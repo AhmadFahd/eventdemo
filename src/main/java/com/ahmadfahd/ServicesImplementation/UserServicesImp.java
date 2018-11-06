@@ -51,7 +51,7 @@ public class UserServicesImp implements UserServices {
     public void updateUser(UsersEntity usersEntity, Long userid) {
         UsersEntity usersEntity1= usersRepository.findById(userid).get();
 //        usersEntity1.setRoleid(usersEntity1.getRoleid());
-
+// FIXME: 11/6/2018 
 //        usersEntity1.setUsername(usersEntity.getUsername());
 //        usersEntity1.setFirstname(usersEntity.getFirstname());
 //        usersEntity1.setMidname(usersEntity.getMidname());
