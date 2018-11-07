@@ -2,10 +2,15 @@ package com.ahmadfahd.controller.ApiController;
 
 import com.ahmadfahd.NotificationService;
 import com.ahmadfahd.Services.UserServices;
+import com.ahmadfahd.dto.UsersDTO;
 import com.ahmadfahd.entity.UsersEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import sun.invoke.empty.Empty;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -19,50 +24,76 @@ public class UserController {
     private NotificationService notificationService;
 
     @GetMapping("/UsersAccess/view")
-    public List<UsersEntity> findAllPresent() {
-        return userServices.findAllPresent();
+    public ResponseEntity findAllPresent() {
+            if (userServices.findAllPresent().isEmpty())
+            {
+                return ResponseEntity.badRequest().build();
+            }
+        return ResponseEntity.ok(userServices.findAllPresent());
     }
 
     @GetMapping("/AdminAccess/view")
-    public List<UsersEntity> getAllUser() {
-        return userServices.getAllUsers();
+    public ResponseEntity getAllUser() {
+        if (userServices.getAllUsers().isEmpty())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(userServices.getAllUsers());
     }
 
     @GetMapping("/view/{userid}")
-    public UsersEntity findById(@PathVariable Long userid) {
-        UsersEntity usersEntity;
-        return userServices.findById(userid);
+    public ResponseEntity findById(@PathVariable Long userid) {
+        if (!userServices.findById(userid).isPresent())
+        {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(userServices.findById(userid));
     }
 
     @PostMapping("/addAdmin")
-    public void addAdmin(@RequestBody UsersEntity usersEntity) {
-        userServices.addUser(usersEntity, Long.valueOf(1));
+    public ResponseEntity addAdmin(@RequestBody @Valid UsersDTO usersDTO, BindingResult result) {
+        if (result.hasErrors()){
+            return ResponseEntity.badRequest().body(result.getAllErrors());
+        }
+        notificationService.addUserNotification(usersDTO);
+        return ResponseEntity.ok(userServices.addUser(usersDTO, Long.valueOf(1)));
     }
+
+
     @PostMapping("/addOrganizer")
-    public void addOrganizer(@RequestBody UsersEntity usersEntity) {
-        userServices.addUser(usersEntity, Long.valueOf(2));
+    public ResponseEntity addOrganizer(@RequestBody @Valid UsersDTO usersDTO, BindingResult result) {
+            if (result.hasErrors()){
+                return ResponseEntity.badRequest().body(result.getAllErrors());
+            }
+        notificationService.addUserNotification(usersDTO);
+        return ResponseEntity.ok(userServices.addUser(usersDTO, Long.valueOf(2)));
     }
+
     @PostMapping("/addUser")
-    public void addUser(@RequestBody UsersEntity usersEntity) {
-
-
-        userServices.addUser(usersEntity, Long.valueOf(3));
-        notificationService.addUserNotification(usersEntity);
+    public ResponseEntity addUser(@RequestBody @Valid UsersDTO usersDTO, BindingResult result) {
+        if (result.hasErrors()){
+            return ResponseEntity.badRequest().body(result.getAllErrors());
+        }
+        notificationService.addUserNotification(usersDTO);
+        return ResponseEntity.ok(userServices.addUser(usersDTO, Long.valueOf(3)));
     }
 
 
     @PutMapping("/edit/{userid}")
-    public void updateUser(@RequestBody UsersEntity usersEntity, @PathVariable Long userid) {
-        usersEntity.setRoleid(usersEntity.getRoleid());
-
-        userServices.updateUser(usersEntity, userid);
+    public ResponseEntity updateUser(@RequestBody @Valid UsersDTO usersDTO, @PathVariable Long userid, BindingResult result) {
+        if(result.hasErrors()){
+            return ResponseEntity.badRequest().body(result.getAllErrors());
+        }
+        return ResponseEntity.ok(userServices.updateUser(usersDTO, userid));
 
     }
 
     @PutMapping("/delete/{userid}")
-    public void deleteById(@PathVariable Long userid) {
-        userServices.deleteById(userid);
+    public ResponseEntity deleteById(@PathVariable Long userid) {
+        if(!userServices.findById(userid).isPresent()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(userServices.deleteById(userid));
     }
-
 
 }

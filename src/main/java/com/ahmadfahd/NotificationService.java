@@ -1,12 +1,14 @@
 
 package com.ahmadfahd;
 
+import com.ahmadfahd.dto.UsersDTO;
 import com.ahmadfahd.entity.EventsEntity;
 import com.ahmadfahd.entity.TicketsEntity;
 import com.ahmadfahd.entity.UsersEntity;
 import com.ahmadfahd.repository.EventsRepository;
 import com.ahmadfahd.repository.TicketsRepository;
 import com.ahmadfahd.repository.UsersRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -26,19 +28,21 @@ public class NotificationService {
 	private EventsRepository eventsRepository;
 	@Autowired
 	private UsersRepository usersRepository;
+//	@Autowired
+//	private ModelMapper modelMapper;
 
 
-	public void addUserNotification(UsersEntity usersEntity) throws MailException {
+	public void addUserNotification(UsersDTO usersDTO) throws MailException {
 		// send email
 		SimpleMailMessage mail = new SimpleMailMessage();
-		mail.setTo(usersEntity.getEmail());
+		mail.setTo(usersDTO.getEmail());
 		mail.setFrom("spring.mail.username");
-		mail.setSubject("Hi " + usersEntity.getUsername());
-		mail.setText("Hi " + usersEntity.getUsername() + ", we hope you're doing OK !\n" +
+		mail.setSubject("Hi " + usersDTO.getUsername());
+		mail.setText("Hi " + usersDTO.getUsername() + ", we hope you're doing OK !\n" +
 				"This Email to confirm your registeration\n" +
-				"your name is: " + usersEntity.getUsername() + "\n" +
-				"your first name is: " + usersEntity.getFirstname() + "\n" +
-				"your last name is: " + usersEntity.getLastname() + "\n\n\n\n" +
+				"your name is: " + usersDTO.getUsername() + "\n" +
+				"your first name is: " + usersDTO.getFirstname() + "\n" +
+				"your last name is: " + usersDTO.getLastname() + "\n\n\n\n" +
 				"Thanks for registration");
 
 		javaMailSender.send(mail);
