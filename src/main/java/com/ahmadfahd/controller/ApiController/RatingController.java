@@ -1,8 +1,10 @@
 package com.ahmadfahd.controller.ApiController;
 
 import com.ahmadfahd.Services.RatingServices;
-import com.ahmadfahd.entity.RatingEntity;
+import com.ahmadfahd.entity.RatingDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,19 +17,36 @@ public class RatingController {
     private RatingServices ratingServices;
 
     @GetMapping("/AdminAccess/view")
-    public List<RatingEntity> getAllRatings(){
-        return ratingServices.getAllRatings(); }
+    public ResponseEntity getAllRatings(){
+        if(ratingServices.getAllRatings().isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(ratingServices.getAllRatings()); }
 
     @GetMapping("/view/{rateid}")
-    public RatingEntity findById(@PathVariable Long rateid) {
-        return ratingServices.findById(rateid); }
+    public ResponseEntity findById(@PathVariable Long rateid) {
+        if (ratingServices.findById(rateid).isPresent()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(ratingServices.findById(rateid)); }
 
     @PostMapping("/add/{ticketid}")
-    public void addRating (@RequestBody RatingEntity ratingEntity,@PathVariable  Long ticketid){
-        ratingServices.addRating(ratingEntity,ticketid);
+    public ResponseEntity addRating (@RequestBody RatingDTO ratingDTO, @PathVariable  Long ticketid, BindingResult result){
+        if (result.hasErrors())
+        {
+            ResponseEntity.badRequest().body(result.getAllErrors());
+        }
+        return ResponseEntity.ok(ratingServices.addRating(ratingDTO,ticketid));
     }
     @PutMapping("/edit/{rateid}")
-    public void updateRating(@RequestBody RatingEntity ratingEntity, @PathVariable String rateid) {
-        ratingServices.updateRating(ratingEntity, rateid); }
+    public ResponseEntity updateRating(@RequestBody RatingDTO ratingDTO, @PathVariable Long rateid,BindingResult result) {
+
+    if (result.hasErrors())
+    {
+        return ResponseEntity.badRequest().body(result.getAllErrors());
+    }
+        return ResponseEntity.ok(ratingServices.updateRating(ratingDTO, rateid));
+
+    }
 
 }
