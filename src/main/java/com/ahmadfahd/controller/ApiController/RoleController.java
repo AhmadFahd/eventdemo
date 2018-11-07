@@ -4,6 +4,7 @@ import com.ahmadfahd.Services.RoleServices;
 import com.ahmadfahd.ServicesImplementation.RoleServicesImp;
 import com.ahmadfahd.entity.RolesEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,35 +14,26 @@ import java.util.Optional;
 @RequestMapping("/api/roles")
 public class RoleController {
 
-    private RoleServices roleServices;
 
     @Autowired
-    public RoleController(RoleServicesImp roleServices){
-        super();
-        this.roleServices = roleServices; }
-
+    private RoleServices roleServices;
 
     @GetMapping("/AdminAccess/view")
-    public List<RolesEntity> getAllRoles(){ return roleServices.getAllRoles(); }
-
-
-    @GetMapping("/view/{roleid}")
-    public Optional<RolesEntity> findById(@PathVariable Long roleid){
-        return roleServices.findById(roleid);
+    public ResponseEntity getAllRoles(){
+        if (roleServices.getAllRoles().isEmpty())
+        {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(roleServices.getAllRoles());
     }
 
-    @PostMapping("/add")
-    public void addRole (@RequestBody RolesEntity rolesEntity){ roleServices.addRole(rolesEntity); }
-
-
-
-    @PutMapping("/edit/{roleid}")
-    public void updateRole(@RequestBody RolesEntity rolesEntity, @PathVariable String roleid) {
-        roleServices.updateRole(rolesEntity, roleid); }
-
-        // No need for HardDelete
-//    @RequestMapping(method = RequestMethod.DELETE,value = "/roles/{roleid}")
-//    public void deleteRole(@PathVariable Long roleid){ roleServices.deleteById(roleid); }
-
+    @GetMapping("/view/{roleid}")
+    public ResponseEntity findById(@PathVariable Long roleid){
+        if (roleServices.findById(roleid).isPresent())
+        {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(roleServices.findById(roleid));
+    }
 
 }

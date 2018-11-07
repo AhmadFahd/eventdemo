@@ -1,8 +1,10 @@
 package com.ahmadfahd.Services;
 
+import com.ahmadfahd.dto.CommentsDTO;
 import com.ahmadfahd.entity.CommentsEntity;
+import org.springframework.http.ResponseEntity;
 
 public interface CommentService {
 
-    void AddComment(CommentsEntity commentsEntity, Long eventid, Long userid);
+    ResponseEntity AddComment(CommentsDTO commentsDTO, Long eventid, Long userid);
 }

@@ -1,8 +1,11 @@
 package com.ahmadfahd.ServicesImplementation;
 
 import com.ahmadfahd.Services.EventServices;
+import com.ahmadfahd.dto.EventsDTO;
 import com.ahmadfahd.entity.EventsEntity;
 import com.ahmadfahd.repository.EventsRepository;
+import com.ahmadfahd.repository.UsersRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +21,14 @@ public class EventServicesImp implements EventServices {
 
     @Autowired
     private EventsRepository eventsRepository;
+    @Autowired
+    private ModelMapper modelMapper;
+    @Autowired
+    private UsersRepository usersRepository;
 
 
     @Override
-    public Iterable<EventsEntity> getAllEvents() {
+    public List<EventsEntity> getAllEvents() {
         return eventsRepository.findAll();
     }
 
@@ -31,26 +38,39 @@ public class EventServicesImp implements EventServices {
     }
 
     @Override
-    public void addEvent(EventsEntity eventsEntity) {
-        eventsRepository.save(eventsEntity);
+    public EventsEntity addEvent(EventsDTO eventsDTO, Long userid) {
+
+        EventsEntity eventsEntity;
+        eventsEntity = modelMapper.map(eventsDTO, EventsEntity.class);
+        eventsEntity.setOrganizer(usersRepository.findById(userid).get());
+        return eventsRepository.save(eventsEntity);
     }
 
     @Override
-    public void updateEvent(EventsEntity eventsEntity, String eventid) {
-        eventsRepository.save(eventsEntity); }
+    public EventsEntity updateEvent(EventsDTO eventsDTO, Long eventid) {
+        EventsEntity eventsEntity1 = eventsRepository.findById(eventid).get();
+        EventsEntity eventsEntity;
+        eventsEntity = modelMapper.map(eventsDTO, EventsEntity.class);
+        eventsEntity.setEventid(eventsEntity1.getEventid());
+        eventsEntity.setOrganizer(eventsEntity1.getOrganizer());
+        eventsEntity.setComments(eventsEntity1.getComments());
+        return eventsRepository.save(eventsEntity);
+    }
 
     @Override
-    public void deleteById(Long eventid) {
+    public EventsEntity deleteById(Long eventid) {
         EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
         eventsEntity.setDeleted(true);
-        eventsRepository.save(eventsEntity); }
+        return eventsRepository.save(eventsEntity);
+    }
 
     @Override
-    public void eventAprrove(Long eventid, boolean aproved) {
+    public EventsEntity eventAprrove(Long eventid, boolean aproved) {
         //you can use optional and delete get();
         EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
         eventsEntity.setApproved(aproved);
-        eventsRepository.save(eventsEntity); }
+        return eventsRepository.save(eventsEntity);
+    }
 
     @Override
     public List<EventsEntity> findByCity(String eventcity) {
@@ -70,13 +90,9 @@ public class EventServicesImp implements EventServices {
     }
 
     @Override
-    public Optional<EventsEntity> findIfPresent(Long eventid){
-        LocalDate date= LocalDate.now();
-        return eventsRepository.findByEventidAndDeletedFalseAndApprovedTrueAndEventdateAfter(eventid,date);
+    public Optional<EventsEntity> findIfPresent(Long eventid) {
+        LocalDate date = LocalDate.now();
+        return eventsRepository.findByEventidAndDeletedFalseAndApprovedTrueAndEventdateAfter(eventid, date);
     }
 
-    @Override
-    public Long HowManyAproved() {
-        return eventsRepository.countByApprovedTrue();
-    }
 }

@@ -1,8 +1,10 @@
 package com.ahmadfahd.controller.ApiController;
 
 import com.ahmadfahd.Services.CommentService;
+import com.ahmadfahd.dto.CommentsDTO;
 import com.ahmadfahd.entity.CommentsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,8 +16,8 @@ public class CommentsController
 
 
     @PostMapping("/add/{eventid}/{userid}")
-    public void AddComment(@RequestBody CommentsEntity commentsEntity, @PathVariable Long eventid, @PathVariable Long userid)
+    public ResponseEntity AddComment(@RequestBody CommentsDTO commentsDTO, @PathVariable Long eventid, @PathVariable Long userid)
     {
-        commentService.AddComment(commentsEntity,eventid,userid);
+        return commentService.AddComment(commentsDTO,eventid,userid);
     }
 }

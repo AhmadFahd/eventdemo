@@ -2,8 +2,11 @@ package com.ahmadfahd.controller.ApiController;
 
 import com.ahmadfahd.NotificationService;
 import com.ahmadfahd.Services.EventServices;
+import com.ahmadfahd.dto.EventsDTO;
 import com.ahmadfahd.entity.EventsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,29 +25,53 @@ public class EventController {
     @Autowired
     private NotificationService notificationService;
 
+
+
      @GetMapping("/UsersAccess/view")
-    public List<EventsEntity> getAllActive(){ return eventServices.getAllActive(); }
+     public ResponseEntity getAllActive() {
+         if(eventServices.getAllEvents().isEmpty()){
+         return ResponseEntity.noContent().build();
+     }
+         return ResponseEntity.ok(eventServices.getAllActive());
+     }
 
     @GetMapping("/AdminAccess/view")
-    public Iterable<EventsEntity> getAllEvents(){ return eventServices.getAllEvents(); }
+    public ResponseEntity getAllEvents(){
+         if (eventServices.getAllEvents().isEmpty()){
+             return ResponseEntity.noContent().build(); }
+         return ResponseEntity.ok(eventServices.getAllEvents());
+     }
 
     @GetMapping("/view/{eventid}")
-    public Optional<EventsEntity> findById(@PathVariable Long eventid){
-        return eventServices.findById(eventid);
+    public ResponseEntity findById(@PathVariable Long eventid){
+        if (!eventServices.findById(eventid).isPresent())
+        {
+            return ResponseEntity.noContent().build();
+        }
+         return ResponseEntity.ok(eventServices.findById(eventid));
     }
 
-    @PostMapping("/add")
-    public void addEvent(@RequestBody @Valid EventsEntity eventsEntity){ eventServices.addEvent(eventsEntity); }
+    @PostMapping("/{userid}/add")
+    public ResponseEntity addEvent(@RequestBody @Valid EventsDTO eventsDTO, @PathVariable Long userid, BindingResult result){
+        if (result.hasErrors()){
+            return ResponseEntity.badRequest().body(result.getAllErrors());
+        }
+         return ResponseEntity.ok(eventServices.addEvent(eventsDTO,userid));
+     }
 
     @PutMapping("/edit/{eventid}")
-    public void updateEvent(@RequestBody EventsEntity eventsEntity, @PathVariable String eventid) {
-        eventServices.updateEvent(eventsEntity,eventid);
-        notificationService.updateEventNotification(Long.valueOf(eventid));}
+    public ResponseEntity updateEvent(@RequestBody EventsDTO eventsDTO, @PathVariable Long eventid,BindingResult result) {
+        if (result.hasErrors()){
+            return ResponseEntity.badRequest().body(result.getAllErrors());
+        }
+        notificationService.updateEventNotification(Long.valueOf(eventid));
+        return ResponseEntity.ok(eventServices.updateEvent(eventsDTO,eventid));
+}
 
     @PutMapping("/delete/{eventid}")
     public void deleteById(@PathVariable Long eventid){
+         notificationService.eventCancelNotification(eventid);
          eventServices.deleteById(eventid);
-     notificationService.eventCancelNotification(eventid);
      }
 
     @PutMapping("/AdminAccess/approve/{eventid}")
@@ -55,22 +82,28 @@ public class EventController {
 
 
     @GetMapping("/AdminAccess/viewbylocation/{eventcity}")
-    public List<EventsEntity> findAllByEventlocation(@PathVariable String eventcity) {
-        return eventServices.findByCity(eventcity);
+    public ResponseEntity findAllByEventlocation(@PathVariable String eventcity) {
+        if (eventServices.findByCity(eventcity).isEmpty())
+        {
+            return ResponseEntity.noContent().build();
+        }
+         return ResponseEntity.ok(eventServices.findByCity(eventcity));
     }
     @GetMapping("/AdminAccess/viewBydate/{eventdate}")
-    public List<EventsEntity> findAllByEventdate(@PathVariable String eventdate) {
-        return eventServices.findByDate(LocalDate.parse(eventdate));}
+    public ResponseEntity findAllByEventdate(@PathVariable String eventdate) {
+        if (eventServices.findByDate(LocalDate.parse(eventdate)).isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+         return ResponseEntity.ok(eventServices.findByDate(LocalDate.parse(eventdate)));
+     }
 
 
     @GetMapping("/viewifpresent/{eventid}")
-    public Optional<EventsEntity> findIfPresent(@PathVariable Long eventid){
-    return eventServices.findIfPresent(eventid);
-   }
-
-   @GetMapping("/count")
-   public Long HowManyAproved() {
-         return eventServices.HowManyAproved();
+    public ResponseEntity findIfPresent(@PathVariable Long eventid){
+    if (eventServices.findIfPresent(eventid).isPresent()){
+        return ResponseEntity.ok(eventServices.findIfPresent(eventid));
+    }
+    return ResponseEntity.badRequest().build();
    }
 
    }

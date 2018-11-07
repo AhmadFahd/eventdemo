@@ -18,27 +18,9 @@ public class RoleServicesImp implements RoleServices {
     private RolesRepository rolesRepository;
 
     @Override
-    public List<RolesEntity> getAllRoles() {
-        return rolesRepository.findAll();
-    }
+    public List<RolesEntity> getAllRoles() { return rolesRepository.findAll(); }
 
     @Override
-    public Optional<RolesEntity> findById(Long roleid)
-        {return rolesRepository.findById(roleid); }
+    public Optional<RolesEntity> findById(Long roleid) { return rolesRepository.findById(roleid); }
 
-
-    @Override
-    public void addRole(RolesEntity rolesEntity) {
-        rolesRepository.save(rolesEntity);
-    }
-
-    @Override
-    public void updateRole(RolesEntity rolesEntity, String roleid) {
-        rolesRepository.save(rolesEntity);
-    }
-        // HardDelete
-    @Override
-    public void deleteById(Long roleid) {
-        rolesRepository.deleteById(roleid);
-    }
 }

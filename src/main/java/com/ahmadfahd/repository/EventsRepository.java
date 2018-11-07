@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface EventsRepository extends PagingAndSortingRepository<EventsEntity,Long> {
+public interface EventsRepository extends JpaRepository<EventsEntity,Long> {
 //    EventsEntity findByEventname (String eventname);
     List<EventsEntity> findAllByEventcity(String eventcity);
     List<EventsEntity> findByEventdate(LocalDate eventdate);
@@ -24,5 +24,6 @@ public interface EventsRepository extends PagingAndSortingRepository<EventsEntit
     List<EventsEntity> findByDeletedFalseAndApprovedTrueAndEventdateAfter(LocalDate date);
     Optional<EventsEntity> findByEventidAndDeletedFalseAndApprovedTrueAndEventdateAfter(Long eventid,LocalDate date);
     Long countByApprovedTrue();
+//    List<EventsEntity> findAll();
 
      }
