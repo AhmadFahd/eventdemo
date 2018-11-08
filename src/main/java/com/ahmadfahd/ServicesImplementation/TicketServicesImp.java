@@ -42,7 +42,8 @@ public class TicketServicesImp implements TicketServices {
     }
 
     @Override
-    public ResponseEntity addTicket(TicketsEntity ticketsEntity, Long eventid, Long userid) {
+    public ResponseEntity addTicket(Long eventid, Long userid) {
+        TicketsEntity ticketsEntity = new TicketsEntity();
         Optional<EventsEntity> eventsOptional = eventsRepository.findByEventidAndDeletedFalseAndApprovedTrueAndEventdateAfter(eventid,LocalDate.now());
         Optional<UsersEntity> usersOptional = usersRepository.findById(userid);
         if (eventsOptional.isPresent()&&usersOptional.isPresent()) {
@@ -63,11 +64,6 @@ public class TicketServicesImp implements TicketServices {
         return ResponseEntity.noContent().build();
     }
 
-
-    @Override
-    public void updateTicket(TicketsEntity ticketsEntity, Long ticketid) {
-        ticketsRepository.save(findById(ticketid));
-    }
 
     @Override
     public Long CountEventTickets(Long eventid) {

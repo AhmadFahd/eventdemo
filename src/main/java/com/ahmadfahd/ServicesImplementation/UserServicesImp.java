@@ -1,8 +1,8 @@
 package com.ahmadfahd.ServicesImplementation;
 
 import com.ahmadfahd.Services.UserServices;
+import com.ahmadfahd.dto.ObjectMapperUtils;
 import com.ahmadfahd.dto.UsersDTO;
-import com.ahmadfahd.entity.RolesEntity;
 import com.ahmadfahd.entity.UsersEntity;
 import com.ahmadfahd.repository.RolesRepository;
 import com.ahmadfahd.repository.UsersRepository;
@@ -11,11 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServicesImp implements UserServices {
@@ -28,45 +24,61 @@ public class UserServicesImp implements UserServices {
     private ModelMapper modelMapper;
 
     @Override
-    public List<UsersEntity> getAllUsers() {
-        return usersRepository.findAll();
+    public ResponseEntity getAllUsers() {
+        List<UsersEntity> usersEntities = usersRepository.findAll();
+        List<UsersDTO> usersDTOS = ObjectMapperUtils.mapAll(usersEntities,UsersDTO.class);
+        return ResponseEntity.ok(usersDTOS);
     }
 
     @Override
-    public List<UsersEntity> findAllPresent() {
-        return usersRepository.findByDeletedIsFalse();
+    public ResponseEntity findAllPresent() {
+        List<UsersEntity> usersEntities = usersRepository.findByDeletedIsFalse();
+        List<UsersDTO> usersDTOS = ObjectMapperUtils.mapAll(usersEntities,UsersDTO.class);
+
+        return ResponseEntity.ok(usersDTOS);
     }
 
     @Override
-    public Optional<UsersEntity> findById(Long userid) {
+    public ResponseEntity findById(Long userid) {
 
-    return usersRepository.findById(userid);
+        if(usersRepository.findById(userid).isPresent()){
+        UsersEntity usersEntity = usersRepository.findById(userid).get();
+        UsersDTO usersDTO = modelMapper.map(usersEntity,UsersDTO.class);
+        return ResponseEntity.ok(usersDTO);
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @Override
-    public UsersEntity addUser(UsersDTO usersDTO, Long roleid) {
+    public ResponseEntity addUser(UsersDTO usersDTO, Long roleid) {
         UsersEntity usersEntity ;
         usersEntity = modelMapper.map(usersDTO,UsersEntity.class);
         usersEntity.setRoleid(rolesRepository.findById(roleid).get());
-        return usersRepository.save(usersEntity);
-    }
-
-    public UsersEntity updateUser(UsersDTO usersDTO, Long userid) {
-
-
-        UsersEntity usersEntity1 = usersRepository.findById(userid).get();
-        UsersEntity usersEntity = new UsersEntity();
-        usersEntity = modelMapper.map(usersDTO, UsersEntity.class);
-        usersEntity.setUserid(userid);
-        usersEntity.setRoleid(usersEntity1.getRoleid());
-        return usersRepository.save(usersEntity);
-
+        return ResponseEntity.ok(usersRepository.save(usersEntity));
     }
 
     @Override
-    public UsersEntity deleteById(Long userid) {
-        UsersEntity usersEntity = usersRepository.findById(userid).get();
-        usersEntity.setDeleted(true);
-        return usersRepository.save(usersEntity);
+    public ResponseEntity updateUser(UsersDTO usersDTO, Long userid) {
+
+            if (usersRepository.findById(userid).isPresent()) {
+
+                UsersEntity usersEntity1 = usersRepository.findById(userid).get();
+                UsersEntity usersEntity ;
+                usersEntity = modelMapper.map(usersDTO, UsersEntity.class);
+                usersEntity.setUserid(userid);
+                usersEntity.setRoleid(usersEntity1.getRoleid());
+                return ResponseEntity.ok(usersRepository.save(usersEntity));
+            }
+            return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity deleteUser(Long userid) {
+        if (usersRepository.findById(userid).isPresent()) {
+            UsersEntity usersEntity = usersRepository.findById(userid).get();
+            usersEntity.setDeleted(true);
+            return ResponseEntity.ok(usersRepository.save(usersEntity));
+        }
+        return ResponseEntity.noContent().build();
     }
 }

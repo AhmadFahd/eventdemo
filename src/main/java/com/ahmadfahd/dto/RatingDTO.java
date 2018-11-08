@@ -1,4 +1,4 @@
-package com.ahmadfahd.entity;
+package com.ahmadfahd.dto;
 
 import javax.validation.constraints.Size;
 

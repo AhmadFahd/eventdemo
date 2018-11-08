@@ -3,15 +3,14 @@ package com.ahmadfahd.controller.ApiController;
 import com.ahmadfahd.NotificationService;
 import com.ahmadfahd.Services.UserServices;
 import com.ahmadfahd.dto.UsersDTO;
-import com.ahmadfahd.entity.UsersEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import sun.invoke.empty.Empty;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -25,30 +24,15 @@ public class UserController {
 
     @GetMapping("/UsersAccess/view")
     public ResponseEntity findAllPresent() {
-            if (userServices.findAllPresent().isEmpty())
-            {
-                return ResponseEntity.badRequest().build();
-            }
-        return ResponseEntity.ok(userServices.findAllPresent());
-    }
+        return ResponseEntity.ok(userServices.findAllPresent()); }
 
     @GetMapping("/AdminAccess/view")
     public ResponseEntity getAllUser() {
-        if (userServices.getAllUsers().isEmpty())
-        {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(userServices.getAllUsers());
-    }
+        return ResponseEntity.ok(userServices.getAllUsers()); }
 
     @GetMapping("/view/{userid}")
     public ResponseEntity findById(@PathVariable Long userid) {
-        if (!userServices.findById(userid).isPresent())
-        {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(userServices.findById(userid));
-    }
+        return ResponseEntity.ok(userServices.findById(userid)); }
 
     @PostMapping("/addAdmin")
     public ResponseEntity addAdmin(@RequestBody @Valid UsersDTO usersDTO, BindingResult result) {
@@ -56,8 +40,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(result.getAllErrors());
         }
         notificationService.addUserNotification(usersDTO);
-        return ResponseEntity.ok(userServices.addUser(usersDTO, Long.valueOf(1)));
-    }
+        return ResponseEntity.ok(userServices.addUser(usersDTO, Long.valueOf(1))); }
 
 
     @PostMapping("/addOrganizer")
@@ -90,10 +73,6 @@ public class UserController {
 
     @PutMapping("/delete/{userid}")
     public ResponseEntity deleteById(@PathVariable Long userid) {
-        if(!userServices.findById(userid).isPresent()){
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(userServices.deleteById(userid));
+        return ResponseEntity.ok(userServices.deleteUser(userid));
     }
-
 }

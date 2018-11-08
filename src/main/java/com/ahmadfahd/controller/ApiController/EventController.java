@@ -29,25 +29,25 @@ public class EventController {
 
      @GetMapping("/UsersAccess/view")
      public ResponseEntity getAllActive() {
-         if(eventServices.getAllEvents().isEmpty()){
-         return ResponseEntity.noContent().build();
-     }
+//         if(eventServices.getAllEvents().isEmpty()){
+//         return ResponseEntity.noContent().build();
+//     }
          return ResponseEntity.ok(eventServices.getAllActive());
      }
 
     @GetMapping("/AdminAccess/view")
     public ResponseEntity getAllEvents(){
-         if (eventServices.getAllEvents().isEmpty()){
-             return ResponseEntity.noContent().build(); }
+//         if (eventServices.getAllEvents().isEmpty()){
+//             return ResponseEntity.noContent().build(); }
          return ResponseEntity.ok(eventServices.getAllEvents());
      }
 
     @GetMapping("/view/{eventid}")
     public ResponseEntity findById(@PathVariable Long eventid){
-        if (!eventServices.findById(eventid).isPresent())
-        {
-            return ResponseEntity.noContent().build();
-        }
+//        if (!eventServices.findById(eventid).isPresent())
+//        {
+//            return ResponseEntity.noContent().build();
+//        }
          return ResponseEntity.ok(eventServices.findById(eventid));
     }
 
@@ -83,26 +83,26 @@ public class EventController {
 
     @GetMapping("/AdminAccess/viewbylocation/{eventcity}")
     public ResponseEntity findAllByEventlocation(@PathVariable String eventcity) {
-        if (eventServices.findByCity(eventcity).isEmpty())
-        {
-            return ResponseEntity.noContent().build();
-        }
+//        if (eventServices.findByCity(eventcity).isEmpty())
+//        {
+//            return ResponseEntity.noContent().build();
+//        }
          return ResponseEntity.ok(eventServices.findByCity(eventcity));
     }
     @GetMapping("/AdminAccess/viewBydate/{eventdate}")
     public ResponseEntity findAllByEventdate(@PathVariable String eventdate) {
-        if (eventServices.findByDate(LocalDate.parse(eventdate)).isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
+//        if (eventServices.findByDate(LocalDate.parse(eventdate)).isEmpty()) {
+//            return ResponseEntity.noContent().build();
+//        }
          return ResponseEntity.ok(eventServices.findByDate(LocalDate.parse(eventdate)));
      }
 
 
     @GetMapping("/viewifpresent/{eventid}")
     public ResponseEntity findIfPresent(@PathVariable Long eventid){
-    if (eventServices.findIfPresent(eventid).isPresent()){
-        return ResponseEntity.ok(eventServices.findIfPresent(eventid));
-    }
+//    if (eventServices.findIfPresent(eventid).isPresent()){
+//        return ResponseEntity.ok(eventServices.findIfPresent(eventid));
+//    }
     return ResponseEntity.badRequest().build();
    }
 

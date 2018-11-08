@@ -2,11 +2,14 @@ package com.ahmadfahd.ServicesImplementation;
 
 import com.ahmadfahd.Services.EventServices;
 import com.ahmadfahd.dto.EventsDTO;
+import com.ahmadfahd.dto.ObjectMapperUtils;
 import com.ahmadfahd.entity.EventsEntity;
+import com.ahmadfahd.entity.RatingEntity;
 import com.ahmadfahd.repository.EventsRepository;
 import com.ahmadfahd.repository.UsersRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,71 +31,114 @@ public class EventServicesImp implements EventServices {
 
 
     @Override
-    public List<EventsEntity> getAllEvents() {
-        return eventsRepository.findAll();
+    public ResponseEntity getAllEvents() {
+        if (!eventsRepository.findAll().isEmpty()) {
+            List<EventsEntity> eventsEntityList = eventsRepository.findAll();
+            List<EventsDTO> eventsDTO = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
+            return ResponseEntity.ok(eventsDTO);
+        }
+        return ResponseEntity.noContent().build();
+    }
+    @Override
+    public ResponseEntity findById(Long eventid) {
+        if (eventsRepository.findById(eventid).isPresent()) {
+            EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
+            EventsDTO eventsDTO = modelMapper.map(eventsEntity, EventsDTO.class);
+            return ResponseEntity.ok(eventsDTO);
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @Override
-    public Optional<EventsEntity> findById(Long eventid) {
-        return eventsRepository.findById(eventid);
+    public ResponseEntity addEvent(EventsDTO eventsDTO, Long userid) {
+
+        if (eventsDTO.getEventdate().isAfter(LocalDate.now().minusDays(1)))
+        {
+            EventsEntity eventsEntity;
+            eventsEntity = modelMapper.map(eventsDTO, EventsEntity.class);
+
+            eventsEntity.setOrganizer(usersRepository.findById(userid).get());
+            return ResponseEntity.ok(eventsRepository.save(eventsEntity));
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @Override
-    public EventsEntity addEvent(EventsDTO eventsDTO, Long userid) {
-
-        EventsEntity eventsEntity;
-        eventsEntity = modelMapper.map(eventsDTO, EventsEntity.class);
-        eventsEntity.setOrganizer(usersRepository.findById(userid).get());
-        return eventsRepository.save(eventsEntity);
+    public ResponseEntity updateEvent(EventsDTO eventsDTO, Long eventid) {
+        if (eventsRepository.findById(eventid).isPresent()) {
+            EventsEntity eventsEntity1 = eventsRepository.findById(eventid).get();
+            EventsEntity eventsEntity;
+            eventsEntity = modelMapper.map(eventsDTO, EventsEntity.class);
+            eventsEntity.setEventid(eventsEntity1.getEventid());
+            eventsEntity.setOrganizer(eventsEntity1.getOrganizer());
+            eventsEntity.setComments(eventsEntity1.getComments());
+            return ResponseEntity.ok(eventsRepository.save(eventsEntity));
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @Override
-    public EventsEntity updateEvent(EventsDTO eventsDTO, Long eventid) {
-        EventsEntity eventsEntity1 = eventsRepository.findById(eventid).get();
-        EventsEntity eventsEntity;
-        eventsEntity = modelMapper.map(eventsDTO, EventsEntity.class);
-        eventsEntity.setEventid(eventsEntity1.getEventid());
-        eventsEntity.setOrganizer(eventsEntity1.getOrganizer());
-        eventsEntity.setComments(eventsEntity1.getComments());
-        return eventsRepository.save(eventsEntity);
+    public ResponseEntity deleteById(Long eventid) {
+        if (eventsRepository.findById(eventid).isPresent()) {
+            EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
+            eventsEntity.setDeleted(true);
+            return ResponseEntity.ok(eventsRepository.save(eventsEntity));
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @Override
-    public EventsEntity deleteById(Long eventid) {
-        EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
-        eventsEntity.setDeleted(true);
-        return eventsRepository.save(eventsEntity);
+    public ResponseEntity eventAprrove(Long eventid, boolean aproved) {
+        if (eventsRepository.findById(eventid).isPresent()) {
+            EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
+            eventsEntity.setApproved(aproved);
+            return ResponseEntity.ok(eventsRepository.save(eventsEntity));
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @Override
-    public EventsEntity eventAprrove(Long eventid, boolean aproved) {
-        //you can use optional and delete get();
-        EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
-        eventsEntity.setApproved(aproved);
-        return eventsRepository.save(eventsEntity);
+    public ResponseEntity findByCity(String eventcity) {
+        if (!eventsRepository.findAllByEventcity(eventcity).isEmpty()) {
+            List<EventsEntity> eventsEntityList = eventsRepository.findAllByEventcity(eventcity);
+            List<EventsDTO> eventsDTOList = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
+            return ResponseEntity.ok(eventsDTOList);
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @Override
-    public List<EventsEntity> findByCity(String eventcity) {
-        return eventsRepository.findAllByEventcity(eventcity);
+    public ResponseEntity findByDate(LocalDate eventdate) {
+        if (!eventsRepository.findByEventdate(eventdate).isEmpty()) {
+            List<EventsEntity> eventsEntityList = eventsRepository.findByEventdate(eventdate);
+            List<EventsDTO> eventsDTOList = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
+            return ResponseEntity.ok(eventsDTOList);
+        }
+        return ResponseEntity.noContent().build();
     }
 
-    @Override
-    public List<EventsEntity> findByDate(LocalDate eventdate) {
-        return eventsRepository.findByEventdate(eventdate);
-    }
-
 
     @Override
-    public List<EventsEntity> getAllActive() {
+    public ResponseEntity getAllActive() {
+
         LocalDate localDate = LocalDate.now();
-        return eventsRepository.findByDeletedFalseAndApprovedTrueAndEventdateAfter(localDate);
+        if (!eventsRepository.findByDeletedFalseAndApprovedTrueAndEventdateAfter(localDate).isEmpty()) {
+            List<EventsEntity> eventsEntityList = eventsRepository.findByDeletedFalseAndApprovedTrueAndEventdateAfter(localDate);
+            List<EventsDTO> eventsDTOList = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
+            return ResponseEntity.ok(eventsDTOList);
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @Override
-    public Optional<EventsEntity> findIfPresent(Long eventid) {
+    public ResponseEntity findIfPresent(Long eventid) {
         LocalDate date = LocalDate.now();
-        return eventsRepository.findByEventidAndDeletedFalseAndApprovedTrueAndEventdateAfter(eventid, date);
+        if (eventsRepository.findByEventidAndDeletedFalseAndApprovedTrueAndEventdateAfter(eventid, date).isPresent()) {
+            EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
+            EventsDTO eventsDTO = modelMapper.map(eventsEntity, EventsDTO.class);
+            return ResponseEntity.ok(eventsDTO);
+        }
+        return ResponseEntity.noContent().build();
     }
 
 }

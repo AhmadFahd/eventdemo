@@ -17,11 +17,10 @@ public class EventsDTO {
     private String eventcategory;
     private String eventcity;
     private String eventlocation;
-    private List<CommentsEntity> comments;
 
-    public List<CommentsEntity> getComments() { return comments; }
+//    public List<CommentsEntity> getComments() { return comments; }
 
-    public void setComments(List<CommentsEntity> comments) { this.comments = comments; }
+//    public void setComments(List<CommentsEntity> comments) { this.comments = comments; }
 
     public String getEventname() { return eventname; }
 

@@ -1,13 +1,12 @@
 package com.ahmadfahd.controller.ApiController;
 
 import com.ahmadfahd.Services.RatingServices;
-import com.ahmadfahd.entity.RatingDTO;
+import com.ahmadfahd.dto.RatingDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/rating")
@@ -18,16 +17,16 @@ public class RatingController {
 
     @GetMapping("/AdminAccess/view")
     public ResponseEntity getAllRatings(){
-        if(ratingServices.getAllRatings().isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
+//        if(ratingServices.getAllRatings().isEmpty()) {
+//            return ResponseEntity.noContent().build();
+//        }
         return ResponseEntity.ok(ratingServices.getAllRatings()); }
 
     @GetMapping("/view/{rateid}")
     public ResponseEntity findById(@PathVariable Long rateid) {
-        if (ratingServices.findById(rateid).isPresent()) {
-            return ResponseEntity.noContent().build();
-        }
+//        if (ratingServices.findById(rateid).isPresent()) {
+//            return ResponseEntity.noContent().build();
+//        }
         return ResponseEntity.ok(ratingServices.findById(rateid)); }
 
     @PostMapping("/add/{ticketid}")
@@ -46,7 +45,6 @@ public class RatingController {
         return ResponseEntity.badRequest().body(result.getAllErrors());
     }
         return ResponseEntity.ok(ratingServices.updateRating(ratingDTO, rateid));
-
     }
 
 }

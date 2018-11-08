@@ -26,7 +26,7 @@ public class UsersEntity {
     private String usergender;
     private LocalDate userdob;
     @JsonIgnore
-    @ColumnDefault("0")
+    @ColumnDefault(value = "0")
     private boolean deleted;
 
     public long getUserid() {

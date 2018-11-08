@@ -21,8 +21,12 @@ public class TicketController {
     private NotificationService notificationService;
 
     @GetMapping("/AdminAccess/view")
-    public List<TicketsEntity> getAllTickets() {
-        return ticketServices.getAllTickets();
+    public ResponseEntity getAllTickets() {
+        if (ticketServices.getAllTickets().isEmpty())
+        {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(ticketServices.getAllTickets());
     }
 
 
@@ -33,18 +37,11 @@ public class TicketController {
 
 
     @PostMapping("/add/{eventid}/{userid}")
-    public void addTicket(@RequestBody TicketsEntity ticketsEntity, @PathVariable Long eventid, @PathVariable Long userid) {
-        ticketServices.addTicket(ticketsEntity, eventid , userid);
+    public void addTicket(@PathVariable Long eventid, @PathVariable Long userid) {
+        ticketServices.addTicket(eventid , userid);
         notificationService.bookTicketNotification(eventid,userid);
 
     }
-
-//Needs TO Check
-    @RequestMapping(method = RequestMethod.PUT, value = "/tickets/{ticketid}")
-    public void updateTicket(@RequestBody TicketsEntity ticketsEntity, @PathVariable Long ticketid) {
-        ticketServices.updateTicket(ticketsEntity, ticketid);
-    }
-
     @GetMapping("/count/{eventid}")
     public Long CountEventTickets(@PathVariable String eventid) {
 

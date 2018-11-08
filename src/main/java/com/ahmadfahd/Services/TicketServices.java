@@ -9,8 +9,7 @@ public interface TicketServices {
 
     List<TicketsEntity> getAllTickets();
     TicketsEntity findById(Long ticketid);
-    ResponseEntity addTicket(TicketsEntity ticketsEntity, Long eventid, Long userid);
-    void updateTicket(TicketsEntity ticketsEntity, Long ticketid);
+    ResponseEntity addTicket(Long eventid, Long userid);
     Long CountEventTickets(Long eventid);
     List<TicketsEntity> findMyTickets(Long userid);
     void ChickinTicket(Long ticketid);

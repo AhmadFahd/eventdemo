@@ -1,7 +1,8 @@
 package com.ahmadfahd.ServicesImplementation;
 
 import com.ahmadfahd.Services.RatingServices;
-import com.ahmadfahd.entity.RatingDTO;
+import com.ahmadfahd.dto.ObjectMapperUtils;
+import com.ahmadfahd.dto.RatingDTO;
 import com.ahmadfahd.entity.RatingEntity;
 import com.ahmadfahd.entity.TicketsEntity;
 import com.ahmadfahd.repository.RatingRepository;
@@ -11,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,14 +25,23 @@ public class RatingServicesImp implements RatingServices {
     private ModelMapper modelMapper;
 
     @Override
-    public List<RatingEntity> getAllRatings() {
-        return ratingRepository.findAll();
+    public ResponseEntity getAllRatings() {
+        if (!ratingRepository.findAll().isEmpty()) {
+            List<RatingEntity> ratingEntityList = ratingRepository.findAll();
+            List<RatingDTO> ratingDTOList = ObjectMapperUtils.mapAll(ratingEntityList, RatingDTO.class);
+            return ResponseEntity.ok(ratingDTOList);
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @Override
-    public Optional<RatingEntity>  findById(Long rateid) {
-
-        return ratingRepository.findById(rateid);
+    public ResponseEntity  findById(Long rateid) {
+        if (ratingRepository.findById(rateid).isPresent()) {
+            RatingEntity ratingEntity = ratingRepository.findById(rateid).get();
+            RatingDTO ratingDTO = modelMapper.map(ratingEntity,RatingDTO.class);
+            return ResponseEntity.ok(ratingDTO);
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @Override
