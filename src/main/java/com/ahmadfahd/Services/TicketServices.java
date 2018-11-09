@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface TicketServices {
 
-    List<TicketsEntity> getAllTickets();
-    TicketsEntity findById(Long ticketid);
+    ResponseEntity getAllTickets();
+    ResponseEntity findById(Long ticketid);
     ResponseEntity addTicket(Long eventid, Long userid);
-    Long CountEventTickets(Long eventid);
-    List<TicketsEntity> findMyTickets(Long userid);
-    void ChickinTicket(Long ticketid);
-    void CancelTicket(Long ticketid);
+    ResponseEntity CountEventTickets(Long eventid);
+    ResponseEntity findMyTickets(Long userid);
+    ResponseEntity ChickinTicket(Long ticketid);
+    ResponseEntity CancelTicket(Long ticketid);
 
 
 }

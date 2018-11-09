@@ -14,4 +14,15 @@ public class TicketsDTO {
     private EventsEntity eventid;
     private UsersEntity userid;
 
+    public long getTicketid() { return ticketid; }
+
+    public void setTicketid(long ticketid) { this.ticketid = ticketid; }
+
+    public EventsEntity getEventid() { return eventid; }
+
+    public void setEventid(EventsEntity eventid) { this.eventid = eventid; }
+
+    public UsersEntity getUserid() { return userid; }
+
+    public void setUserid(UsersEntity userid) { this.userid = userid; }
 }
