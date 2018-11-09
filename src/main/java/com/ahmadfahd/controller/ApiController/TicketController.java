@@ -22,45 +22,38 @@ public class TicketController {
 
     @GetMapping("/AdminAccess/view")
     public ResponseEntity getAllTickets() {
-        if (ticketServices.getAllTickets().isEmpty())
-        {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(ticketServices.getAllTickets());
     }
 
-
     @GetMapping("/view/{ticketid}")
-    public TicketsEntity findById(@PathVariable Long ticketid) {
-        return ticketServices.findById(ticketid);
+    public ResponseEntity findById(@PathVariable Long ticketid) {
+        return ResponseEntity.ok(ticketServices.findById(ticketid));
     }
 
 
     @PostMapping("/add/{eventid}/{userid}")
-    public void addTicket(@PathVariable Long eventid, @PathVariable Long userid) {
-        ticketServices.addTicket(eventid , userid);
+    public ResponseEntity addTicket(@PathVariable Long eventid, @PathVariable Long userid) {
         notificationService.bookTicketNotification(eventid,userid);
-
+        return ResponseEntity.ok(ticketServices.addTicket(eventid , userid));
     }
     @GetMapping("/count/{eventid}")
-    public Long CountEventTickets(@PathVariable String eventid) {
-
-        return ticketServices.CountEventTickets(Long.valueOf(eventid));
-
+    public ResponseEntity CountEventTickets(@PathVariable Long eventid) {
+        return ResponseEntity.ok(ticketServices.CountEventTickets(eventid));
     }
 
     @GetMapping("/{userid}")
-    public List<TicketsEntity> findMyTickets(@PathVariable Long userid) {
-        return ticketServices.findMyTickets(userid);
+    public ResponseEntity findMyTickets(@PathVariable Long userid) {
+
+        return ResponseEntity.ok(ticketServices.findMyTickets(userid));
     }
 
     @GetMapping("/chickin/{ticketid}")
-    public void ChickinTicket(@PathVariable Long ticketid) {
-    ticketServices.ChickinTicket(ticketid);
+    public ResponseEntity ChickinTicket(@PathVariable Long ticketid) {
+        return ResponseEntity.ok(ticketServices.ChickinTicket(ticketid));
     }
 
     @GetMapping("/cancel/{ticketid}")
-    public void CancelTicket(@PathVariable Long ticketid) {
-        ticketServices.CancelTicket(ticketid);
+    public ResponseEntity CancelTicket(@PathVariable Long ticketid) {
+        return ResponseEntity.ok(ticketServices.CancelTicket(ticketid));
     }
 }
