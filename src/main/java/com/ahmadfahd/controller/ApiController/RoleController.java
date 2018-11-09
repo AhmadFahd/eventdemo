@@ -20,19 +20,13 @@ public class RoleController {
 
     @GetMapping("/AdminAccess/view")
     public ResponseEntity getAllRoles(){
-        if (roleServices.getAllRoles().isEmpty())
-        {
-            return ResponseEntity.noContent().build();
-        }
+
         return ResponseEntity.ok(roleServices.getAllRoles());
     }
 
     @GetMapping("/view/{roleid}")
     public ResponseEntity findById(@PathVariable Long roleid){
-        if (roleServices.findById(roleid).isPresent())
-        {
-            return ResponseEntity.noContent().build();
-        }
+
         return ResponseEntity.ok(roleServices.findById(roleid));
     }
 
