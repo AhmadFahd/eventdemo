@@ -28,13 +28,13 @@ public class UserServicesImp implements UserServices {
         List<UsersEntity> usersEntities = usersRepository.findAll();
         List<UsersDTO> usersDTOS = ObjectMapperUtils.mapAll(usersEntities,UsersDTO.class);
         return ResponseEntity.ok(usersDTOS);
+
     }
 
     @Override
     public ResponseEntity findAllPresent() {
         List<UsersEntity> usersEntities = usersRepository.findByDeletedIsFalse();
         List<UsersDTO> usersDTOS = ObjectMapperUtils.mapAll(usersEntities,UsersDTO.class);
-
         return ResponseEntity.ok(usersDTOS);
     }
 

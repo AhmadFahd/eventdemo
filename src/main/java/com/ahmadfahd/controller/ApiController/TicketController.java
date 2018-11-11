@@ -3,6 +3,7 @@ package com.ahmadfahd.controller.ApiController;
 import com.ahmadfahd.NotificationService;
 import com.ahmadfahd.Services.TicketServices;
 
+import com.ahmadfahd.dto.TicketsDTO;
 import com.ahmadfahd.entity.TicketsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,9 @@ public class TicketController {
     private NotificationService notificationService;
 
     @GetMapping("/AdminAccess/view")
-    public ResponseEntity getAllTickets() {
-        return ResponseEntity.ok(ticketServices.getAllTickets());
+    public List<TicketsDTO> getAllTickets() {
+//        return ResponseEntity.ok(ticketServices.getAllTickets());
+        return ticketServices.getAllTickets();
     }
 
     @GetMapping("/view/{ticketid}")
@@ -32,16 +34,17 @@ public class TicketController {
 
 
     @PostMapping("/add/{eventid}/{userid}")
-    public ResponseEntity addTicket(@PathVariable Long eventid, @PathVariable Long userid) {
-        notificationService.bookTicketNotification(eventid,userid);
-        return ResponseEntity.ok(ticketServices.addTicket(eventid , userid));
+    public void addTicket(@PathVariable Long eventid, @PathVariable Long userid) {
+//        notificationService.bookTicketNotification(eventid,userid);
+//        return ResponseEntity.ok(ticketServices.addTicket(eventid , userid));
+        ticketServices.addTicket(eventid, userid);
     }
     @GetMapping("/count/{eventid}")
     public ResponseEntity CountEventTickets(@PathVariable Long eventid) {
         return ResponseEntity.ok(ticketServices.CountEventTickets(eventid));
     }
 
-    @GetMapping("/{userid}")
+    @GetMapping("mytickets/{userid}")
     public ResponseEntity findMyTickets(@PathVariable Long userid) {
 
         return ResponseEntity.ok(ticketServices.findMyTickets(userid));

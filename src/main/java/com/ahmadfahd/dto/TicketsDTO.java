@@ -18,11 +18,11 @@ public class TicketsDTO {
 
     public void setTicketid(long ticketid) { this.ticketid = ticketid; }
 
-    public EventsEntity getEventid() { return eventid; }
+    public String getEventid() { return eventid.getEventname(); }
 
     public void setEventid(EventsEntity eventid) { this.eventid = eventid; }
 
-    public UsersEntity getUserid() { return userid; }
+    public String getUserid() { return userid.getUsername(); }
 
     public void setUserid(UsersEntity userid) { this.userid = userid; }
 }

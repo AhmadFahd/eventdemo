@@ -36,10 +36,11 @@ public class TicketServicesImp implements TicketServices {
     private ModelMapper modelMapper;
 
     @Override
-    public ResponseEntity getAllTickets() {
+    public List<TicketsDTO> getAllTickets() {
         List<TicketsEntity> ticketsEntityList = ticketsRepository.findAll();
         List<TicketsDTO> ticketsDTOList = ObjectMapperUtils.mapAll(ticketsEntityList, TicketsDTO.class);
-        return ResponseEntity.ok(ticketsDTOList);
+        return ticketsDTOList; //ResponseEntity.ok(ticketsDTOList);
+
     }
 
     @Override
