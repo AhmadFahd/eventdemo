@@ -11,6 +11,8 @@ import java.util.List;
 public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
 
     List<UsersEntity> findByDeletedIsFalse();
+    UsersEntity findByUsername(String uname);
+
 
 
 }

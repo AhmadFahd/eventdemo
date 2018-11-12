@@ -1,19 +1,24 @@
 package com.ahmadfahd.entity;
 
+import com.ahmadfahd.security.Authority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="USERS")
 public class UsersEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long userid;
-//    @UniqueElements
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
+    private Long id;
+    //    @UniqueElements
     private String username;
     private String firstname;
     private String midname;
@@ -21,20 +26,36 @@ public class UsersEntity {
     private String email;
     private String userphone;
     private String password;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private RolesEntity roleid;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "USER_AUTHORITY",
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
+    private List<Authority> authorities;
     private String usergender;
     private LocalDate userdob;
     @JsonIgnore
     @ColumnDefault(value = "0")
     private boolean deleted;
+    @Column(name = "LASTPASSWORDRESETDATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
+    private Date lastPasswordResetDate;
 
-    public long getUserid() {
-        return userid;
+    public Date getLastPasswordResetDate() {
+        return lastPasswordResetDate;
     }
 
-    public void setUserid(long userid) {
-        this.userid = userid;
+    public void setLastPasswordResetDate(Date lastPasswordResetDate) {
+        this.lastPasswordResetDate = lastPasswordResetDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -93,12 +114,12 @@ public class UsersEntity {
         this.password = password;
     }
 
-    public RolesEntity getRoleid() {
-        return roleid;
+    public List<Authority> getAuthorities() {
+        return authorities;
     }
 
-    public void setRoleid(RolesEntity roleid) {
-        this.roleid = roleid;
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     public String getUsergender() {

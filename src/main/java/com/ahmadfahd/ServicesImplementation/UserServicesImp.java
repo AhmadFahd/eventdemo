@@ -53,7 +53,7 @@ public class UserServicesImp implements UserServices {
     public ResponseEntity addUser(UsersDTO usersDTO, Long roleid) {
         UsersEntity usersEntity ;
         usersEntity = modelMapper.map(usersDTO,UsersEntity.class);
-        usersEntity.setRoleid(rolesRepository.findById(roleid).get());
+//        usersEntity.setRoleid(rolesRepository.findById(roleid).get());
         return ResponseEntity.ok(usersRepository.save(usersEntity));
     }
 
@@ -65,8 +65,8 @@ public class UserServicesImp implements UserServices {
                 UsersEntity usersEntity1 = usersRepository.findById(userid).get();
                 UsersEntity usersEntity ;
                 usersEntity = modelMapper.map(usersDTO, UsersEntity.class);
-                usersEntity.setUserid(userid);
-                usersEntity.setRoleid(usersEntity1.getRoleid());
+                usersEntity.setId(userid);
+//                usersEntity.setRoleid(usersEntity1.getRoleid());
                 return ResponseEntity.ok(usersRepository.save(usersEntity));
             }
             return ResponseEntity.noContent().build();

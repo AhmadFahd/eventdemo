@@ -3,8 +3,10 @@ package com.ahmadfahd.ServicesImplementation;
 
 import com.ahmadfahd.Services.EventServices;
 import com.ahmadfahd.Services.TicketServices;
+import com.ahmadfahd.dto.EventsDTO;
 import com.ahmadfahd.dto.ObjectMapperUtils;
 import com.ahmadfahd.dto.TicketsDTO;
+import com.ahmadfahd.dto.UsersDTO;
 import com.ahmadfahd.entity.EventsEntity;
 import com.ahmadfahd.entity.TicketsEntity;
 import com.ahmadfahd.entity.UsersEntity;
