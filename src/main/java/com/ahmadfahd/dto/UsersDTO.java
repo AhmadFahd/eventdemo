@@ -7,6 +7,7 @@ public class UsersDTO {
 
 //    private long userid;
     @NotNull(message = "Username is null")
+
 //    @UniqueElements(message = "User-name is already exist")
     private String username;
     private String firstname;
