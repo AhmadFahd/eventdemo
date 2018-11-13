@@ -59,32 +59,41 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-            // we don't need CSRF because our token is invulnerable
-            .csrf().disable()
+//        httpSecurity
+//            // we don't need CSRF because our token is invulnerable
+//            .csrf().disable()
+//
+//            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+//
+//            // don't create session
+//            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+//
+//            .authorizeRequests()
+//
+//            // Un-secure H2 Database
+//            .antMatchers("/h2-console/**/**").permitAll()
+//
+//            .antMatchers("/auth/**").permitAll()
+//            .anyRequest().authenticated();
+//
+//       httpSecurity
+//            .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+//
+//        // disable page caching
+//        httpSecurity
+//            .headers()
+//            .frameOptions().sameOrigin()  // required to set for H2 else H2 Console will be blank.
+//            .cacheControl();
+//
+        httpSecurity.httpBasic().and().csrf().disable()
+                    .authorizeRequests()
+                    .antMatchers(HttpMethod.GET).authenticated()
+//                    .antMatchers(HttpMethod.PUT).authenticated()
+//                    .antMatchers(HttpMethod.DELETE).authenticated()
+                .and().addFilterBefore(authenticationTokenFilter,UsernamePasswordAuthenticationFilter.class);
 
-            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-
-            // don't create session
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-
-            .authorizeRequests()
-
-            // Un-secure H2 Database
-            .antMatchers("/h2-console/**/**").permitAll()
-
-            .antMatchers("/auth/**").permitAll()
-            .anyRequest().authenticated();
-
-       httpSecurity
-            .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
-
-        // disable page caching
-        httpSecurity
-            .headers()
-            .frameOptions().sameOrigin()  // required to set for H2 else H2 Console will be blank.
-            .cacheControl();
     }
+
 
     @Override
     public void configure(WebSecurity web) throws Exception {
