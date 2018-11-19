@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,12 +25,16 @@ public class UserController {
     private NotificationService notificationService;
 
     @GetMapping("/UsersAccess/view")
-    public ResponseEntity findAllPresent() {
-        return ResponseEntity.ok(userServices.findAllPresent()); }
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity findAllPresent(Principal principal) {
+        return ResponseEntity.ok(userServices.findAllPresent());
+    }
 
     @GetMapping("/AdminAccess/view")
-    public ResponseEntity getAllUser() {
-        return ResponseEntity.ok(userServices.getAllUsers()); }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity getAllUser(Principal principal) {
+        return ResponseEntity.ok(userServices.getAllUsers());
+    }
 
     @GetMapping("/view/{userid}")
     public ResponseEntity findById(@PathVariable Long userid) {

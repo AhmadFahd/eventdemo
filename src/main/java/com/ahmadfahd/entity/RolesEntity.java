@@ -13,7 +13,7 @@ public class RolesEntity {
     private long roleid;
     private String rolename;
     @ManyToOne
-    @JoinColumn(name = "usermame",referencedColumnName = "usermame")
+    @JoinColumn(name = "username",referencedColumnName = "username")
     private UsersEntity user;
 
     public long getRoleid() { return roleid; }

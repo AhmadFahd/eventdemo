@@ -12,7 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.sql.DataSource;
 
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
@@ -37,11 +37,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         /*
         * @PreAurhorize
         * */
-
                 http.csrf().disable()
+                        .httpBasic()
+                        .and()
                         .authorizeRequests()
-                        . antMatchers("/login").permitAll()
-                .anyRequest().authenticated().and().httpBasic();
+                        . antMatchers("/users/**","/users").permitAll()
+                .anyRequest().authenticated();
 
 
         /*

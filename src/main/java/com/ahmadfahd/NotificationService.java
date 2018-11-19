@@ -28,8 +28,6 @@ public class NotificationService {
 	private EventsRepository eventsRepository;
 	@Autowired
 	private UsersRepository usersRepository;
-//	@Autowired
-//	private ModelMapper modelMapper;
 
 
 	public void addUserNotification(UsersDTO usersDTO) throws MailException {

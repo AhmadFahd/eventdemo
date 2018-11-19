@@ -34,7 +34,7 @@ public class UserServicesImp implements UserServices {
 
     @Override
     public ResponseEntity findAllPresent() {
-        List<UsersEntity> usersEntities = usersRepository.findByDeletedIsFalse();
+        List<UsersEntity> usersEntities = usersRepository.findByEnabledIsFalse();
         List<UsersDTO> usersDTOS = ObjectMapperUtils.mapAll(usersEntities,UsersDTO.class);
         return ResponseEntity.ok(usersDTOS);
     }
