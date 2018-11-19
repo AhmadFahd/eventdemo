@@ -17,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.sql.DataSource;
+
 
 @Configuration
 @EnableWebSecurity
@@ -40,10 +42,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private String authenticationPath;
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-            .userDetailsService(jwtUserDetailsService)
-            .passwordEncoder(passwordEncoderBean());
+    private DataSource dataSource;
+
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+        auth.jdbcAuthentication().dataSource(dataSource)
+                .usersByUsernameQuery("select username, password, enabled"
+                        + " from users where username=?")
+                .authoritiesByUsernameQuery("select username, authority "
+                        + "from authorities where username=?")
+                .passwordEncoder(passwordEncoderBean());
     }
 
     @Bean
@@ -60,22 +70,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 //        httpSecurity
-//            // we don't need CSRF because our token is invulnerable
-//            .csrf().disable()
+            // we don't need CSRF because our token is invulnerable
+//            .csrf().disable();
 //
-//            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-//
+//            httpSecurity.exceptionHandling().authenticationEntryPoint(unauthorizedHandler);
+//                    .and()
+////
 //            // don't create session
-//            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+//            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 //
-//            .authorizeRequests()
+//
+//            .and().authorizeRequests()
 //
 //            // Un-secure H2 Database
 //            .antMatchers("/h2-console/**/**").permitAll()
 //
 //            .antMatchers("/auth/**").permitAll()
 //            .anyRequest().authenticated();
-//
+////
 //       httpSecurity
 //            .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 //
@@ -84,43 +96,48 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //            .headers()
 //            .frameOptions().sameOrigin()  // required to set for H2 else H2 Console will be blank.
 //            .cacheControl();
-//
-        httpSecurity.httpBasic().and().csrf().disable()
-                    .authorizeRequests()
-                    .antMatchers(HttpMethod.GET).authenticated()
-//                    .antMatchers(HttpMethod.PUT).authenticated()
-//                    .antMatchers(HttpMethod.DELETE).authenticated()
-                .and().addFilterBefore(authenticationTokenFilter,UsernamePasswordAuthenticationFilter.class);
-
+////
+//        httpSecurity
+//                    .authorizeRequests()
+//                    .antMatchers(HttpMethod.GET).hasRole("ADMIN")
+////                    .antMatchers(HttpMethod.PUT).authenticated()
+////                    .antMatchers(HttpMethod.DELETE).authenticated()
+//                .and().addFilterBefore(authenticationTokenFilter,UsernamePasswordAuthenticationFilter.class);
+/*Last JDBC*/
+        httpSecurity.authorizeRequests().anyRequest().hasAnyRole("ADMIN", "USER")
+                .and()
+                .httpBasic(); // Authenticate users with HTTP basic authentication
     }
 
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        // AuthenticationTokenFilter will ignore the below paths
-        web
-            .ignoring()
-            .antMatchers(
-                HttpMethod.POST,
-                authenticationPath
-            )
-
-            // allow anonymous resource requests
-            .and()
-            .ignoring()
-            .antMatchers(
-                HttpMethod.GET,
-                "/",
-                "/*.html",
-                "/favicon.ico",
-                "/**/*.html",
-                "/**/*.css",
-                "/**/*.js"
-            )
-
-            // Un-secure H2 Database (for testing purposes, H2 console shouldn't be unprotected in production)
-            .and()
-            .ignoring()
-            .antMatchers("/h2-console/**/**");
-    }
 }
+//
+//
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        // AuthenticationTokenFilter will ignore the below paths
+//        web
+//            .ignoring()
+//            .antMatchers(
+//                HttpMethod.POST,
+//                authenticationPath
+//            )
+//
+//            // allow anonymous resource requests
+//            .and()
+//            .ignoring()
+//            .antMatchers(
+//                HttpMethod.GET,
+//                "/",
+//                "/*.html",
+//                "/favicon.ico",
+//                "/**/*.html",
+//                "/**/*.css",
+//                "/**/*.js"
+//            )
+//
+//            // Un-secure H2 Database (for testing purposes, H2 console shouldn't be unprotected in production)
+//            .and()
+//            .ignoring()
+//            .antMatchers("/h2-console/**/**");
+//    }
+//}

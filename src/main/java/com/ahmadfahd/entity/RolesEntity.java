@@ -1,5 +1,7 @@
 package com.ahmadfahd.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -8,6 +10,7 @@ public class RolesEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long roleid;
+
     private String roletype;
 
     public long getRoleid() { return roleid; }

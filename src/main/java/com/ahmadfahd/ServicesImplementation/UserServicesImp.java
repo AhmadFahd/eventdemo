@@ -6,6 +6,7 @@ import com.ahmadfahd.dto.UsersDTO;
 import com.ahmadfahd.entity.UsersEntity;
 import com.ahmadfahd.repository.RolesRepository;
 import com.ahmadfahd.repository.UsersRepository;
+import com.ahmadfahd.security.Authority;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
