@@ -3,10 +3,10 @@ package com.ahmadfahd.ServicesImplementation;
 import com.ahmadfahd.Services.UserServices;
 import com.ahmadfahd.dto.ObjectMapperUtils;
 import com.ahmadfahd.dto.UsersDTO;
+import com.ahmadfahd.entity.RolesEntity;
 import com.ahmadfahd.entity.UsersEntity;
 import com.ahmadfahd.repository.RolesRepository;
 import com.ahmadfahd.repository.UsersRepository;
-import com.ahmadfahd.security.Authority;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -50,11 +50,15 @@ public class UserServicesImp implements UserServices {
         return ResponseEntity.noContent().build();
     }
 
+    // FIXME: 11/19/2018
     @Override
-    public ResponseEntity addUser(UsersDTO usersDTO, Long roleid) {
+    public ResponseEntity addUser(UsersDTO usersDTO, String role) {
         UsersEntity usersEntity ;
+        RolesEntity rolesEntity = new RolesEntity();
         usersEntity = modelMapper.map(usersDTO,UsersEntity.class);
-//        usersEntity.setRoleid(rolesRepository.findById(roleid).get());
+        rolesEntity.setRolename("ROLE_"+role);
+        rolesEntity.setUser(usersEntity);
+        rolesRepository.save(rolesEntity);
         return ResponseEntity.ok(usersRepository.save(usersEntity));
     }
 
@@ -62,12 +66,9 @@ public class UserServicesImp implements UserServices {
     public ResponseEntity updateUser(UsersDTO usersDTO, Long userid) {
 
             if (usersRepository.findById(userid).isPresent()) {
-
-                UsersEntity usersEntity1 = usersRepository.findById(userid).get();
                 UsersEntity usersEntity ;
                 usersEntity = modelMapper.map(usersDTO, UsersEntity.class);
                 usersEntity.setId(userid);
-//                usersEntity.setRoleid(usersEntity1.getRoleid());
                 return ResponseEntity.ok(usersRepository.save(usersEntity));
             }
             return ResponseEntity.noContent().build();
@@ -77,7 +78,7 @@ public class UserServicesImp implements UserServices {
     public ResponseEntity deleteUser(Long userid) {
         if (usersRepository.findById(userid).isPresent()) {
             UsersEntity usersEntity = usersRepository.findById(userid).get();
-            usersEntity.setDeleted(true);
+            usersEntity.setEnabled(false);
             return ResponseEntity.ok(usersRepository.save(usersEntity));
         }
         return ResponseEntity.noContent().build();

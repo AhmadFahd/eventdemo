@@ -8,7 +8,7 @@ public interface UserServices {
      ResponseEntity getAllUsers();
      ResponseEntity findAllPresent();
      ResponseEntity findById(Long userid) ;
-     ResponseEntity addUser(UsersDTO usersDTO, Long roleid);
+     ResponseEntity addUser(UsersDTO usersDTO, String role);
      ResponseEntity updateUser(UsersDTO usersDTO, Long userid);
      ResponseEntity deleteUser(Long userid);
 

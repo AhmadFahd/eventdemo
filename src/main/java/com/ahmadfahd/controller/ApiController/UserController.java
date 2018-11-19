@@ -5,6 +5,7 @@ import com.ahmadfahd.Services.UserServices;
 import com.ahmadfahd.dto.UsersDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,30 +36,33 @@ public class UserController {
         return ResponseEntity.ok(userServices.findById(userid)); }
 
     @PostMapping("/addAdmin")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity addAdmin(@RequestBody @Valid UsersDTO usersDTO, BindingResult result) {
         if (result.hasErrors()){
             return ResponseEntity.badRequest().body(result.getAllErrors());
         }
         notificationService.addUserNotification(usersDTO);
-        return ResponseEntity.ok(userServices.addUser(usersDTO, Long.valueOf(1))); }
+        return ResponseEntity.ok(userServices.addUser(usersDTO,"ADMIN")); }
 
 
     @PostMapping("/addOrganizer")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity addOrganizer(@RequestBody @Valid UsersDTO usersDTO, BindingResult result) {
             if (result.hasErrors()){
                 return ResponseEntity.badRequest().body(result.getAllErrors());
             }
         notificationService.addUserNotification(usersDTO);
-        return ResponseEntity.ok(userServices.addUser(usersDTO, Long.valueOf(2)));
+        return ResponseEntity.ok(userServices.addUser(usersDTO,"ORGANIZER"));
     }
 
     @PostMapping("/addUser")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity addUser(@RequestBody @Valid UsersDTO usersDTO, BindingResult result) {
         if (result.hasErrors()){
             return ResponseEntity.badRequest().body(result.getAllErrors());
         }
         notificationService.addUserNotification(usersDTO);
-        return ResponseEntity.ok(userServices.addUser(usersDTO, Long.valueOf(3)));
+        return ResponseEntity.ok(userServices.addUser(usersDTO, "USER"));
     }
 
 
