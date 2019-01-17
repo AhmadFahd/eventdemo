@@ -1,0 +1,125 @@
+<app-navbar></app-navbar>
+  <div class="container">
+    <div class="main-login main-center">
+      <div>
+        <img class="rounded-circle img-fluid d-block mx-auto" style="max-width: 200px" src="/api/file/downloadFile/{{fileDownloadUri}}" alt="">
+      </div>
+      <br>
+      <div style="margin-bottom: 30px"><h2 style="color: #0f2442">Edit Profile</h2></div>
+      <form novalidate [formGroup]="myReactiveForm">
+        <div class="row">
+          <div class="col-lg-4 portfolio-item">
+            <mat-form-field appearance="legacy">
+              <mat-label>Email</mat-label>
+              <input matInput type="text" formControlName="email">
+            </mat-form-field>
+            <mat-error>
+              <small *ngIf="!myReactiveForm.controls.email.valid && !myReactiveForm.controls.email.untouched">
+                username required
+              </small>
+            </mat-error>
+          </div>
+          <div class="col-lg-4 portfolio-item">
+            <mat-form-field appearance="legacy">
+              <mat-label>User Name</mat-label>
+              <input matInput type="text" formControlName="username">
+            </mat-form-field>
+            <mat-error>
+              <small *ngIf="!myReactiveForm.controls.username.valid && !myReactiveForm.controls.username.untouched">
+                username required
+              </small>
+            </mat-error>
+          </div>
+          <div class="col-lg-4 portfolio-item">
+            <mat-form-field appearance="legacy">
+              <mat-label>Password</mat-label>
+              <input matInput type="password" formControlName="password">
+            </mat-form-field>
+            <mat-error>
+              <small *ngIf="!myReactiveForm.controls.password.valid && !myReactiveForm.controls.password.untouched">
+                password required
+              </small>
+            </mat-error>
+          </div>
+          <div class="col-lg-4 portfolio-item">
+            <mat-form-field appearance="legacy">
+              <mat-label>Confirm</mat-label>
+              <input matInput type="password" formControlName="confirm">
+            </mat-form-field>
+            <mat-error>
+              <small *ngIf="!myReactiveForm.controls.confirm.valid && !myReactiveForm.controls.confirm.untouched">
+                password required
+              </small>
+            </mat-error>
+          </div>
+          <div class="col-lg-8">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <button (click)="upload(file)" class="input-group-text" [disabled]="!selectedFiles">
+                  Upload
+                </button>
+              </div>
+              <div class="custom-file">
+                <label class="custom-file-label">
+                  <input type="file"  class="custom-file-input" (change)="selectFile($event)" accept="image/*" >
+                </label>
+              </div>
+              <b *ngIf="uploaded" class="text-success" style="padding-left: 5px">&#10003;</b>
+            </div>
+          </div>
+          <div class="col-lg-4 portfolio-item">
+            <mat-form-field appearance="legacy">
+              <mat-label>Enter First Name</mat-label>
+              <input matInput type="text" formControlName="firstname">
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4 portfolio-item">
+            <mat-form-field appearance="legacy">
+              <mat-label>Enter Mid Name</mat-label>
+              <input matInput type="text" formControlName="midname">
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4 portfolio-item">
+            <mat-form-field appearance="legacy">
+              <mat-label>Enter Last Name</mat-label>
+              <input matInput type="text" formControlName="lastname">
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4 portfolio-item">
+            <mat-radio-group formControlName="gender">
+              <mat-radio-button style="padding: 10px" value="Male">Male </mat-radio-button>
+              <mat-radio-button value="Female"> Female</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div class="col-lg-4 portfolio-item">
+            <mat-form-field appearance="legacy">
+              <mat-label>Phone number</mat-label>
+              <input matInput type="text" formControlName="phone">
+            </mat-form-field>
+            <mat-error>
+              <small *ngIf="!myReactiveForm.controls.phone.valid && !myReactiveForm.controls.phone.untouched">
+                Enter Valid Phone number
+              </small>
+            </mat-error>
+          </div>
+          <div class="col-lg-4 portfolio-item">
+
+            <mat-form-field class="form-element" >
+              <input matInput [matDatepicker]="picker" placeholder="Date OF birth" formControlName="dob">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-6 portfolio-item">
+            <button mat-button [disabled]="!myReactiveForm.valid" (click)="onSubmit()"
+                    class="btn btn-block py-1 font-weight-bold"
+                    type="submit">Submit</button>
+          </div>
+          <div class="col-lg-6 portfolio-item">
+            <button mat-button class="btn btn-block py-1 font-weight-bold" (click)="cancel()">Cancel
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

@@ -8,7 +8,7 @@ import { UserComponent } from './user/user.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { RegisterComponent } from './register/register.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {UserDetailComponent} from './user/user-detail.component';
+import {UserDetailComponent} from './user/user-detail/user-detail.component';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
 import { LoginComponent } from './login/login.component';
 import {BasicAuthInterceptor} from './auth/basic-auth.interceptor';
