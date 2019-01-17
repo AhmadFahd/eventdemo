@@ -2,6 +2,7 @@
 run BackEnd with ddl = create-drop !
 #2
 Insert values into database:
+note: all passwords = "password" , but BCrypted!
 ___________________________
 insert into users(enabled,email,firstname,lastname,midname,password,dob,gender,username,phone)
 		values(1,'A7mad414@gmail.com','Ahmad','AlHowimel','Fahd','$2a$10$wpaqIfq/66Gw45LdJJnB..iwd0GPffE8PeGakMIv3ls/b.T1SMBGW','1993-12-07','Male','ahmad','0546077717')
