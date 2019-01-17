@@ -1,20 +1,46 @@
 package com.ahmadfahd.dto;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class UsersDTO {
 
-    @NotNull(message = "Username is null")
+    private Long id;
+    @Length(min = 3)
     private String username;
     private String firstname;
     private String midname;
     private String lastname;
     private String email;
-    private String userphone;
+    private String confirm;
+    private String icon;
+    private String phone;
     private String password;
-    private String usergender;
-    private LocalDate userdob;
+    private String gender;
+    private LocalDate dob;
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getConfirm() {
+        return confirm;
+    }
+
+    public void setConfirm(String confirm) {
+        this.confirm = confirm;
+    }
+
+    public Long getId() { return id; }
+
+    public void setId(Long id) { this.id = id; }
 
     public String getUsername() {
         return username;
@@ -56,14 +82,6 @@ public class UsersDTO {
         this.email = email;
     }
 
-    public String getUserphone() {
-        return userphone;
-    }
-
-    public void setUserphone(String userphone) {
-        this.userphone = userphone;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -72,23 +90,28 @@ public class UsersDTO {
         this.password = password;
     }
 
-
-    public String getUsergender() {
-        return usergender;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setUsergender(String usergender) {
-        this.usergender = usergender;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public LocalDate getUserdob() {
-        return userdob;
+    public String getGender() {
+        return gender;
     }
 
-    public void setUserdob(LocalDate userdob) {
-        this.userdob = userdob;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-
+    public LocalDate getDob() {
+        return dob;
     }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
+}
 

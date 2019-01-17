@@ -1,0 +1,61 @@
+<app-navbar></app-navbar>
+<div class="container" *ngIf="currentUser">
+    <h2 align="center" style="margin-bottom: 2%">{{ currentUser.username }}'s Details </h2>
+    <div class="row">
+        <div class="col-md-6 img">
+            <img class="rounded-circle img-fluid d-block mx-auto" style="max-width: 200px"
+                 src="/api/file/downloadFile/{{currentUser.icon}}" alt="">
+        </div>
+        <div class="col-md-6 details">
+            <blockquote>
+                <h5>{{currentUser.username}}</h5>
+
+            </blockquote>
+            <p>
+                {{currentUser.gender}}<br>
+                {{currentUser.dob}}<br>
+                <button style="margin-top: 20px" *ngIf="!followed&&id!=myId" class="btn" (click)="follow()">Follow
+                </button>
+                <button style="margin-top: 20px" *ngIf="followed" class="btn" (click)="unfollow()">Following</button>
+            </p>
+        </div>
+    </div>
+
+
+        <div class="container">
+            <div class="list-group-item" style="background-color: #0f2442; color: white"><b> Feeds : </b></div>
+            <ul class="list-group" *ngFor="let feed of feeds">
+                <li class="list-group-item" *ngIf="feed.action=='FOLLOW'">
+                    <a [routerLink]="['/profile', feed.user.id]">{{feed.user.username}}</a>
+                    Followd :
+                    <a [routerLink]="['/profile', feed.targetUser.id]">{{feed.targetUser.username}}</a>
+                </li>
+                <li class="list-group-item" *ngIf="feed.action=='COMMENT'">
+                    <a [routerLink]="['/profile', feed.user.id]">{{feed.user.username}}</a>
+                    Comments : {{feed.targetComment.comment}} On
+                    <a [routerLink]="['/events', feed.targetComment.event.id]">{{feed.targetComment.event.name}}</a>
+                </li>
+                <li class="list-group-item" *ngIf="feed.action=='BOOK'">
+                    <a [routerLink]="['/profile', feed.user.id]">{{feed.user.username}}</a>
+                    Book a ticket On
+                    <a [routerLink]="['/events', feed.targetEvent.id]">{{feed.targetEvent.name}}</a>
+                </li>
+                <li class="list-group-item" *ngIf="feed.action=='ADD_EVENT'">
+                    <a [routerLink]="['/profile', feed.user.id]">{{feed.user.username}}</a>
+                    Adds new Event :
+                    <a [routerLink]="['/events', feed.targetEvent.id]">{{feed.targetEvent.name}}</a>
+                </li>
+                <li class="list-group-item" *ngIf="feed.action=='RATE'">
+                    <a [routerLink]="['/profile', feed.user.id]">{{feed.user.username}}</a>
+                    Rate an Event :
+                    <a [routerLink]="['/events', feed.targetRate.event.id]">{{feed.targetRate.event.name}}</a>
+                    With : {{feed.targetRate.rate}}/5 Stars !
+                </li>
+            </ul>
+        </div>
+</div>
+
+<div class="container" *ngIf="!currentUser">
+    <div style="alignment: center;"><h2>User Not found</h2></div>
+</div>
+

@@ -10,9 +10,13 @@ import java.util.List;
 @Repository
 public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
 
-    List<UsersEntity> findByEnabledIsFalse();
+    List<UsersEntity> findByEnabledIsTrue();
+    // select * from users where enable = true
+
     UsersEntity findByUsername(String uname);
-
-
+//    List<UsersEntity> findAllByRolesRoleNameEquals(String role);
+    List<UsersEntity> findByRolesRoleNameNotContains(String role);
+    List<UsersEntity> findByIdIn(List<Long> ids);
+    boolean existsByUsername(String username);
 
 }

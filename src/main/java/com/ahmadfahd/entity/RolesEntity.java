@@ -1,28 +1,26 @@
 package com.ahmadfahd.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
+
 
 @Entity
 @Table(name="ROLES")
-public class RolesEntity {
+public class RolesEntity  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long roleid;
-    private String rolename;
+    private long id;
+    private String roleName;
     @ManyToOne
     @JoinColumn(name = "username",referencedColumnName = "username")
     private UsersEntity user;
 
-    public long getRoleid() { return roleid; }
+    public long getId() { return id; }
 
-    public void setRoleid(long roleid) { this.roleid = roleid; }
+    public void setId(long id) { this.id = id; }
 
-    public String getRolename() { return rolename; }
+    public String getRoleName() { return roleName; }
 
-    public void setRolename(String rolename) { this.rolename = rolename; }
+    public void setRoleName(String roleName) { this.roleName = roleName; }
 
     public UsersEntity getUser() { return user; }
 

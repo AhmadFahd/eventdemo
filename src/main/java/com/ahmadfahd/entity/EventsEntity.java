@@ -16,91 +16,147 @@ import java.util.Optional;
 public class EventsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long eventid;
-    private String eventname;
-    private long eventcapacity;
-    private String eventoverview;
-    private LocalDate eventdate;
-    private String eventtime;
-    private String eventimage;
+    private long id;
+    private String name;
+    private long capacity;
+    private String overview;
+    private LocalDate date;
+    private String time;
+    private String image;
     private int minage;
-    private String eventgender;
-    private String eventcategory;
-    private String eventcity;
-    private String eventlocation;
+    private String gender;
+    private String category;
+    private String city;
+    private String location;
     @ColumnDefault("0")
     @JsonIgnore
     private boolean deleted;
     @ColumnDefault("0")
     @JsonIgnore
     private boolean approved;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
     private UsersEntity organizer;
-        @OneToMany(mappedBy = "theevent")
-    private List<CommentsEntity> comments;
 
 
-    public long getEventid() { return eventid; }
+    public long getId() {
+        return id;
+    }
 
-    public void setEventid(long eventid) { this.eventid = eventid; }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-    public String getEventname() { return eventname; }
+    public String getName() {
+        return name;
+    }
 
-    public void setEventname(String eventname) { this.eventname = eventname; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public long getEventcapacity() { return eventcapacity; }
+    public long getCapacity() {
+        return capacity;
+    }
 
-    public void setEventcapacity(long eventcapacity) { this.eventcapacity = eventcapacity; }
+    public void setCapacity(long capacity) {
+        this.capacity = capacity;
+    }
 
-    public String getEventoverview() { return eventoverview; }
+    public String getOverview() {
+        return overview;
+    }
 
-    public void setEventoverview(String eventoverview) { this.eventoverview = eventoverview; }
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
 
-    public LocalDate getEventdate() { return eventdate; }
+    public LocalDate getDate() {
+        return date;
+    }
 
-    public void setEventdate(LocalDate eventdate) { this.eventdate = eventdate; }
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
-    public String getEventtime() { return eventtime; }
+    public String getTime() {
+        return time;
+    }
 
-    public void setEventtime(String eventtime) { this.eventtime = eventtime; }
+    public void setTime(String time) {
+        this.time = time;
+    }
 
-    public String getEventimage() { return eventimage; }
+    public String getImage() {
+        return image;
+    }
 
-    public void setEventimage(String eventimage) { this.eventimage = eventimage; }
+    public void setImage(String image) {
+        this.image = image;
+    }
 
-    public int getMinage() { return minage; }
+    public int getMinage() {
+        return minage;
+    }
 
-    public void setMinage(int minage) { this.minage = minage; }
+    public void setMinage(int minage) {
+        this.minage = minage;
+    }
 
-    public String getEventgender() { return eventgender; }
+    public String getGender() {
+        return gender;
+    }
 
-    public void setEventgender(String eventgender) { this.eventgender = eventgender; }
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-    public String getEventcategory() { return eventcategory; }
+    public String getCategory() {
+        return category;
+    }
 
-    public void setEventcategory(String eventcategory) { this.eventcategory = eventcategory; }
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
-    public String getEventcity() { return eventcity; }
+    public String getCity() {
+        return city;
+    }
 
-    public void setEventcity(String eventcity) { this.eventcity = eventcity; }
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-    public String getEventlocation() { return eventlocation; }
+    public String getLocation() {
+        return location;
+    }
 
-    public void setEventlocation(String eventlocation) { this.eventlocation = eventlocation; }
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
-    public boolean isDeleted() { return deleted; }
+    public boolean isDeleted() {
+        return deleted;
+    }
 
-    public void setDeleted(boolean deleted) { this.deleted = deleted; }
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 
-    public boolean isApproved() { return approved; }
+    public boolean isApproved() {
+        return approved;
+    }
 
-    public void setApproved(boolean approved) { this.approved = approved; }
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
 
-    public UsersEntity getOrganizer() { return organizer; }
+    public UsersEntity getOrganizer() {
+        return organizer;
+    }
 
-    public void setOrganizer(UsersEntity organizer) { this.organizer = organizer; }
+    public void setOrganizer(UsersEntity organizer) {
+        this.organizer = organizer;
+    }
 
-    public List<CommentsEntity> getComments() { return comments; }
-
-    public void setComments(List<CommentsEntity> comments) { this.comments = comments; }
 }

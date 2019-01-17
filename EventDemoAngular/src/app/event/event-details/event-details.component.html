@@ -1,0 +1,45 @@
+<app-navbar></app-navbar>
+<!-- Page Content -->
+<!-- /.container -->
+<div class="container" *ngIf="currentEvent$ | async as event">
+
+    <!-- Portfolio Item Heading -->
+    <h1 class="my-4">{{event.name}}
+        <small>Secondary Text</small>
+    </h1>
+
+    <!-- Portfolio Item Row -->
+    <div class="row">
+
+        <div class="col-md-8">
+            <img class="img-fluid" src="/api/file/downloadFile/{{event.image}}" alt="">
+        </div>
+        <div class="col-md-4">
+            <h3 class="my-3">{{event.name}}</h3>
+            <p>{{event.overview}}</p>
+            <h3 class="my-3">Event Details:</h3>
+            <ul class="list-group">
+                <li class="list-group-item">Date : {{event.date}}</li>
+                <li class="list-group-item">Time : {{event.time}}</li>
+                <li class="list-group-item">Gender : {{event.gender}}</li>
+                <li class="list-group-item">Category : {{event.category}}</li>
+            </ul>
+            <button class="btn" (click)="bookTicket()">book</button>
+        </div>
+    </div>
+    <!-- /.row -->
+
+<div class="container" style="padding-top: 30px">
+    <div class="list-group-item" style="background-color: #0f2442; color: white"><b> Comments : </b></div>
+    <ul class="list-group" *ngFor="let comment of comments | async ">
+        <li class="list-group-item"><a [routerLink]="['/profile',  comment.user.id]">{{comment.user.username}}</a> : {{comment.comment}}</li>
+    </ul>
+        <form style="padding-top: 10px" class="form-inline my-2 my-lg-0" [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+            <input class="form-control mr-sm-2" type="text" placeholder="Comment" aria-label="Comment"
+                   formControlName="comment">
+            <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Add</button>
+        </form>
+    </div>
+
+
+</div>

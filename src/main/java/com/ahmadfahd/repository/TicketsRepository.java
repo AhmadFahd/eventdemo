@@ -16,11 +16,15 @@ import java.util.Optional;
 public interface TicketsRepository extends JpaRepository<TicketsEntity,Long> {
 
 
-    Long countByEventidAndCanceledFalse(EventsEntity byId);
-    Long countByUseridAndEventid(UsersEntity byUId,EventsEntity byEId);
-    Long countByUseridAndDate(UsersEntity byId, LocalDate date);
-    List<TicketsEntity> findByUserid(UsersEntity byId);
-    List<TicketsEntity> findByEventid(EventsEntity byId);
-    TicketsEntity findByUseridAndEventid(UsersEntity byUId,EventsEntity byEId);
+    Long countByEventIdAndCanceledFalse(Long id);
+    boolean existsByUserIdAndEventDate(Long Id, LocalDate date);
+    Long countByUserIdAndEventDate(Long Id, LocalDate date);
+    List<TicketsEntity> findByUserIdAndChickedFalseAndCanceledFalse(Long Id);
+    List<TicketsEntity> findByEventId(Long byId);
+    List<TicketsEntity> findByEventIdAndCanceledFalse(Long byId);
+    TicketsEntity findByUserIdAndEventId(Long UId,Long EId);
+    List<TicketsEntity> findByUserIdAndChickedTrue(Long uid);
+    long countByUserIdAndEventIdAndChickedTrue(Long uId,Long eId);
+    boolean existsByUserIdAndEventIdAndChickedTrue(Long uId,Long eId);
 
 }

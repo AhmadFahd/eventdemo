@@ -4,20 +4,18 @@ import com.ahmadfahd.Services.EventServices;
 import com.ahmadfahd.dto.EventsDTO;
 import com.ahmadfahd.dto.ObjectMapperUtils;
 import com.ahmadfahd.entity.EventsEntity;
-import com.ahmadfahd.entity.RatingEntity;
+import com.ahmadfahd.entity.FeedEntity;
+import com.ahmadfahd.enums.ACTIONS;
 import com.ahmadfahd.repository.EventsRepository;
+import com.ahmadfahd.repository.FeedRepository;
 import com.ahmadfahd.repository.UsersRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class EventServicesImp implements EventServices {
@@ -28,117 +26,141 @@ public class EventServicesImp implements EventServices {
     private ModelMapper modelMapper;
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    private FeedRepository feedRepository;
 
 
     @Override
-    public ResponseEntity getAllEvents() {
-        if (!eventsRepository.findAll().isEmpty()) {
-            List<EventsEntity> eventsEntityList = eventsRepository.findAll();
-            List<EventsDTO> eventsDTO = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
-            return ResponseEntity.ok(eventsDTO);
-        }
-        return ResponseEntity.noContent().build();
+    public List<EventsDTO> getAllEvents() {
+        List<EventsEntity> eventsEntityList = eventsRepository.findAll();
+        List<EventsDTO> eventsDTO = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
+        return eventsDTO;
     }
+
     @Override
-    public ResponseEntity findById(Long eventid) {
-        if (eventsRepository.findById(eventid).isPresent()) {
+    public EventsDTO findById(Long eventid) {
+        if (eventsRepository.findByIdAndDeletedFalseAndApprovedTrueAndDateAfter(eventid, LocalDate.now()).isPresent()) {
             EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
             EventsDTO eventsDTO = modelMapper.map(eventsEntity, EventsDTO.class);
-            return ResponseEntity.ok(eventsDTO);
+            return eventsDTO;
         }
-        return ResponseEntity.noContent().build();
+        return null;
     }
-
     @Override
-    public ResponseEntity addEvent(EventsDTO eventsDTO, Long userid) {
+    public void addEvent(EventsDTO eventsDTO, Long userid) {
 
-        if (eventsDTO.getEventdate().isAfter(LocalDate.now().minusDays(1)))
-        {
+        if (eventsDTO.getDate().isAfter(LocalDate.now().minusDays(1))) {
             EventsEntity eventsEntity;
             eventsEntity = modelMapper.map(eventsDTO, EventsEntity.class);
-
             eventsEntity.setOrganizer(usersRepository.findById(userid).get());
-            return ResponseEntity.ok(eventsRepository.save(eventsEntity));
-        }
-        return ResponseEntity.badRequest().build();
+             eventsRepository.save(eventsEntity);
+          }
     }
 
     @Override
-    public ResponseEntity updateEvent(EventsDTO eventsDTO, Long eventid) {
-        if (eventsRepository.findById(eventid).isPresent()) {
-            EventsEntity eventsEntity1 = eventsRepository.findById(eventid).get();
-            EventsEntity eventsEntity;
-            eventsEntity = modelMapper.map(eventsDTO, EventsEntity.class);
-            eventsEntity.setEventid(eventsEntity1.getEventid());
-            eventsEntity.setOrganizer(eventsEntity1.getOrganizer());
-            eventsEntity.setComments(eventsEntity1.getComments());
-            return ResponseEntity.ok(eventsRepository.save(eventsEntity));
-        }
-        return ResponseEntity.noContent().build();
+    public void updateEvent(EventsDTO eventsDTO, Long eventid) {
+        EventsEntity eventsEntity1 = eventsRepository.findById(eventid).get();
+        EventsEntity eventsEntity;
+        eventsEntity = modelMapper.map(eventsDTO, EventsEntity.class);
+        eventsEntity.setId(eventsEntity1.getId());
+        eventsEntity.setOrganizer(eventsEntity1.getOrganizer());
+            eventsRepository.save(eventsEntity);
+
     }
 
     @Override
-    public ResponseEntity deleteById(Long eventid) {
-        if (eventsRepository.findById(eventid).isPresent()) {
-            EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
-            eventsEntity.setDeleted(true);
-            return ResponseEntity.ok(eventsRepository.save(eventsEntity));
-        }
-        return ResponseEntity.noContent().build();
+    public void deleteById(Long eventid) {
+        EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
+        eventsEntity.setDeleted(true);
+        eventsRepository.save(eventsEntity);
     }
 
     @Override
-    public ResponseEntity eventAprrove(Long eventid, boolean aproved) {
-        if (eventsRepository.findById(eventid).isPresent()) {
-            EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
-            eventsEntity.setApproved(aproved);
-            return ResponseEntity.ok(eventsRepository.save(eventsEntity));
+    public void eventApprove(Long eventid, boolean aproved) {
+        EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
+        eventsEntity.setApproved(aproved);
+        eventsRepository.save(eventsEntity);
+        boolean feed = feedRepository.existsByTargetEventIdAndAction(eventid,ACTIONS.ADD_EVENT.toString());
+        if (aproved&& !feed) {
+            FeedEntity feedEntity = new FeedEntity();
+            feedEntity.setUser(usersRepository.findById(eventsEntity.getOrganizer().getId()).get());
+            feedEntity.setAction(ACTIONS.ADD_EVENT.toString());
+            feedEntity.setTime(LocalDateTime.now());
+            feedEntity.setTargetEvent(eventsEntity);
+            feedRepository.save(feedEntity);
         }
-        return ResponseEntity.noContent().build();
-    }
+        }
+
+//    @Override
+//    public List<EventsDTO> findByCity(String eventcity) {
+//            List<EventsEntity> eventsEntityList = eventsRepository.findAllByEventcity(eventcity);
+//            List<EventsDTO> eventsDTOList = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
+//            return eventsDTOList;
+//        }
+
+//    @Override
+//    public List<EventsDTO> findByDate(LocalDate eventdate) {
+//            List<EventsEntity> eventsEntityList = eventsRepository.findByEventdate(eventdate);
+//            List<EventsDTO> eventsDTOList = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
+//            return eventsDTOList;
+//    }
+
 
     @Override
-    public ResponseEntity findByCity(String eventcity) {
-        if (!eventsRepository.findAllByEventcity(eventcity).isEmpty()) {
-            List<EventsEntity> eventsEntityList = eventsRepository.findAllByEventcity(eventcity);
-            List<EventsDTO> eventsDTOList = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
-            return ResponseEntity.ok(eventsDTOList);
-        }
-        return ResponseEntity.noContent().build();
-    }
-
-    @Override
-    public ResponseEntity findByDate(LocalDate eventdate) {
-        if (!eventsRepository.findByEventdate(eventdate).isEmpty()) {
-            List<EventsEntity> eventsEntityList = eventsRepository.findByEventdate(eventdate);
-            List<EventsDTO> eventsDTOList = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
-            return ResponseEntity.ok(eventsDTOList);
-        }
-        return ResponseEntity.noContent().build();
-    }
-
-
-    @Override
-    public ResponseEntity getAllActive() {
-
+    public List<EventsDTO> getAllActive() {
         LocalDate localDate = LocalDate.now();
-        if (!eventsRepository.findByDeletedFalseAndApprovedTrueAndEventdateAfter(localDate).isEmpty()) {
-            List<EventsEntity> eventsEntityList = eventsRepository.findByDeletedFalseAndApprovedTrueAndEventdateAfter(localDate);
+        if (!eventsRepository.findByDeletedFalseAndApprovedTrueAndDateAfter(localDate).isEmpty()) {
+            List<EventsEntity> eventsEntityList = eventsRepository.findByDeletedFalseAndApprovedTrueAndDateAfter(localDate);
             List<EventsDTO> eventsDTOList = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
-            return ResponseEntity.ok(eventsDTOList);
+            return eventsDTOList;
         }
-        return ResponseEntity.noContent().build();
+        return null;
     }
 
     @Override
-    public ResponseEntity findIfPresent(Long eventid) {
-        LocalDate date = LocalDate.now();
-        if (eventsRepository.findByEventidAndDeletedFalseAndApprovedTrueAndEventdateAfter(eventid, date).isPresent()) {
-            EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
-            EventsDTO eventsDTO = modelMapper.map(eventsEntity, EventsDTO.class);
-            return ResponseEntity.ok(eventsDTO);
+    public List<EventsDTO> getNonApproved(Long id) {
+        List<EventsEntity> eventsEntityList = eventsRepository.findByOrganizerIdAndDeletedFalseAndApprovedFalse(id);
+        if (!eventsEntityList.isEmpty()) {
+            List<EventsDTO> eventsDTOList = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
+            return eventsDTOList;
         }
-        return ResponseEntity.noContent().build();
+        return null;
+    }
+    @Override
+    public List<EventsDTO> getAllNonApproved() {
+        List<EventsEntity> eventsEntityList = eventsRepository.findByDeletedFalseAndApprovedFalse();
+        if (!eventsEntityList.isEmpty()) {
+            List<EventsDTO> eventsDTOList = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
+            return eventsDTOList;
+        }
+        return null;
+    }
+
+
+//    @Override
+//    public EventsDTO findIfPresent(Long eventid) {
+//        LocalDate date = LocalDate.now();
+//        if (eventsRepository.findByEventidAndDeletedFalseAndApprovedTrueAndEventdateAfter(eventid, date).isPresent()) {
+//            EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
+//            EventsDTO eventsDTO = modelMapper.map(eventsEntity, EventsDTO.class);
+//            return eventsDTO;
+//        }
+//        return null;
+//    }
+
+    @Override
+    public Map getOrganizer(long eventid)
+    {
+        Map<String,String> map = new HashMap<>();
+        map.put("OrganizerId",eventsRepository.findById(eventid).get().getOrganizer().getId().toString());
+        map.put("OrganizerName",eventsRepository.findById(eventid).get().getOrganizer().getUsername());
+        return map;
+    }
+
+
+    @Override
+    public List<EventsDTO> findByUser(Long id){
+        return ObjectMapperUtils.mapAll(eventsRepository.findByOrganizerIdAndDeletedFalseAndApprovedTrue(id),EventsDTO.class);
     }
 
 }

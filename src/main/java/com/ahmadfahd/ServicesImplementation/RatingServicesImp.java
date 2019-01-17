@@ -3,15 +3,18 @@ package com.ahmadfahd.ServicesImplementation;
 import com.ahmadfahd.Services.RatingServices;
 import com.ahmadfahd.dto.ObjectMapperUtils;
 import com.ahmadfahd.dto.RatingDTO;
+import com.ahmadfahd.entity.FeedEntity;
 import com.ahmadfahd.entity.RatingEntity;
 import com.ahmadfahd.entity.TicketsEntity;
-import com.ahmadfahd.repository.RatingRepository;
-import com.ahmadfahd.repository.TicketsRepository;
+import com.ahmadfahd.enums.ACTIONS;
+import com.ahmadfahd.repository.*;
+import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,50 +26,61 @@ public class RatingServicesImp implements RatingServices {
     private TicketsRepository ticketsRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private FeedRepository feedRepository;
+    @Autowired
+    private UsersRepository usersRepository;
+    @Autowired
+    private EventsRepository eventsRepository;
 
     @Override
-    public ResponseEntity getAllRatings() {
-        if (!ratingRepository.findAll().isEmpty()) {
-            List<RatingEntity> ratingEntityList = ratingRepository.findAll();
-            List<RatingDTO> ratingDTOList = ObjectMapperUtils.mapAll(ratingEntityList, RatingDTO.class);
-            return ResponseEntity.ok(ratingDTOList);
-        }
-        return ResponseEntity.noContent().build();
+    public List<RatingDTO> getAllRatings() {
+
+        List<RatingEntity> ratingEntityList = ratingRepository.findAll();
+        List<RatingDTO> ratingDTOList = ObjectMapperUtils.mapAll(ratingEntityList, RatingDTO.class);
+        return ratingDTOList;
     }
 
     @Override
-    public ResponseEntity  findById(Long rateid) {
-        if (ratingRepository.findById(rateid).isPresent()) {
-            RatingEntity ratingEntity = ratingRepository.findById(rateid).get();
-            RatingDTO ratingDTO = modelMapper.map(ratingEntity,RatingDTO.class);
-            return ResponseEntity.ok(ratingDTO);
-        }
-        return ResponseEntity.noContent().build();
+    public RatingDTO findById(Long rateid) {
+        RatingEntity ratingEntity = ratingRepository.findById(rateid).get();
+        RatingDTO ratingDTO = modelMapper.map(ratingEntity, RatingDTO.class);
+        return ratingDTO;
     }
 
     @Override
-    public ResponseEntity addRating(RatingDTO ratingDTO, Long ticketId) {
-
-        TicketsEntity ticketsEntity = ticketsRepository.findById(ticketId).get();
-        if (ticketsEntity.isChicked())
-        {
-            RatingEntity ratingEntity = modelMapper.map(ratingDTO,RatingEntity.class);
-
-            ratingEntity.setTicket(ticketsEntity);
-            return ResponseEntity.ok(ratingRepository.save(ratingEntity));
+    public void addRating(int rate, Long uId, Long eId) {
+//        FIXME: 12/25/2018 needs Test
+        long rated= ticketsRepository.countByUserIdAndEventIdAndChickedTrue(uId,eId);
+        if(rated == 1) {
+            RatingEntity ratingEntity = new RatingEntity();
+            ratingEntity.setUser(usersRepository.findById(uId).get());
+            ratingEntity.setEvent(eventsRepository.findById(eId).get());
+            ratingEntity.setRate(rate);
+            FeedEntity feedEntity = new FeedEntity();
+            feedEntity.setUser(ratingEntity.getUser());
+            feedEntity.setTime(LocalDateTime.now());
+            feedEntity.setAction(ACTIONS.RATE.toString());
+            ratingRepository.save(ratingEntity);
+            feedEntity.setTargetRate(ratingEntity);
+            feedRepository.save(feedEntity);
         }
-        return ResponseEntity.badRequest().build();
     }
 
     @Override
-    public ResponseEntity updateRating(RatingDTO ratingDTO, Long rateid) {
-        // FIXME: 11/7/2018
-        if (ratingRepository.findById(rateid).isPresent()) {
-            RatingEntity ratingEntity = modelMapper.map(ratingDTO, RatingEntity.class);
-            ratingEntity.setRateid(ratingEntity.getRateid());
-            ratingEntity.setTicket(ratingEntity.getTicket());
-            return ResponseEntity.ok(ratingRepository.save(ratingEntity));
+    public float findRateAvg(Long uid) {
+            List<RatingEntity> ratingEntities = ratingRepository.findByEventOrganizerId(uid);
+        long rates = ratingEntities.size();
+        if (rates > 0) {
+        float avg;
+            int sum = 0;
+            for (RatingEntity ratingEntity : ratingEntities) {
+                sum = sum + ratingEntity.getRate();
+
+            }
+            avg = sum / rates;
+            return avg;
         }
-        return ResponseEntity.badRequest().build();
+        return 0;
     }
 }

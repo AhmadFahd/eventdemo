@@ -1,0 +1,59 @@
+<app-admin-panel></app-admin-panel>
+<div class="container" >
+    <div class="card">
+        <div class="card-header card-header-danger">
+            <h4 class="card-title ">Events Table</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class=" text-primary">
+                    <th>Event Name </th>
+                    <th>Event GENDER</th>
+                    <th>Event Category</th>
+                    <th>DELETE</th>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let event of events$ | async" class="d-lg-table-row" >
+                        <td [routerLink]="['/events', event.id] " >{{event.name}}</td>
+                        <td>{{event.gender}}</td>
+                        <td>{{event.category}}</td>
+                        <td>
+                            <BUTTON (click)="delete(event.id)" class="btn">Delete</BUTTON></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header card-header-danger">
+            <h4 class="card-title ">Un Approved Events Table</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class=" text-primary">
+                    <th>Event Name </th>
+                    <th>Event GENDER</th>
+                    <th>Event Category</th>
+                    <th>Approve</th>
+
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let event of unApprovedEvents$ | async" class="d-lg-table-row" >
+                        <td [routerLink]="['/events', event.id] " >{{event.name}}</td>
+                        <td>{{event.gender}}</td>
+                        <td>{{event.category}}</td>
+                        <td>
+                            <BUTTON (click)="approve(event.id)" class="btn">Approve</BUTTON></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

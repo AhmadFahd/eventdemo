@@ -1,0 +1,33 @@
+<app-admin-panel></app-admin-panel>
+<div class="container">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title ">Users Table</h4>
+            <p class="card-category"> // subtitle</p>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead class=" text-primary">
+                <th>ID</th>
+                <th>USERNAME</th>
+                <th>USERGENDER</th>
+                <th>USERDOB</th>
+                <th>USERNUMBER</th>
+                <th>EDIT</th>
+                </thead>
+                <tbody>
+                <tr *ngFor="let user of users " class="d-lg-table-row" >
+                  <td><BUTTON  class="btn" [routerLink]="['/user', user.id]">{{user.id}}</BUTTON></td>
+                  <td>{{user.username}}</td>
+                  <td>{{user.gender}}</td>
+                  <td>{{user.dob}}</td>
+                  <td class="text-primary">{{user.phone}}</td>
+                  <td>      <BUTTON [routerLink]="['/edit', user.id]" class="btn">Edit</BUTTON></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+</div>

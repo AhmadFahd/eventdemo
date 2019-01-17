@@ -11,37 +11,46 @@ import java.time.LocalDateTime;
 public class CommentsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long commentid;
+    private long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    private UsersEntity userid;
+    @JoinColumn(name = "user_id")
+    private UsersEntity user;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "theevent")
+    @JoinColumn(name = "event_id")
     @JsonIgnore
-    private EventsEntity theevent;
+    private EventsEntity event;
     private String comment;
-    private LocalDateTime commenttime;
+    private LocalDateTime time;
     private boolean deleted;
 
-    public long getCommentid() { return commentid; }
+    public long getId() {
+        return id;
+    }
 
-    public void setCommentid(long commentid) { this.commentid = commentid; }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-    public UsersEntity getUserid() { return userid; }
+    public LocalDateTime getTime() {
+        return time;
+    }
 
-    public void setUserid(UsersEntity userid) { this.userid = userid;}
+    public void setTime(LocalDateTime time) {
+        this.time = time;
+    }
 
-    public EventsEntity getTheevent() { return theevent; }
+    public UsersEntity getUser() { return user; }
 
-    public void setTheevent(EventsEntity theevent) { this.theevent = theevent; }
+    public void setUser(UsersEntity user) { this.user = user; }
+
+    public EventsEntity getEvent() { return event; }
+
+    public void setEvent(EventsEntity event) { this.event = event; }
 
     public String getComment() { return comment; }
 
     public void setComment(String comment) { this.comment = comment; }
-
-    public LocalDateTime getCommenttime() { return commenttime; }
-
-    public void setCommenttime(LocalDateTime commenttime) { this.commenttime = commenttime; }
 
     public boolean isDeleted() { return deleted; }
 

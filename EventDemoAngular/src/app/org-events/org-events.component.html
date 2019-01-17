@@ -1,0 +1,159 @@
+<app-org-panel></app-org-panel>
+<div class="container" *ngIf="!editable">
+  <div class="card">
+    <div class="card-header card-header-danger">
+      <h4 class="card-title ">Events Table</h4>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class=" text-primary">
+          <th>Event Name </th>
+          <th>Event GENDER</th>
+          <th>Event Category</th>
+          <th>EDIT</th>
+          <th>DELETE</th>
+          </thead>
+          <tbody>
+          <tr *ngFor="let event of events$ | async" class="d-lg-table-row" >
+            <td [routerLink]="['/events', event.id] " >{{event.name}}</td>
+            <td>{{event.gender}}</td>
+            <td>{{event.category}}</td>
+            <td>
+              <BUTTON (click)="edit(event)" class="btn">Edit</BUTTON></td>
+            <td>
+              <BUTTON (click)="delete(event.id)" class="btn">Delete</BUTTON></td>
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container" *ngIf="!editable">
+  <div class="card">
+    <div class="card-header card-header-danger">
+      <h4 class="card-title ">Un Approved Events Table</h4>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class=" text-primary">
+          <th>Event Name </th>
+          <th>Event GENDER</th>
+          <th>Event Category</th>
+          <th>EDIT</th>
+          <th>Delete</th>
+          </thead>
+          <tbody>
+          <tr *ngFor="let event of unAprrovedEvents$ | async" class="d-lg-table-row" >
+            <td [routerLink]="['/events', event.id] " >{{event.name}}</td>
+            <td>{{event.gender}}</td>
+            <td>{{event.category}}</td>
+            <td>
+              <BUTTON (click)="edit(event)" class="btn">Edit</BUTTON></td>
+            <td>
+              <BUTTON (click)="delete(event.id)" class="btn">Delete</BUTTON></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<mat-card class="login" *ngIf="editable">
+  <mat-card-content class="login-box">
+    <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="form">
+      <table>
+        <tr>
+          <td>
+            <mat-form-field class="form-element">
+              <input matInput placeholder="Event Name" formControlName="name">
+              <mat-error *ngIf="!eventForm.controls['name'].valid && eventForm.controls['name'].touched">
+                Event name ?
+              </mat-error>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="form-element">
+              <input matInput placeholder="Capacity" formControlName="capacity" type="number">
+              <mat-error *ngIf="!eventForm.controls['capacity'].valid && eventForm.controls['capacity'].touched">
+                Capacity ?
+              </mat-error>
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <mat-form-field class="form-element">
+              <textarea matInput placeholder="Overview: " formControlName="overview" rows="5" ></textarea>
+              <mat-error *ngIf="!eventForm.controls['overview'].valid && eventForm.controls['overview'].touched">
+                Overview
+              </mat-error>
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-radio-group formControlName="gender">
+              <mat-radio-button value="Male">Male </mat-radio-button>
+              <mat-radio-button value="Female"> Female</mat-radio-button>
+            </mat-radio-group>
+          </td>
+          <td>
+            <mat-form-field class="form-element" >
+              <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="date">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field class="form-element">
+              <input matInput placeholder="Event Time" formControlName="time">
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="form-element">
+              <input matInput placeholder="Image Link" formControlName="image">
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field class="form-element">
+              <input matInput placeholder="Min Age" formControlName="minage" type="number">
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="form-element">
+              <input matInput placeholder="Category" formControlName="category">
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field class="form-element">
+              <input matInput placeholder="City" formControlName="city">
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="form-element">
+              <input matInput placeholder="Google Map Link" formControlName="location">
+            </mat-form-field>
+          </td>
+        </tr>
+        <br>
+        <tr>
+          <td>
+            <div class="form-element" style="alignment: center">
+              <button mat-raised-button color="primary" type="submit" class="button" [disabled]="!eventForm.valid">Submit Form</button>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </mat-card-content>
+</mat-card>

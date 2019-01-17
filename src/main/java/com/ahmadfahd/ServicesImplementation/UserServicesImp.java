@@ -1,7 +1,9 @@
 package com.ahmadfahd.ServicesImplementation;
 
+import com.ahmadfahd.enums.ROLES;
 import com.ahmadfahd.Services.UserServices;
 import com.ahmadfahd.dto.ObjectMapperUtils;
+import com.ahmadfahd.dto.UserGetDto;
 import com.ahmadfahd.dto.UsersDTO;
 import com.ahmadfahd.entity.RolesEntity;
 import com.ahmadfahd.entity.UsersEntity;
@@ -9,9 +11,10 @@ import com.ahmadfahd.repository.RolesRepository;
 import com.ahmadfahd.repository.UsersRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,62 +28,87 @@ public class UserServicesImp implements UserServices {
     private ModelMapper modelMapper;
 
     @Override
-    public ResponseEntity getAllUsers() {
+    public List<UserGetDto> getAllUsers() {
         List<UsersEntity> usersEntities = usersRepository.findAll();
-        List<UsersDTO> usersDTOS = ObjectMapperUtils.mapAll(usersEntities,UsersDTO.class);
-        return ResponseEntity.ok(usersDTOS);
+        List<UserGetDto> usersDTOS = ObjectMapperUtils.mapAll(usersEntities, UserGetDto.class);
+
+        return usersDTOS;
 
     }
 
     @Override
-    public ResponseEntity findAllPresent() {
-        List<UsersEntity> usersEntities = usersRepository.findByEnabledIsFalse();
-        List<UsersDTO> usersDTOS = ObjectMapperUtils.mapAll(usersEntities,UsersDTO.class);
-        return ResponseEntity.ok(usersDTOS);
+    public List<UserGetDto> findAllPresent() {
+        List<UsersEntity> usersEntities = usersRepository.findByEnabledIsTrue();
+        List<UserGetDto> usersDTOS = ObjectMapperUtils.mapAll(usersEntities, UserGetDto.class);
+        return usersDTOS;
     }
 
     @Override
-    public ResponseEntity findById(Long userid) {
-
-        if(usersRepository.findById(userid).isPresent()){
+    public UserGetDto findById(Long userid) {
+//        if (usersRepository.findById(userid).isPresent()) {
         UsersEntity usersEntity = usersRepository.findById(userid).get();
-        UsersDTO usersDTO = modelMapper.map(usersEntity,UsersDTO.class);
-        return ResponseEntity.ok(usersDTO);
-        }
-        return ResponseEntity.noContent().build();
+        UserGetDto userGetDto = modelMapper.map(usersEntity, UserGetDto.class);
+        return userGetDto;
+
     }
 
     // FIXME: 11/19/2018
     @Override
-    public ResponseEntity addUser(UsersDTO usersDTO, String role) {
-        UsersEntity usersEntity ;
-        RolesEntity rolesEntity = new RolesEntity();
-        usersEntity = modelMapper.map(usersDTO,UsersEntity.class);
-        rolesEntity.setRolename("ROLE_"+role);
-        rolesEntity.setUser(usersEntity);
-        rolesRepository.save(rolesEntity);
-        return ResponseEntity.ok(usersRepository.save(usersEntity));
+    public void addUser(UsersDTO usersDTO, String role) {
+        if (usersRepository.existsByUsername(usersDTO.getUsername()))
+        {
+            throw new RuntimeException(usersDTO.getUsername() + " is Already exist!");
+        }
+            UsersEntity usersEntity = modelMapper.map(usersDTO, UsersEntity.class);
+            usersEntity.setPassword(new BCryptPasswordEncoder().encode(usersDTO.getPassword()));
+            usersEntity.setEnabled(true);
+            RolesEntity rolesEntity = new RolesEntity();
+            rolesEntity.setRoleName(role);
+            rolesEntity.setUser(usersEntity);
+            usersRepository.save(usersEntity);
+            rolesRepository.save(rolesEntity);
+        }
+
+    @Override
+    public void updateUser(UsersDTO usersDTO, Long userid) {
+
+        if (usersRepository.findById(userid).isPresent()) {
+            UsersEntity usersEntity;
+            usersEntity = modelMapper.map(usersDTO, UsersEntity.class);
+            usersEntity.setId(userid);
+            usersEntity.setEnabled(usersRepository.findById(userid).get().isEnabled());
+            usersEntity.setPassword(new BCryptPasswordEncoder().encode(usersDTO.getPassword()));
+            usersRepository.saveAndFlush(usersEntity);
+        }
     }
 
     @Override
-    public ResponseEntity updateUser(UsersDTO usersDTO, Long userid) {
-
-            if (usersRepository.findById(userid).isPresent()) {
-                UsersEntity usersEntity ;
-                usersEntity = modelMapper.map(usersDTO, UsersEntity.class);
-                usersEntity.setId(userid);
-                return ResponseEntity.ok(usersRepository.save(usersEntity));
-            }
-            return ResponseEntity.noContent().build();
-    }
-
-    @Override
-    public ResponseEntity deleteUser(Long userid) {
+    public void enableUser(Long userid, boolean b) {
         if (usersRepository.findById(userid).isPresent()) {
             UsersEntity usersEntity = usersRepository.findById(userid).get();
-            usersEntity.setEnabled(false);
-            return ResponseEntity.ok(usersRepository.save(usersEntity));
+            usersEntity.setEnabled(b);
+            usersRepository.save(usersEntity);
         }
-        return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public UsersDTO findByUsername(String username) {
+        UsersEntity usersEntity = usersRepository.findByUsername(username);
+        UsersDTO usersDTO = modelMapper.map(usersEntity, UsersDTO.class);
+        return usersDTO;
+    }
+
+    @Override
+    public List<UserGetDto> findAllOrganizers() {
+        List<UsersEntity> usersEntities = usersRepository.findByRolesRoleNameNotContains(ROLES.ROLE_ADMIN.toString());
+        List<UsersEntity> filtered = new ArrayList<>();
+        for (UsersEntity usersEntity : usersEntities) {
+            if (!usersEntity.getRoles().contains(rolesRepository.findByUserAndRoleName(usersEntity, ROLES.ROLE_ADMIN.toString()))) {
+                filtered.add(usersEntity);
+            }
+        }
+            List<UserGetDto> userGetDtos = ObjectMapperUtils.mapAll(filtered, UserGetDto.class);
+            return userGetDtos;
+
     }
 }

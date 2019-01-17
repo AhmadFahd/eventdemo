@@ -1,67 +1,82 @@
 package com.ahmadfahd.dto;
 
 import com.ahmadfahd.entity.CommentsEntity;
+import com.ahmadfahd.entity.UsersEntity;
+
 import java.time.LocalDate;
 import java.util.List;
 
 public class EventsDTO {
-
-    private String eventname;
-    private long eventcapacity;
-    private String eventoverview;
-    private LocalDate eventdate;
-    private String eventtime;
-    private String eventimage;
+    private long id;
+    private String name;
+    private long capacity;
+    private String overview;
+    private LocalDate date;
+    private String time;
+    private String image;
     private int minage;
-    private String eventgender;
-    private String eventcategory;
-    private String eventcity;
-    private String eventlocation;
+    private String gender;
+    private String category;
+    private String city;
+    private String location;
+    private UserGetDto organizer;
 
-//    public List<CommentsEntity> getComments() { return comments; }
+    public UserGetDto getOrganizer() { return organizer; }
 
-//    public void setComments(List<CommentsEntity> comments) { this.comments = comments; }
+    public void setOrganizer(UserGetDto organizer) { this.organizer = organizer; }
 
-    public String getEventname() { return eventname; }
+    public long getId() { return id; }
 
-    public void setEventname(String eventname) { this.eventname = eventname; }
-
-    public long getEventcapacity() { return eventcapacity; }
-
-    public void setEventcapacity(long eventcapacity) {
-        this.eventcapacity = eventcapacity;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public String getEventoverview() {
-        return eventoverview;
+    public String getName() {
+        return name;
     }
 
-    public void setEventoverview(String eventoverview) {
-        this.eventoverview = eventoverview;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public LocalDate getEventdate() {
-        return eventdate;
+    public long getCapacity() {
+        return capacity;
     }
 
-    public void setEventdate(LocalDate eventdate) {
-        this.eventdate = eventdate;
+    public void setCapacity(long capacity) {
+        this.capacity = capacity;
     }
 
-    public String getEventtime() {
-        return eventtime;
+    public String getOverview() {
+        return overview;
     }
 
-    public void setEventtime(String eventtime) {
-        this.eventtime = eventtime;
+    public void setOverview(String overview) {
+        this.overview = overview;
     }
 
-    public String getEventimage() {
-        return eventimage;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setEventimage(String eventimage) {
-        this.eventimage = eventimage;
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public int getMinage() {
@@ -72,36 +87,35 @@ public class EventsDTO {
         this.minage = minage;
     }
 
-    public String getEventgender() {
-        return eventgender;
+    public String getGender() {
+        return gender;
     }
 
-    public void setEventgender(String eventgender) {
-        this.eventgender = eventgender;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public String getEventcategory() {
-        return eventcategory;
+    public String getCategory() {
+        return category;
     }
 
-    public void setEventcategory(String eventcategory) {
-        this.eventcategory = eventcategory;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public String getEventcity() {
-        return eventcity;
+    public String getCity() {
+        return city;
     }
 
-    public void setEventcity(String eventcity) {
-        this.eventcity = eventcity;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String getEventlocation() {
-        return eventlocation;
+    public String getLocation() {
+        return location;
     }
 
-    public void setEventlocation(String eventlocation) {
-        this.eventlocation = eventlocation;
+    public void setLocation(String location) {
+        this.location = location;
     }
-
 }

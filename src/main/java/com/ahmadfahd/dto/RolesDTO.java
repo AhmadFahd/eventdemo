@@ -2,9 +2,15 @@ package com.ahmadfahd.dto;
 
 public class RolesDTO {
 
-    private String roletype;
+    private long id;
+    private String roleName;
 
-    public String getRoletype() { return roletype; }
+    public long getId() { return id; }
 
-    public void setRoletype(String roletype) { this.roletype = roletype; }
+    public void setId(long id) { this.id = id; }
+
+    public String getRoleName() { return roleName; }
+
+    public void setRoleName(String roleName) { this.roleName = roleName; }
+
 }

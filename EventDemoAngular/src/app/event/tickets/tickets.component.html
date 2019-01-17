@@ -1,0 +1,67 @@
+<app-navbar></app-navbar>
+<div class="container">
+    <div class="main-login main-center">
+
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>My Tickets</th>
+            </tr>
+            <tr>
+                <th>Username</th>
+                <th>Event Name</th>
+                <th>Event Date
+                <th>
+                <th>Cancel</th>
+            </tr>
+            <tr *ngFor="let ticket of tickets$ | async">
+                <td>{{ticket.user.username}}</td>
+                <td>{{ticket.event.name}}</td>
+                <td>{{ticket.event.date}}
+                <td>
+                <td>
+                    <button class="btn" (click)="cancel(ticket.id)">Cancel</button>
+                </td>
+
+            </tr>
+
+        </table>
+    </div>
+    </div>
+    <div class="main-login main-center">
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>Rate previous events</th>
+            </tr>
+            <tr>
+                <th>Username</th>
+                <th>Event Name</th>
+                <th>Event Date
+                <th>
+                <th>Rate</th>
+            </tr>
+            <tr *ngFor="let ticket of nonRated$ | async">
+                <td>{{ticket.user.username}}</td>
+                <td>{{ticket.event.name}}</td>
+                <td>{{ticket.event.date}}
+                <td>
+                <td>
+
+                    <select #ratevalue class="selectable" id="ratevalue" name="ratevalue">
+                        <option value="" disabled>Select Rate</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+
+                    <button class="btn" (click)="rate(ratevalue.value,ticket.event.id)">Rate</button>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+    </div>
+</div>

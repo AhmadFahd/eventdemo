@@ -56,14 +56,15 @@ public class NotificationService {
 //		mail.setText("You have successfully update the event "+eventsEntity.getEventname());
 //		javaMailSender.send(mail);
 
-		List<TicketsEntity> ticketsEntity = ticketsRepository.findByEventid(eventsEntity);
+		List<TicketsEntity> ticketsEntity = ticketsRepository.findByEventId(eventid);
 		for (TicketsEntity ticketsEntity1 : ticketsEntity) {
 				if(!ticketsEntity1.isChicked()) {
-					mail.setTo(ticketsEntity1.getUserid().getEmail());
+					mail.setTo(ticketsEntity1.getUser().getEmail());
 					mail.setFrom("spring.mail.username");
-					mail.setSubject("Hi " + ticketsEntity1.getUserid().getUsername());
-					mail.setText("Hi " + ticketsEntity1.getUserid().getUsername() + "\n"
-							+ "your event " + eventsEntity.getEventname() + " date's has changed to " + eventsEntity.getEventdate());
+					mail.setSubject("Hi " + ticketsEntity1.getUser().getUsername());
+					mail.setText("Hi " + ticketsEntity1.getUser().getUsername() + "\n"
+							+ "your event " + eventsEntity.getName() + " date's has changed to " +
+							eventsEntity.getDate());
 
 					javaMailSender.send(mail);
 				}
@@ -74,13 +75,13 @@ public class NotificationService {
 	public void eventCancelNotification(Long eventid) throws MailException {
 		SimpleMailMessage mail = new SimpleMailMessage();
 		EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
-		List<TicketsEntity> ticketsEntity = ticketsRepository.findByEventid(eventsEntity);
+		List<TicketsEntity> ticketsEntity = ticketsRepository.findByEventId(eventid);
 		for (TicketsEntity ticketsEntity1 : ticketsEntity) {
-			mail.setTo(ticketsEntity1.getUserid().getEmail());
+			mail.setTo(ticketsEntity1.getUser().getEmail());
 			mail.setFrom("spring.mail.username");
-			mail.setSubject("Hi " + ticketsEntity1.getUserid().getUsername());
-			mail.setText("Hi " + ticketsEntity1.getUserid().getUsername() + "\n"
-					+ "your event " + eventsEntity.getEventname() + " has been canceled !");
+			mail.setSubject("Hi " + ticketsEntity1.getUser().getUsername());
+			mail.setText("Hi " + ticketsEntity1.getUser().getUsername() + "\n"
+					+ "your event " + eventsEntity.getName() + " has been canceled !");
 
 			javaMailSender.send(mail);
 		}
@@ -91,15 +92,15 @@ public class NotificationService {
 		SimpleMailMessage mail = new SimpleMailMessage();
 		EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
 		UsersEntity usersEntity = usersRepository.findById(userid).get();
-		TicketsEntity ticketsEntity = ticketsRepository.findByUseridAndEventid(usersEntity,eventsEntity);
+		TicketsEntity ticketsEntity = ticketsRepository.findByUserIdAndEventId(userid,eventid);
 
 	mail.setTo(usersEntity.getEmail());
 		mail.setFrom("spring.mail.username");
 		mail.setSubject("Hi " + usersEntity.getUsername());
 		mail.setText("Hi " + usersEntity.getUsername() + "\n"
-				+ "your booking for Event : " + eventsEntity.getEventname()
+				+ "your booking for Event : " + eventsEntity.getName()
 				+ " is confirmed!\n"
-				+"your Ticket id is : "+ticketsEntity.getTicketid()+"Thanks.");
+				+"your Ticket id is : "+ticketsEntity.getId()+"Thanks.");
 
 		javaMailSender.send(mail);
 
@@ -111,11 +112,11 @@ public class NotificationService {
 //		EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
 //		UsersEntity usersEntity = usersRepository.findById(userid).get();
 		TicketsEntity ticketsEntity = ticketsRepository.findById(ticketid).get();
-		mail.setTo(ticketsEntity.getUserid().getEmail());
+		mail.setTo(ticketsEntity.getUser().getEmail());
 		mail.setFrom("spring.mail.username");
-		mail.setSubject("Hi " + ticketsEntity.getUserid().getUsername());
-		mail.setText("Hi " + ticketsEntity.getUserid().getUsername() + "\n"
-				+ "your booking for Event : " + ticketsEntity.getEventid().getEventname()
+		mail.setSubject("Hi " + ticketsEntity.getUser().getUsername());
+		mail.setText("Hi " + ticketsEntity.getUser().getUsername() + "\n"
+				+ "your booking for Event : " + ticketsEntity.getEvent().getName()
 				+ " is confirmed!\n" +"Thanks.");
 		javaMailSender.send(mail);
 

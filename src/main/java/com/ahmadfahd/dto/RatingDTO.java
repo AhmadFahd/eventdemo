@@ -1,12 +1,25 @@
 package com.ahmadfahd.dto;
 
+import com.ahmadfahd.entity.EventsEntity;
+import com.ahmadfahd.entity.UsersEntity;
+
 import javax.validation.constraints.Size;
 
 public class RatingDTO {
-    @Size(min = 1 ,max = 10 ,message = "please rate 1-10")
+    // FIXME: 12/22/2018
+    private long id;
+    @Size(min = 1, max = 5, message = "please rate 1-5")
     private int rate;
-    private String ratepros;
-    private String ratecons;
+    private UsersDTO user;
+    private EventsDTO event;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public int getRate() {
         return rate;
@@ -16,19 +29,19 @@ public class RatingDTO {
         this.rate = rate;
     }
 
-    public String getRatepros() {
-        return ratepros;
+    public UsersDTO getUser() {
+        return user;
     }
 
-    public void setRatepros(String ratepros) {
-        this.ratepros = ratepros;
+    public void setUser(UsersDTO user) {
+        this.user = user;
     }
 
-    public String getRatecons() {
-        return ratecons;
+    public EventsDTO getEvent() {
+        return event;
     }
 
-    public void setRatecons(String ratecons) {
-        this.ratecons = ratecons;
+    public void setEvent(EventsDTO event) {
+        this.event = event;
     }
 }

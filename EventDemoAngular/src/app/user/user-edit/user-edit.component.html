@@ -1,0 +1,81 @@
+<app-navbar></app-navbar>
+<div>
+  <H1>Edit</H1>
+
+  <div class="container">
+    <form novalidate [formGroup]="myReactiveForm">
+      <div class="form-group">
+        <label for="inputEmail">Email address</label>
+        <input type="email" class="form-control" id="inputEmail"
+               placeholder="Enter email" name="email"
+               formControlName="email">
+      </div>
+      <div class="form-group">
+        <label for="inputUserName">Enter User Name</label>
+        <input type="username" class="form-control" id="inputUserName"
+               placeholder="Enter Username" name="username"
+               formControlName="username">
+      </div>
+      <div class="form-group">
+        <label for="inputPassword">Password</label>
+        <input type="password" class="form-control"
+               formControlName="password"
+               id="inputPassword" placeholder="Password" name="password">
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" class="form-control"
+               formControlName="confirm"
+               id="confirmPassword" placeholder="Confirm Password" name="confirm">
+      </div>
+
+
+      <div class="form-group">
+        <label for="selectGender">Gander</label>
+        <select class="form-control" id="selectGender" formControlName="usergender" name="userGender">
+          <option value="" disabled>Select gander</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+
+
+      <div class="form-group">
+        <label for="firstName">Enter First Name</label>
+        <input type="text" class="form-control"
+               formControlName="firstname"
+               id="firstName" placeholder="Enter First Name" name="firstName">
+      </div>
+
+      <div class="form-group">
+        <label for="midName">Enter Mid Name</label>
+        <input type="text" class="form-control"
+               formControlName="midname"
+               id="midName" placeholder="Enter Mid Name" name="midName">
+      </div>
+      <div class="form-group">
+        <label for="lastName">Enter Last Name</label>
+        <input type="text" class="form-control"
+               formControlName="lastname"
+               id="lastName" placeholder="Enter Last Name" name="lastName">
+      </div>
+      <div class="form-group">
+        <label for="userphone">Enter Your phone number</label>
+        <input type="number" class="form-control"
+               formControlName="userphone"
+               id="userphone" placeholder="Enter your phone number" name="userphone">
+      </div>
+      <div class="form-group">
+        <label for="userdob">Enter DateOfBirth</label>
+        <input type="date" class="form-control"
+               formControlName="userdob"
+               id="userdob" placeholder="Enter your phone number" name="userdob">
+      </div>
+
+      <button  type="submit" class="btn btn-primary"
+               (click)="onSubmit()"
+               [disabled]="!myReactiveForm.valid">Submit</button>
+    </form>
+  </div>
+</div>

@@ -1,14 +1,16 @@
 package com.ahmadfahd.entity;
 
 import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
-@Table(name="USERS")
-public class UsersEntity {
+@Table(name = "USERS")
+public class UsersEntity implements Serializable {
     @Id
-    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
@@ -16,12 +18,23 @@ public class UsersEntity {
     private String midname;
     private String lastname;
     private String email;
-    private String userphone;
+    private String phone;
+    private String icon;
     private String password;
-    private String usergender;
-    private LocalDate userdob;
-    @ColumnDefault(value = "1")
+    private String gender;
+    private LocalDate dob;
+    @ColumnDefault(value = "'true'")
     private boolean enabled;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<RolesEntity> roles;
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
 
     public Long getId() {
         return id;
@@ -71,14 +84,6 @@ public class UsersEntity {
         this.email = email;
     }
 
-    public String getUserphone() {
-        return userphone;
-    }
-
-    public void setUserphone(String userphone) {
-        this.userphone = userphone;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -87,27 +92,51 @@ public class UsersEntity {
         this.password = password;
     }
 
-    public String getUsergender() {
-        return usergender;
-    }
-
-    public void setUsergender(String usergender) {
-        this.usergender = usergender;
-    }
-
-    public LocalDate getUserdob() {
-        return userdob;
-    }
-
-    public void setUserdob(LocalDate userdob) {
-        this.userdob = userdob;
-    }
-
     public boolean isEnabled() {
         return enabled;
     }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+//    public List<FeedEntity> getFeeds() {
+//        return feeds;
+//    }
+//
+//    public void setFeeds(List<FeedEntity> feeds) {
+//        this.feeds = feeds;
+//    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
+
+    public List<RolesEntity> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RolesEntity> roles) {
+        this.roles = roles;
     }
 }

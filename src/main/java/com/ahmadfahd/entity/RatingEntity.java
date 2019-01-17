@@ -1,62 +1,36 @@
 package com.ahmadfahd.entity;
 
-import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import org.hibernate.annotations.ColumnDefault;
 
+import javax.persistence.*;
 
 @Entity
 @Table(name = "RATING")
 public class RatingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long rateid;
+    private long id;
     @ManyToOne
-    private TicketsEntity ticket;
-    @Min(1)
-    @Max(10)
+    @JoinColumn(name = "user_id")
+    private UsersEntity user;
+    @ManyToOne
+    @JoinColumn(name = "event_id")
+    private EventsEntity event;
     private int rate;
-    private String ratepros;
-    private String ratecons;
 
+    public long getId() { return id; }
 
-    public long getRateid() {
-        return rateid;
-    }
+    public void setId(long id) { this.id = id; }
 
-    public void setRateid(long rateid) {
-        this.rateid = rateid;
-    }
+    public UsersEntity getUser() { return user; }
 
-    public TicketsEntity getTicket() {
-        return ticket;
-    }
+    public void setUser(UsersEntity user) { this.user = user; }
 
-    public void setTicket(TicketsEntity ticket) {
-        this.ticket = ticket;
-    }
+    public EventsEntity getEvent() { return event; }
 
-    public int getRate() {
-        return rate;
-    }
+    public void setEvent(EventsEntity event) { this.event = event; }
 
-    public void setRate(int rate) {
-        this.rate = rate;
-    }
+    public int getRate() { return rate; }
 
-    public String getRatepros() {
-        return ratepros;
-    }
-
-    public void setRatepros(String ratepros) {
-        this.ratepros = ratepros;
-    }
-
-    public String getRatecons() {
-        return ratecons;
-    }
-
-    public void setRatecons(String ratecons) {
-        this.ratecons = ratecons;
-    }
+    public void setRate(int rate) { this.rate = rate; }
 }

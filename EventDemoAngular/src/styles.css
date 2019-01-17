@@ -1,0 +1,12 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+body {
+    font-family: Roboto, Arial, sans-serif;
+    padding-top: 70px;
+    padding-bottom: 55px;
+    background-image: url('/assets/images/b g.jpg');
+    background-position: right;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}

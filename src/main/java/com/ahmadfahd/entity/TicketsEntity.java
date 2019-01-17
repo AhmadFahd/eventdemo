@@ -12,38 +12,56 @@ public class TicketsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long ticketid;
+    private long id;
     @ManyToOne
-    private EventsEntity eventid;
+    @JoinColumn(name = "event_id")
+    private EventsEntity event;
     @ManyToOne
-    private UsersEntity userid;
+    @JoinColumn(name = "user_id")
+    private UsersEntity user;
     @ColumnDefault("0")
     private boolean chicked;
     @ColumnDefault("0")
     private boolean canceled;
-    private LocalDate date;
 
-    public long getTicketid() { return ticketid; }
+    public long getId() {
+        return id;
+    }
 
-    public void setTicketid(long ticketid) { this.ticketid = ticketid; }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-    public EventsEntity getEventid() { return eventid; }
+    public EventsEntity getEvent() {
+        return event;
+    }
 
-    public void setEventid(EventsEntity eventid) { this.eventid = eventid; }
+    public void setEvent(EventsEntity event) {
+        this.event = event;
+    }
 
-    public UsersEntity getUserid() { return userid; }
+    public UsersEntity getUser() {
+        return user;
+    }
 
-    public void setUserid(UsersEntity userid) { this.userid = userid; }
+    public void setUser(UsersEntity user) {
+        this.user = user;
+    }
 
-    public boolean isChicked() { return chicked; }
+    public boolean isChicked() {
+        return chicked;
+    }
 
-    public void setChicked(boolean chicked) { this.chicked = chicked; }
+    public void setChicked(boolean chicked) {
+        this.chicked = chicked;
+    }
 
-    public LocalDate getDate() { return date; }
+    public boolean isCanceled() {
+        return canceled;
+    }
 
-    public void setDate(LocalDate date) { this.date = date; }
+    public void setCanceled(boolean canceled) {
+        this.canceled = canceled;
+    }
 
-    public boolean isCanceled() { return canceled; }
-
-    public void setCanceled(boolean canceled) { this.canceled = canceled; }
 }
