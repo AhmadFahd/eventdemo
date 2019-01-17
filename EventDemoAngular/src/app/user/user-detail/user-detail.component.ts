@@ -17,7 +17,7 @@ function passwordMatcher(control: AbstractControl) {
 @Component({
     selector: 'app-user-datail',
     templateUrl: 'user-datail.component.html',
-    styleUrls: ['user-detail.component.css']
+    styleUrls: ['./user-detail.component.css']
 })
 export class UserDetailComponent implements OnInit {
     id: number;
