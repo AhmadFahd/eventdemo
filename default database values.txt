@@ -1,0 +1,32 @@
+#1 
+run BackEnd with ddl = create-drop !
+#2
+Insert values into database:
+___________________________
+insert into users(enabled,email,firstname,lastname,midname,password,dob,gender,username,phone)
+		values(1,'A7mad414@gmail.com','Ahmad','AlHowimel','Fahd','$2a$10$wpaqIfq/66Gw45LdJJnB..iwd0GPffE8PeGakMIv3ls/b.T1SMBGW','1993-12-07','Male','ahmad','0546077717')
+		,(1,'organizer@eventtestapplication.com','Someone','LASTNAME','Test','$2a$10$wpaqIfq/66Gw45LdJJnB..iwd0GPffE8PeGakMIv3ls/b.T1SMBGW','1993-12-07','Male','organizer','0501111111')
+				,(1,'user@eventtestapplication.com','Someone','LASTNAME','Test','$2a$10$wpaqIfq/66Gw45LdJJnB..iwd0GPffE8PeGakMIv3ls/b.T1SMBGW','1993-12-07','Male','user','0502222222')
+						,(1,'admin@eventtestapplication.com','Someone','LASTNAME','Test','$2a$10$wpaqIfq/66Gw45LdJJnB..iwd0GPffE8PeGakMIv3ls/b.T1SMBGW','1993-12-07','Male','admin','0503333333');
+
+insert into roles (role_name,username) values ( 'ROLE_ADMIN','ahmad'),('ROLE_USER','ahmad'),('ROLE_ORGANIZER','ahmad'),( 'ROLE_ADMIN','admin'),('ROLE_USER','user'),('ROLE_ORGANIZER','organizer');
+
+
+
+insert into events(approved , deleted , capacity, category , city, date , gender, image , location,name,overview,time ,minage,org_id)
+	values ( 1 , 0 ,10,'Traditional','Riyadh' ,'2019-09-23','Male','Http','GoogleMapLocationLink','Jnadriah','An old traditional event' ,'From 4:00pm To 8:00pm', '12',2),
+( 1 , 0 ,10,'Traditional','Riyadh' ,'2019-09-23','Male','Http','GoogleMapLocationLink','SameTime','An old traditional event' ,'From 4:00pm To 8:00pm', '12',2),
+( 1 , 0 ,10,'Traditional','Riyadh' ,'2019-09-20','Male','Http','GoogleMapLocationLink','Before','An old traditional event' ,'From 4:00pm To 8:00pm', '12',2),
+( 1 , 0 ,10,'Traditional','Riyadh' ,'2019-09-30','Male','Http','GoogleMapLocationLink','After','An old traditional event' ,'From 4:00pm To 8:00pm', '12',2),
+( 1 , 0 ,10,'Traditional','Riyadh' ,'2018-01-01','Male','Http','GoogleMapLocationLink','Older','An old traditional event' ,'From 4:00pm To 8:00pm', '12',2),
+( 0 , 1 ,10,'Traditional','Riyadh' ,'2019-09-23','Male','Http','GoogleMapLocationLink','NotAproved','An old traditional event' ,'From 4:00pm To 8:00pm', '12',2),
+( 1 , 1 ,10,'Traditional','Riyadh' ,'2019-09-23','Male','Http','GoogleMapLocationLink','Deleted','An old traditional event' ,'From 4:00pm To 8:00pm', '12',2);
+___________________________
+#3 go to http://localhost:4300/register
+#4 upload file in directory : defaultEventImage.png
+#5 update its id in data base to : 'defaultEventImage'
+update files set id = 'defaultEventImage' where id ='get it from database';
+#6 update events set image = 'defaultEventImage';
+#7 upload profile picture : defaultProfileImage.jpg 
+#8 update files set id = 'defaultProfileImage' where id ='get it from database';
+#9 update users set icon= 'defaultProfileImage';
