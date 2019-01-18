@@ -4,6 +4,15 @@ public class TicketsDTO {
     private long id;
     private EventsDTO event;
     private UserGetDto user;
+    private boolean chicked;
+
+    public boolean isChicked() {
+        return chicked;
+    }
+
+    public void setChicked(boolean chicked) {
+        this.chicked = chicked;
+    }
 
     public long getId() { return id; }
 

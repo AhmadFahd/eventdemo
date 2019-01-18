@@ -21,6 +21,7 @@ function passwordMatcher(control: AbstractControl) {
 })
 export class UserDetailComponent implements OnInit {
     id: number;
+    dd: number;
     constructor(private route: ActivatedRoute, private userService: UserService,
                 private formBuilder: FormBuilder,
                 private uploadService: UploadFileService) {

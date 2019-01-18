@@ -65,4 +65,12 @@ export class EventsService {
         return this.http.get(`/api/events/approve/${id}`);
     }
 
+    getOrgRate(id): Observable<any> {
+        return this.http.get(`/api/rating/avg/${id}`)
+    }
+
+    chickIn(id): Observable<any> {
+        return this.http.get(`/api/tickets/chickin/${id}`)
+    }
+
 }

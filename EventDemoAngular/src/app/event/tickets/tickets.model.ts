@@ -5,6 +5,7 @@ export class Tickets {
     constructor(
         public id: number,
         public event: Events,
-        public user: User
+        public user: User,
+        public chicked: boolean
     ) { }
 }

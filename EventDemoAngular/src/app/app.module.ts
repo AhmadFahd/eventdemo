@@ -81,8 +81,7 @@ import { PassResetComponent } from './pass-reset/pass-reset.component';
     FilterPipe,
     EventTicketsComponent,
     PassForgetComponent,
-    PassResetComponent
-  ],
+    PassResetComponent],
   imports: [
       BrowserModule,
       MatNativeDateModule,

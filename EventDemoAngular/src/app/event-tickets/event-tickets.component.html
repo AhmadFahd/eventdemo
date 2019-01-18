@@ -1,4 +1,15 @@
 <app-navbar></app-navbar>
-<div class="container" *ngFor="let ticket of tickets">
-  {{ticket.user.username}}
+<div class="container"*ngIf="!forbidden">
+  <table *ngFor="let ticket of tickets">
+    <tr>
+      <th>TicketId</th>
+      <th>User Name</th>
+      <th>Chick in?</th>
+    </tr>
+    <tr>
+      <th>{{ticket.id}}</th>
+      <th>{{ticket.user.username}}</th>
+      <th><button class="btn" [disabled]="ticket.chicked" (click)="Chick(ticket.id)">Chick in</button></th>
+    </tr>
+  </table>
 </div>

@@ -1,11 +1,11 @@
 <app-navbar></app-navbar>
 <!-- Page Content -->
 <!-- /.container -->
-<div class="container" *ngIf="currentEvent$ | async as event">
+<div class="container" *ngIf="currentEvent as event">
 
     <!-- Portfolio Item Heading -->
     <h1 class="my-4">{{event.name}}
-        <small>Secondary Text</small>
+        <small > {{event.organizer.username}}: {{orgRate}}/5 &#9733;</small>
     </h1>
 
     <!-- Portfolio Item Row -->

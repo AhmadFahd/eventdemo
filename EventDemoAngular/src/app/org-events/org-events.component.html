@@ -16,7 +16,7 @@
           </thead>
           <tbody>
           <tr *ngFor="let event of events$ | async" class="d-lg-table-row" >
-            <td [routerLink]="['/events', event.id] " >{{event.name}}</td>
+            <td [routerLink]="['/event/tickets', event.id] " >{{event.name}}</td>
             <td>{{event.gender}}</td>
             <td>{{event.category}}</td>
             <td>

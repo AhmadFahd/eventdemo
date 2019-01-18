@@ -19,10 +19,11 @@ import {findLocaleData, getLocaleTimeFormat} from '@angular/common/src/i18n/loca
 export class EventDetailsComponent implements OnInit {
     id: number;
     commentForm: FormGroup;
-    currentEvent$: Observable<Events>;
+    currentEvent: Events;
     private sub: Subscription;
     comments: Observable<Comments>;
     timee: number;
+    orgRate= 0;
     buttonDisable = true;
 
     constructor(private formBuilder: FormBuilder,
@@ -33,10 +34,15 @@ export class EventDetailsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.sub = this.route.params.subscribe((param: any) => {
+        this.route.params.subscribe((param: any) => {
             this.id = param.id;
-            this.currentEvent$ = this.eventsService.getEvent(this.id);
+            this.eventsService.getEvent(this.id).subscribe( value => {
+                this.currentEvent = value;
+                this.eventsService.getOrgRate(this.currentEvent.organizer.id).subscribe(value =>
+                    this.orgRate = value);
+            });
         });
+
         this.commentForm = this.formBuilder.group({
             comment: ['', Validators.required]
         });
