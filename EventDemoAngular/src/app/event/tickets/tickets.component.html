@@ -4,50 +4,21 @@
 
     <div class="table-responsive">
         <table class="table">
-            <tr>
-                <th>My Tickets</th>
-            </tr>
+            <h3 style="color: #0f2442; font-style: oblique">My Tickets</h3>
             <tr>
                 <th>Username</th>
                 <th>Event Name</th>
-                <th>Event Date
-                <th>
-                <th>Cancel</th>
+                <th>Event Date</th>
+                <th>Cancel/Rate</th>
             </tr>
             <tr *ngFor="let ticket of tickets$ | async">
                 <td>{{ticket.user.username}}</td>
                 <td>{{ticket.event.name}}</td>
-                <td>{{ticket.event.date}}
-                <td>
-                <td>
+                <td>{{ticket.event.date}}</td>
+                <td *ngIf="!ticket.chicked">
                     <button class="btn" (click)="cancel(ticket.id)">Cancel</button>
                 </td>
-
-            </tr>
-
-        </table>
-    </div>
-    </div>
-    <div class="main-login main-center">
-    <div class="table-responsive">
-        <table class="table">
-            <tr>
-                <th>Rate previous events</th>
-            </tr>
-            <tr>
-                <th>Username</th>
-                <th>Event Name</th>
-                <th>Event Date
-                <th>
-                <th>Rate</th>
-            </tr>
-            <tr *ngFor="let ticket of nonRated$ | async">
-                <td>{{ticket.user.username}}</td>
-                <td>{{ticket.event.name}}</td>
-                <td>{{ticket.event.date}}
-                <td>
-                <td>
-
+                <td *ngIf="ticket.chicked">
                     <select #ratevalue class="selectable" id="ratevalue" name="ratevalue">
                         <option value="" disabled>Select Rate</option>
                         <option value="1">1</option>
@@ -56,11 +27,11 @@
                         <option value="4">4</option>
                         <option value="5">5</option>
                     </select>
-
-                    <button class="btn" (click)="rate(ratevalue.value,ticket.event.id)">Rate</button>
+                    <button style="margin: 10px" class="btn" (click)="rate(ratevalue.value,ticket.event.id)">Rate</button>
                 </td>
 
             </tr>
+
         </table>
     </div>
     </div>

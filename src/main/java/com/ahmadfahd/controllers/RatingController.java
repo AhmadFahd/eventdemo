@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/rating")
@@ -33,8 +36,12 @@ public class RatingController {
         return ResponseEntity.ok().build();
     }
     @GetMapping("/avg/{uid}")
-    public ResponseEntity findRateAvg(@PathVariable Long uid) {
-        return ResponseEntity.ok(ratingServices.findRateAvg(uid));
+    public String findRateAvg(@PathVariable Long uid) {
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(1);
+        double avg = ratingServices.findRateAvg(uid);
+        return String.valueOf(df.format(avg));
     }
+
 
 }

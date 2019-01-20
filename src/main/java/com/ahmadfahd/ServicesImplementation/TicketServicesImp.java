@@ -117,10 +117,19 @@ public class TicketServicesImp implements TicketServices {
         return ticketsDTOList;
     }
 
+    // TODO: 1/20/2019 merge with find non rated
     @Override
     public List<TicketsDTO> findNonAttended(Long uId) {
-        List<TicketsEntity> ticketsEntities = ticketsRepository.findByUserIdAndChickedFalseAndCanceledFalse(uId);
-        List<TicketsDTO> ticketsDTOList = ObjectMapperUtils.mapAll(ticketsEntities,TicketsDTO.class);
+        List<TicketsEntity> ticketsEntities = ticketsRepository.findByUserIdAndCanceledFalse(uId);
+        List<TicketsEntity> filtered = new ArrayList<>();
+        for (TicketsEntity ticketsEntity : ticketsEntities)
+        {
+            if (!ratingRepository.existsByUserIdAndEventId(uId,ticketsEntity.getEvent().getId())){
+                filtered.add(ticketsEntity);}
+        }
+        if (filtered.isEmpty())
+        {return null;}
+        List<TicketsDTO> ticketsDTOList = ObjectMapperUtils.mapAll(filtered, TicketsDTO.class);
         return ticketsDTOList;
     }
 

@@ -8,6 +8,6 @@ public interface RatingServices {
     List<RatingDTO> getAllRatings();
     RatingDTO findById(Long rateid);
     void addRating(int rate, Long uId, Long eId);
-    float findRateAvg(Long uid);
+    double findRateAvg(Long uid);
 
 }

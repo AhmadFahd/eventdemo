@@ -91,7 +91,7 @@ public class EventController {
     @GetMapping("myevents/{userId}")
     public ResponseEntity findMyEvents(@PathVariable Long userId) {
         if
-            (!eventServices.findByUser(userId).isEmpty()) {
+            (eventServices.findByUser(userId) != null) {
                 return ResponseEntity.ok(eventServices.findByUser(userId));
             }
             return ResponseEntity.noContent().build();
@@ -100,7 +100,7 @@ public class EventController {
     @GetMapping("mynonapproved/{userId}")
     public ResponseEntity findMyNonApprovedEvents(@PathVariable Long userId) {
         if
-        (!eventServices.getNonApproved(userId).isEmpty()) {
+        (eventServices.getNonApproved(userId) != null) {
             return ResponseEntity.ok(eventServices.getNonApproved(userId));
         }
         return ResponseEntity.noContent().build();

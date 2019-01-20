@@ -19,7 +19,6 @@ import {PublicProfileComponent} from './public-profile/public-profile.component'
 import {FeedsComponent} from './feeds/feeds.component';
 import {AdminEventsComponent} from './admin-events/admin-events.component';
 import {TestCommand} from '@angular/cli/commands/test-impl';
-import {TestComponent} from './test/test.component';
 import {FollowingComponent} from './following/following.component';
 import {RoleRequestComponent} from './role-request/role-request.component';
 import {AdminPanelComponent} from './admin-panel/admin-panel.component';
@@ -51,7 +50,6 @@ const routes: Routes = [
     {path: 'admin', component: AdminPanelComponent, canActivate: [AuthGuard], data: { authority : [admin] }  },
     {path: 'admin/users', component: AdminUsersComponent, canActivate: [AuthGuard], data: { authority : [admin] }  },
     {path: 'admin/events', component: AdminEventsComponent, canActivate: [AuthGuard], data: { authority : [admin] }  },
-    {path: 'test', component: TestComponent},
     {path: 'organizer', component: OrgPanelComponent, canActivate: [AuthGuard], data: { authority : [org] } },
     {path: 'following', component: FollowingComponent, canActivate: [AuthGuard] },
     {path: 'roleRequests', component: RoleRequestComponent, canActivate: [AuthGuard], data: { authority : [admin] }  },

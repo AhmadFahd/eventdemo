@@ -41,7 +41,6 @@ import { AdminUsersComponent } from './admin-users/admin-users.component';
 import { AdminEventsComponent } from './admin-events/admin-events.component';
 import { PublicProfileComponent } from './public-profile/public-profile.component';
 import { FeedsComponent } from './feeds/feeds.component';
-import { TestComponent } from './test/test.component';
 import { FollowingComponent } from './following/following.component';
 import { RoleRequestComponent } from './role-request/role-request.component';
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
@@ -73,7 +72,6 @@ import { PassResetComponent } from './pass-reset/pass-reset.component';
     AdminEventsComponent,
     PublicProfileComponent,
     FeedsComponent,
-    TestComponent,
     FollowingComponent,
     RoleRequestComponent,
     AdminPanelComponent,

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -68,15 +69,14 @@ public class RatingServicesImp implements RatingServices {
     }
 
     @Override
-    public float findRateAvg(Long uid) {
+    public double findRateAvg(Long uid) {
             List<RatingEntity> ratingEntities = ratingRepository.findByEventOrganizerId(uid);
         long rates = ratingEntities.size();
         if (rates > 0) {
-        float avg;
-            int sum = 0;
+            double avg;
+            double sum = 0;
             for (RatingEntity ratingEntity : ratingEntities) {
                 sum = sum + ratingEntity.getRate();
-
             }
             avg = sum / rates;
             return avg;
