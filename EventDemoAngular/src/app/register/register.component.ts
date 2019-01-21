@@ -36,16 +36,17 @@ export class RegisterComponent implements OnInit {
     ngOnInit() {
         this.myReactiveForm = this.formBuilder.group({
             email: ['', Validators.compose([Validators.required, Validators.email])],
-            username: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z]/)])],
+            username: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z]/),
+                Validators.maxLength(32), Validators.minLength(3)])],
             password: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^[a-zA-Z]/)])],
             confirm: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
-            gender: ``,
-            firstname: ``,
+            gender: [``, Validators.required],
+            firstname: [``, Validators.required],
             midname: ``,
             lastname: ``,
-            phone: ['', [Validators.required, Validators.pattern(/(05)\d{8}/)]],
-            dob: '',
-            icon: ''
+            phone: [``, [Validators.required, Validators.pattern(/(05)\d{8}/)]],
+            dob: [``, Validators.required],
+            icon: ``
 
         }, {
             validator: passwordMatcher // pass in the validator function
@@ -56,10 +57,10 @@ export class RegisterComponent implements OnInit {
         // console.log(this.myReactiveForm)
         this.myReactiveForm.controls.icon.setValue(this.fileDownloadUri);
         this.userService.addUser(this.myReactiveForm).subscribe(
-            value => console.log(value),
+            value =>
                 err => {
                 this.err = err;
-                // console.log(err);
+                console.log(this.err);
                 });
         // this.router.navigateByUrl('/login');
     }

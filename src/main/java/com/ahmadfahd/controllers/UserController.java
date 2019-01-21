@@ -4,22 +4,13 @@ import com.ahmadfahd.NotificationService;
 import com.ahmadfahd.Services.UserServices;
 import com.ahmadfahd.dto.UsersDTO;
 import com.ahmadfahd.enums.ROLES;
-import com.ahmadfahd.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
-import java.security.Principal;
-import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -75,12 +66,18 @@ public class UserController {
 
     @PostMapping("/create")
     public ResponseEntity addUser(@RequestBody @Valid UsersDTO usersDTO, BindingResult result) {
-        if (result.hasErrors()) {
+
+        if (userServices.isUser(usersDTO.getUsername())) {
+            throw new RuntimeException(usersDTO.getUsername() + " is Already exist!");
+        } else if (userServices.isEmailUsed(usersDTO.getEmail())) {
+            throw new RuntimeException(usersDTO.getEmail() + " is Already exist!");
+        } else if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(result.getAllErrors());
-        }
+        } else {
 //        notificationService.addUserNotification(usersDTO);
             userServices.addUser(usersDTO, ROLES.ROLE_USER.toString());
-            return ResponseEntity.created(null).build();
+            return ResponseEntity.ok().build();
+        }
     }
 
 

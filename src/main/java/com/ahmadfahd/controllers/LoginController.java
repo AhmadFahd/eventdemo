@@ -3,8 +3,6 @@ package com.ahmadfahd.controllers;
 import com.ahmadfahd.Services.UserServices;
 import com.ahmadfahd.dto.LoginBody;
 import com.ahmadfahd.dto.UsersDTO;
-import com.ahmadfahd.entity.UsersEntity;
-import com.ahmadfahd.security.MyPrincipal;
 import com.ahmadfahd.security.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +33,7 @@ public class LoginController {
 // // FIXME: 1/21/2019 This function solved login pop up message
     @PostMapping("/UserData")
     public ResponseEntity login(@RequestBody LoginBody loginBody) {
-        if (!userServices.isUser(loginBody.getUsername())) {
+        if (!userServices.isActiveUser(loginBody.getUsername())) {
             return ResponseEntity.badRequest().body(new RuntimeException("User not found"));
         }
         UsersDTO usersDTO = userServices.findByUsername(loginBody.getUsername());

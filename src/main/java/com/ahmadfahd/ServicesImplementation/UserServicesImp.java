@@ -55,10 +55,7 @@ public class UserServicesImp implements UserServices {
     // FIXME: 11/19/2018
     @Override
     public void addUser(UsersDTO usersDTO, String role) {
-        if (usersRepository.existsByUsername(usersDTO.getUsername()))
-        {
-            throw new RuntimeException(usersDTO.getUsername() + " is Already exist!");
-        }
+
             UsersEntity usersEntity = modelMapper.map(usersDTO, UsersEntity.class);
             usersEntity.setPassword(new BCryptPasswordEncoder().encode(usersDTO.getPassword()));
             usersEntity.setEnabled(true);
@@ -99,8 +96,16 @@ public class UserServicesImp implements UserServices {
     }
 
     @Override
-    public boolean isUser(String username) {
+    public boolean isActiveUser(String username) {
         return usersRepository.existsByUsernameAndEnabledTrue(username);
+    }
+    @Override
+    public boolean isUser(String username) {
+        return usersRepository.existsByUsername(username);
+    }
+    @Override
+    public boolean isEmailUsed(String email) {
+        return usersRepository.existsByEmail(email);
     }
 
     @Override

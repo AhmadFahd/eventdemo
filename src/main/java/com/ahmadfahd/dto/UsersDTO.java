@@ -1,26 +1,30 @@
 package com.ahmadfahd.dto;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.beans.factory.annotation.Required;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 public class UsersDTO {
 
     private Long id;
-    @Length(min = 3)
+    @Length(min = 3,max = 32)
     private String username;
     private String firstname;
     private String midname;
     private String lastname;
     private String email;
-    private String confirm;
     private String icon;
     private String phone;
     private String password;
     private String gender;
     private LocalDate dob;
+
+
 
     public String getIcon() {
         return icon;
@@ -28,14 +32,6 @@ public class UsersDTO {
 
     public void setIcon(String icon) {
         this.icon = icon;
-    }
-
-    public String getConfirm() {
-        return confirm;
-    }
-
-    public void setConfirm(String confirm) {
-        this.confirm = confirm;
     }
 
     public Long getId() { return id; }
