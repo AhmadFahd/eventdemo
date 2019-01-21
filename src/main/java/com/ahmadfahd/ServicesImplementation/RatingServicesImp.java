@@ -52,8 +52,8 @@ public class RatingServicesImp implements RatingServices {
     @Override
     public void addRating(int rate, Long uId, Long eId) {
 //        FIXME: 12/25/2018 needs Test
-        long rated= ticketsRepository.countByUserIdAndEventIdAndChickedTrue(uId,eId);
-        if(rated == 1) {
+        long rated = ticketsRepository.countByUserIdAndEventIdAndChickedTrue(uId, eId);
+        if (rated == 1) {
             RatingEntity ratingEntity = new RatingEntity();
             ratingEntity.setUser(usersRepository.findById(uId).get());
             ratingEntity.setEvent(eventsRepository.findById(eId).get());
@@ -70,7 +70,7 @@ public class RatingServicesImp implements RatingServices {
 
     @Override
     public double findRateAvg(Long uid) {
-            List<RatingEntity> ratingEntities = ratingRepository.findByEventOrganizerId(uid);
+        List<RatingEntity> ratingEntities = ratingRepository.findByEventOrganizerId(uid);
         long rates = ratingEntities.size();
         if (rates > 0) {
             double avg;
@@ -83,4 +83,5 @@ public class RatingServicesImp implements RatingServices {
         }
         return 0;
     }
+
 }

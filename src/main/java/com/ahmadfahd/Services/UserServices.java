@@ -16,6 +16,7 @@ public interface UserServices {
      void updateUser(UsersDTO usersDTO, Long userid);
      void enableUser(Long userid,boolean b);
      UsersDTO findByUsername(String username);
+     boolean isUser(String username);
      List<UserGetDto> findAllOrganizers();
 
     }

@@ -99,6 +99,11 @@ public class UserServicesImp implements UserServices {
     }
 
     @Override
+    public boolean isUser(String username) {
+        return usersRepository.existsByUsername(username);
+    }
+
+    @Override
     public List<UserGetDto> findAllOrganizers() {
         List<UsersEntity> usersEntities = usersRepository.findByRolesRoleNameNotContains(ROLES.ROLE_ADMIN.toString());
         List<UsersEntity> filtered = new ArrayList<>();

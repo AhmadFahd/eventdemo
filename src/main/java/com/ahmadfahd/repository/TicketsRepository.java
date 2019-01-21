@@ -27,5 +27,6 @@ public interface TicketsRepository extends JpaRepository<TicketsEntity,Long> {
     List<TicketsEntity> findByUserIdAndChickedTrue(Long uid);
     long countByUserIdAndEventIdAndChickedTrue(Long uId,Long eId);
     boolean existsByUserIdAndEventIdAndChickedTrue(Long uId,Long eId);
+    List<TicketsEntity> findByUserIdIn(List<Long> ids);
 
 }
