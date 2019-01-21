@@ -41,9 +41,10 @@ public class LoginController {
             return ResponseEntity.badRequest().body(new RuntimeException("UserNotFound"));
         }
         UsersDTO usersDTO = userServices.findByUsername(loginBody.getUsername());
-        if (!usersDTO.getUsername().equals(loginBody.getUsername())) {
-            return ResponseEntity.badRequest().body(new RuntimeException("UserCaseSensitive"));
-        }
+        //To Check The Case sensitive ,, but it's not required
+//        if (!usersDTO.getUsername().equals(loginBody.getUsername())) {
+//            return ResponseEntity.badRequest().body(new RuntimeException("UserCaseSensitive"));
+//        }
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginBody.getUsername());
         if (new BCryptPasswordEncoder().matches(loginBody.getPassword(), usersDTO.getPassword())) {
             Map<String, Object> map = new HashMap<>();
