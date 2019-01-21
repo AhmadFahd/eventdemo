@@ -23,7 +23,8 @@
                 <small [hidden]="loginForm.controls.password.valid ||loginForm.controls.password.untouched">password required</small>
             </mat-error>
             <div>
-                <button mat-button  [disabled]="loginForm.invalid" class="btn btn-block py-1 font-weight-bold" type="submit">Login</button>
+                <small class="text-danger">{{error}}</small>
+                <button mat-button style="margin-top: 10px" [disabled]="loginForm.invalid" class="btn btn-block py-1 font-weight-bold" type="submit">Login</button>
                 <button mat-button class="btn btn-block py-1 font-weight-bold" routerLink="/register" >Register</button>
                 <small class="text-info" routerLink="/forget">Forget password?</small>
             </div>

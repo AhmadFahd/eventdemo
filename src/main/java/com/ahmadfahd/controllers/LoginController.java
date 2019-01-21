@@ -38,10 +38,10 @@ public class LoginController {
     @PostMapping("/UserData")
     public ResponseEntity login(@RequestBody LoginBody loginBody) {
         if (!userServices.isUser(loginBody.getUsername())) {
-            return ResponseEntity.badRequest().body(new RuntimeException("UserNotFound"));
+            return ResponseEntity.badRequest().body(new RuntimeException("User not found"));
         }
         UsersDTO usersDTO = userServices.findByUsername(loginBody.getUsername());
-        //To Check The Case sensitive ,, but it's not required
+//        To Check The Case sensitive ,, but it's not required
 //        if (!usersDTO.getUsername().equals(loginBody.getUsername())) {
 //            return ResponseEntity.badRequest().body(new RuntimeException("UserCaseSensitive"));
 //        }

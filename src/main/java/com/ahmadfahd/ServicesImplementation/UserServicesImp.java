@@ -100,7 +100,7 @@ public class UserServicesImp implements UserServices {
 
     @Override
     public boolean isUser(String username) {
-        return usersRepository.existsByUsername(username);
+        return usersRepository.existsByUsernameAndEnabledTrue(username);
     }
 
     @Override
