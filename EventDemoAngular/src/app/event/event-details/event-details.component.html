@@ -24,7 +24,10 @@
                 <li class="list-group-item">Gender : {{event.gender}}</li>
                 <li class="list-group-item">Category : {{event.category}}</li>
             </ul>
-            <button class="btn" (click)="bookTicket()">book</button>
+            <div style="margin: 10px">
+                <mat-progress-bar style="height: 15px; border-radius: 10px" [color]="" mode="determinate" value={{percentage}}></mat-progress-bar>
+            </div>
+            <button class="btn" [disabled]="percentage>=100" (click)="bookTicket()">book</button>
         </div>
     </div>
     <!-- /.row -->

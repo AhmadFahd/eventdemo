@@ -106,7 +106,7 @@ public class NotificationService {
 
 	}
 
-	public void cancelTicketNotification(Long ticketid)
+	public void cancelTicketNotification(String ticketid)
 	{
 		SimpleMailMessage mail = new SimpleMailMessage();
 //		EventsEntity eventsEntity = eventsRepository.findById(eventid).get();

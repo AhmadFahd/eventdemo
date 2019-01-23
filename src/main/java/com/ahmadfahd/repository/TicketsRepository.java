@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TicketsRepository extends JpaRepository<TicketsEntity,Long> {
+public interface TicketsRepository extends JpaRepository<TicketsEntity,String> {
 
 
     Long countByEventIdAndCanceledFalse(Long id);

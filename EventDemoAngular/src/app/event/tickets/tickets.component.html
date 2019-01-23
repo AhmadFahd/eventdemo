@@ -1,24 +1,23 @@
 <app-navbar></app-navbar>
-<div class="container">
-    <div class="main-login main-center">
+<div class="container" style="padding-top: 20px;">
+    <div class="row">
+        <div *ngFor="let ticket of tickets$ | async" class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100" style="text-align: center">
+                <div class="card-body">
 
-    <div class="table-responsive">
-        <table class="table">
-            <h3 style="color: #0f2442; font-style: oblique">My Tickets</h3>
-            <tr>
-                <th>Username</th>
-                <th>Event Name</th>
-                <th>Event Date</th>
-                <th>Cancel/Rate</th>
-            </tr>
-            <tr *ngFor="let ticket of tickets$ | async">
-                <td>{{ticket.user.username}}</td>
-                <td>{{ticket.event.name}}</td>
-                <td>{{ticket.event.date}}</td>
-                <td *ngIf="!ticket.chicked">
-                    <button class="btn" (click)="cancel(ticket.id)">Cancel</button>
-                </td>
-                <td *ngIf="ticket.chicked">
+                    <div class="card h-100">
+                        <qr-code [value]="ticket.id" [size]="300"></qr-code>
+                    </div>
+                    <h4 class="card-title" style="padding-top: 30px">
+                        <a>{{ticket.user.username}}</a></h4>
+                    <h4 class="card-title">
+                        <a>{{ticket.event.name}}</a></h4>
+                    <h5>{{ticket.event.date}}</h5>
+
+                </div>
+                <div class="card-footer">
+                    <button *ngIf="!ticket.chicked" class="btn" (click)="cancel(ticket.id)">Cancel</button>
+                    <form *ngIf="ticket.chicked" >
                     <select #ratevalue class="selectable" id="ratevalue" name="ratevalue">
                         <option value="" disabled>Select Rate</option>
                         <option value="1">1</option>
@@ -27,12 +26,11 @@
                         <option value="4">4</option>
                         <option value="5">5</option>
                     </select>
-                    <button style="margin: 10px" class="btn" (click)="rate(ratevalue.value,ticket.event.id)">Rate</button>
-                </td>
-
-            </tr>
-
-        </table>
-    </div>
+                    <button style="margin: 10px" class="btn" (click)="rate(ratevalue.value, ticket.event.id)">Rate</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+

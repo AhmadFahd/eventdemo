@@ -39,13 +39,13 @@ public class TicketController {
     }
 
     @GetMapping("/chickin/{ticketid}")
-    public ResponseEntity ChickinTicket(@PathVariable Long ticketid) {
+    public ResponseEntity ChickinTicket(@PathVariable String ticketid) {
         ticketServices.ChickinTicket(ticketid);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/cancel/{ticketid}")
-    public ResponseEntity CancelTicket(@PathVariable Long ticketid) {
+    public ResponseEntity CancelTicket(@PathVariable String ticketid) {
         ticketServices.CancelTicket(ticketid);
         return ResponseEntity.ok().build();
     }

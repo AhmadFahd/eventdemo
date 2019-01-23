@@ -6,4 +6,5 @@ export class Rate {
     rate: number;
     user: User;
     event: Events;
+
 }

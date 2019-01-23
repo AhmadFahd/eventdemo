@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { QRCodeModule } from 'angular2-qrcode';
 import { NgModule } from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -27,6 +28,7 @@ import {
     MatOptionModule,
     MatRadioModule,
     MatSelectModule,
+    MatProgressBarModule,
     MatSlideToggleModule,
     MatTableModule,
     MatToolbarModule, MatListModule
@@ -49,6 +51,7 @@ import { FilterPipe } from './filter.pipe';
 import { EventTicketsComponent } from './event-tickets/event-tickets.component';
 import { PassForgetComponent } from './pass-forget/pass-forget.component';
 import { PassResetComponent } from './pass-reset/pass-reset.component';
+import { TicketDetailsComponent } from './ticket-details/ticket-details.component';
 
 
 @NgModule({
@@ -79,9 +82,11 @@ import { PassResetComponent } from './pass-reset/pass-reset.component';
     FilterPipe,
     EventTicketsComponent,
     PassForgetComponent,
-    PassResetComponent],
+    PassResetComponent,
+    TicketDetailsComponent],
   imports: [
       BrowserModule,
+      QRCodeModule,
       MatNativeDateModule,
       BrowserAnimationsModule,
       AppRoutingModule,
@@ -89,7 +94,7 @@ import { PassResetComponent } from './pass-reset/pass-reset.component';
       ReactiveFormsModule,
       HttpClientModule,
       MatInputModule,
-
+      MatProgressBarModule,
       MatFormFieldModule,
       MatButtonModule,
       MatMenuModule,

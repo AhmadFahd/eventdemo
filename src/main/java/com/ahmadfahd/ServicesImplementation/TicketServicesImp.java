@@ -84,7 +84,7 @@ public class TicketServicesImp implements TicketServices {
         return 0;
     }
     @Override
-    public void ChickinTicket(Long ticketid) {
+    public void ChickinTicket(String ticketid) {
 
         if (ticketsRepository.findById(ticketid).isPresent()) {
             TicketsEntity ticketsEntity = ticketsRepository.findById(ticketid).get();
@@ -94,7 +94,7 @@ public class TicketServicesImp implements TicketServices {
     }
 
     @Override
-    public void CancelTicket(Long ticketid) {
+    public void CancelTicket(String ticketid) {
         if (ticketsRepository.findById(ticketid).isPresent()) {
             TicketsEntity ticketsEntity = ticketsRepository.findById(ticketid).get();
             ticketsEntity.setCanceled(true);

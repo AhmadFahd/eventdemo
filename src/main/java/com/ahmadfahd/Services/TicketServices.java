@@ -8,13 +8,12 @@ import java.util.List;
 
 public interface TicketServices {
 
-//    List<TicketsDTO>  getAllTickets();
-//    TicketsDTO findById(Long ticketid);
+
     void addTicket(Long eventid, Long userid);
     long CountEventTickets(Long eventid);
 //    List<TicketsDTO> findMyTickets(Long userid);
-    void ChickinTicket(Long ticketid);
-    void CancelTicket(Long ticketid);
+    void ChickinTicket(String ticketid);
+    void CancelTicket(String ticketid);
     List<TicketsDTO> findNonRatedByUser(Long uId);
     List<TicketsDTO> findNonAttended(Long uId);
     List<TicketsDTO> findEventsTickets(Long eId);

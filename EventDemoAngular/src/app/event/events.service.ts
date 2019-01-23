@@ -72,5 +72,8 @@ export class EventsService {
     chickIn(id): Observable<any> {
         return this.http.get(`/api/tickets/chickin/${id}`)
     }
+    eventCounter(id): Observable<any> {
+        return this.http.get(`/api/tickets/count/${id}`)
+    }
 
 }

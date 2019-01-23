@@ -22,6 +22,7 @@ export class RegisterComponent implements OnInit {
     user$: Observable<User>;
     selectedFiles: FileList;
     err;
+    sdfas;
     currentFileUpload: File;
     fileDownloadUri = 'defaultProfileImage';
     uploaded;

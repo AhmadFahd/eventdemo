@@ -46,6 +46,7 @@ public class EventServicesImp implements EventServices {
         }
         return null;
     }
+
     @Override
     public void addEvent(EventsDTO eventsDTO, Long userid) {
 
@@ -53,8 +54,8 @@ public class EventServicesImp implements EventServices {
             EventsEntity eventsEntity;
             eventsEntity = modelMapper.map(eventsDTO, EventsEntity.class);
             eventsEntity.setOrganizer(usersRepository.findById(userid).get());
-             eventsRepository.save(eventsEntity);
-          }
+            eventsRepository.save(eventsEntity);
+        }
     }
 
     @Override
@@ -64,7 +65,7 @@ public class EventServicesImp implements EventServices {
         eventsEntity = modelMapper.map(eventsDTO, EventsEntity.class);
         eventsEntity.setId(eventsEntity1.getId());
         eventsEntity.setOrganizer(eventsEntity1.getOrganizer());
-            eventsRepository.save(eventsEntity);
+        eventsRepository.save(eventsEntity);
 
     }
 
@@ -80,8 +81,8 @@ public class EventServicesImp implements EventServices {
         EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
         eventsEntity.setApproved(aproved);
         eventsRepository.save(eventsEntity);
-        boolean feed = feedRepository.existsByTargetEventIdAndAction(eventid,ACTIONS.ADD_EVENT.toString());
-        if (aproved&& !feed) {
+        boolean feed = feedRepository.existsByTargetEventIdAndAction(eventid, ACTIONS.ADD_EVENT.toString());
+        if (aproved && !feed) {
             FeedEntity feedEntity = new FeedEntity();
             feedEntity.setUser(usersRepository.findById(eventsEntity.getOrganizer().getId()).get());
             feedEntity.setAction(ACTIONS.ADD_EVENT.toString());
@@ -89,7 +90,7 @@ public class EventServicesImp implements EventServices {
             feedEntity.setTargetEvent(eventsEntity);
             feedRepository.save(feedEntity);
         }
-        }
+    }
 
 //    @Override
 //    public List<EventsDTO> findByCity(String eventcity) {
@@ -126,6 +127,7 @@ public class EventServicesImp implements EventServices {
         }
         return null;
     }
+
     @Override
     public List<EventsDTO> getAllNonApproved() {
         List<EventsEntity> eventsEntityList = eventsRepository.findByDeletedFalseAndApprovedFalse();
@@ -149,18 +151,16 @@ public class EventServicesImp implements EventServices {
 //    }
 
     @Override
-    public Map getOrganizer(long eventid)
-    {
-        Map<String,String> map = new HashMap<>();
-        map.put("OrganizerId",eventsRepository.findById(eventid).get().getOrganizer().getId().toString());
-        map.put("OrganizerName",eventsRepository.findById(eventid).get().getOrganizer().getUsername());
+    public Map getOrganizer(long eventid) {
+        Map<String, String> map = new HashMap<>();
+        map.put("OrganizerId", eventsRepository.findById(eventid).get().getOrganizer().getId().toString());
+        map.put("OrganizerName", eventsRepository.findById(eventid).get().getOrganizer().getUsername());
         return map;
     }
 
 
     @Override
-    public List<EventsDTO> findByUser(Long id){
-        return ObjectMapperUtils.mapAll(eventsRepository.findByOrganizerIdAndDeletedFalseAndApprovedTrue(id),EventsDTO.class);
+    public List<EventsDTO> findByUser(Long id) {
+        return ObjectMapperUtils.mapAll(eventsRepository.findByOrganizerIdAndDeletedFalseAndApprovedTrue(id), EventsDTO.class);
     }
-
 }

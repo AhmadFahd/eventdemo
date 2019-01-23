@@ -1,6 +1,7 @@
 package com.ahmadfahd.entity;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -11,8 +12,9 @@ import java.time.LocalDateTime;
 public class TicketsEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
     @ManyToOne
     @JoinColumn(name = "event_id")
     private EventsEntity event;
@@ -24,11 +26,11 @@ public class TicketsEntity {
     @ColumnDefault("0")
     private boolean canceled;
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
