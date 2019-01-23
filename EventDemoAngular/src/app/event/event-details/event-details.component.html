@@ -27,7 +27,7 @@
             <div style="margin: 10px">
                 <mat-progress-bar style="height: 15px; border-radius: 10px" [color]="" mode="determinate" value={{percentage}}></mat-progress-bar>
             </div>
-            <button class="btn" [disabled]="percentage>=100" (click)="bookTicket()">book</button>
+            <button  mat-button class="btn btn-block py-1 font-weight-bold" [disabled]="percentage>=100" (click)="bookTicket()">book</button>
         </div>
     </div>
     <!-- /.row -->
@@ -40,7 +40,7 @@
         <form style="padding-top: 10px" class="form-inline my-2 my-lg-0" [formGroup]="commentForm" (ngSubmit)="onSubmit()">
             <input class="form-control mr-sm-2" type="text" placeholder="Comment" aria-label="Comment"
                    formControlName="comment">
-            <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Add</button>
+            <button mat-button style="background-color: #0f2442" class="btn py-1 font-weight-bold text-white" type="submit">Add</button>
         </form>
     </div>
 
