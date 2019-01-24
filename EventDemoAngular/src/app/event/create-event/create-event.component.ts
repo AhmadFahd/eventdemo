@@ -4,6 +4,7 @@ import {EventsService} from '../events.service';
 import {AuthenticationService} from '../../auth/authentication.service';
 import {UploadFileService} from '../../upload-file.service';
 import {HttpEventType, HttpResponse} from '@angular/common/http';
+import {Router} from "@angular/router";
 
 function dateMatcher(control: AbstractControl) {
     return control.get('date').value >= Date.now() + (10800000)
@@ -28,6 +29,7 @@ export class CreateEventComponent implements OnInit {
         private formBuilder: FormBuilder,
         private eventService: EventsService,
         private auth: AuthenticationService,
+        private router:Router,
         private uploadService: UploadFileService) {
     }
 
@@ -53,6 +55,7 @@ export class CreateEventComponent implements OnInit {
         // console.log(this.myReactiveForm)
         this.eventForm.controls.image.setValue(this.fileDownloadUri);
         this.eventService.addEvent(this.auth.getUserId() , JSON.stringify(this.eventForm.value)).subscribe();
+        this.router.navigateByUrl("/myEvents");
 
     }
     selectFile(event) {

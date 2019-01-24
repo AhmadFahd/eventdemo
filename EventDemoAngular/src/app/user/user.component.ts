@@ -21,8 +21,7 @@ export class UserComponent implements OnInit  {
           userData => {
               this.users = userData;
           },
-          err => console.log(err),
-          () => console.log('Getting users complete...')
+          err => console.log(err)
       );
   }
 }

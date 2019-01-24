@@ -27,7 +27,7 @@
             <ul class="list-group" *ngFor="let feed of feeds">
                 <li class="list-group-item" *ngIf="feed.action=='FOLLOW'">
                     <a [routerLink]="['/profile', feed.user.id]">{{feed.user.username}}</a>
-                    Followd :
+                    Follow :
                     <a [routerLink]="['/profile', feed.targetUser.id]">{{feed.targetUser.username}}</a>
                 </li>
                 <li class="list-group-item" *ngIf="feed.action=='COMMENT'">

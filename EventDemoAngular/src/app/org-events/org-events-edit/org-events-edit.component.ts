@@ -36,11 +36,12 @@ export class OrgEventsEditComponent implements OnInit {
         this.route.params.subscribe(value => {
             this.id = value.id;
             this.eventService.getEvent(this.id).subscribe( value1 => {
-                if(value1){
+                if (value1){
+                if(value1.organizer.id==this.auth.getUserId()){
                 this.eventForm.patchValue(value1 as any);
                 this.fileDownloadUri = value1.image;
                 this.currentEvent =true;
-            }})
+            }}})
         });
         this.eventForm = this.formBuilder.group({
             name: ['', Validators.required],

@@ -58,17 +58,12 @@ export class PublicProfileComponent implements OnInit {
             }));
         }
     }
-
     follow() {
         this.userService.Follow(this.myId, this.id).subscribe();
         this.ngOnInit();
     }
-
     unfollow() {
         this.userService.unFollow(this.myId, this.id).subscribe();
         this.ngOnInit();
-    }
-    navigatee(id) {
-        this.router.navigateByUrl('/profile/' + id);
     }
 }

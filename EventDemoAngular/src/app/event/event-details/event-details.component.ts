@@ -7,9 +7,6 @@ import {Events} from '../event.model';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../auth/authentication.service';
 import {Comments} from '../comment.model';
-import {catchError, delay, timestamp} from 'rxjs/operators';
-import {endTimeRange, startTimeRange} from '@angular/core/src/profile/wtf_impl';
-import {findLocaleData, getLocaleTimeFormat} from '@angular/common/src/i18n/locale_data_api';
 
 @Component({
     selector: 'app-event-details',
@@ -22,9 +19,8 @@ export class EventDetailsComponent implements OnInit {
     currentEvent: Events;
     private sub: Subscription;
     comments: Observable<Comments>;
-    timee: number;
+    time: number;
     orgRate = 0;
-    buttonDisable = true;
     eventCounter;
     percentage;
     models;
@@ -46,7 +42,6 @@ export class EventDetailsComponent implements OnInit {
                 this.eventsService.eventCounter(this.id).subscribe(value => {
                     this.eventCounter = value;
                     this.percentage= this.eventCounter/this.currentEvent.capacity*100;
-                    console.log(this.percentage);
                 });
             });
         });
@@ -59,15 +54,14 @@ export class EventDetailsComponent implements OnInit {
     }
 
     onSubmit() {
-        if (!this.timee || this.timee <= Date.now() - 60000) {
-            console.log('Accepted');
-            this.timee = Date.now();
-            this.eventsService.addComment(this.commentForm, this.id, this.auth.getUserId()).subscribe();
+        if (!this.time || this.time <= Date.now() - 60000) {
+            // console.log('Accepted');
+            this.time = Date.now();
+            this.eventsService.addComment(this.commentForm, this.id, this.auth.getUserId()).subscribe(
+                value => this.ngOnInit());
         } else {
-            console.log('wait');
+            // console.log('wait');
         }
-        console.log(Date.now());
-        console.log(this.timee);
     }
 
     getComments() {
@@ -76,7 +70,7 @@ export class EventDetailsComponent implements OnInit {
 
     bookTicket() {
         this.eventsService.bookTicket(this.id, this.auth.getUserId()).subscribe();
-        this.router.navigateByUrl("/tickets")
+        this.router.navigateByUrl("/tickets");
     }
 
 }

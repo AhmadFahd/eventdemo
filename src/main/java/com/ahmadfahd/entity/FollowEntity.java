@@ -10,10 +10,10 @@ public class FollowEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long id;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "follower",referencedColumnName = "id")
     private UsersEntity user;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "followed",referencedColumnName = "id")
     private UsersEntity followed;
     private boolean status;
