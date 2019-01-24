@@ -40,10 +40,11 @@ export class UserDetailComponent implements OnInit {
             this.id = param.id;
     });
       this.userService.getUser(this.id).subscribe((value0 => {
-          this.currentUser = value0;
-          this.myReactiveForm.patchValue(value0 as any);
-          this.fileDownloadUri = this.currentUser.icon;
-      }));
+          if(value0) {
+              this.currentUser = value0;
+              this.myReactiveForm.patchValue(value0 as any);
+              this.fileDownloadUri = this.currentUser.icon;
+          }}));
       this.myReactiveForm = this.formBuilder.group({
           email: ['', Validators.compose([Validators.required, Validators.email])],
           username: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z]/)])],

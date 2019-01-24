@@ -27,6 +27,7 @@ export class EventDetailsComponent implements OnInit {
     buttonDisable = true;
     eventCounter;
     percentage;
+    models;
 
     constructor(private formBuilder: FormBuilder,
                 private route: ActivatedRoute,
@@ -75,6 +76,7 @@ export class EventDetailsComponent implements OnInit {
 
     bookTicket() {
         this.eventsService.bookTicket(this.id, this.auth.getUserId()).subscribe();
+        this.router.navigateByUrl("/tickets")
     }
 
 }

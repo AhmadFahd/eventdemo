@@ -26,6 +26,7 @@ import {OrgPanelComponent} from './org-panel/org-panel.component';
 import {EventTicketsComponent} from './event-tickets/event-tickets.component';
 import {PassForgetComponent} from './pass-forget/pass-forget.component';
 import {PassResetComponent} from './pass-reset/pass-reset.component';
+import {OrgEventsEditComponent} from "./org-events/org-events-edit/org-events-edit.component";
 
 const user = RoleEnum.USER;
 const admin = RoleEnum.ADMIN;
@@ -56,6 +57,7 @@ const routes: Routes = [
     {path: 'forget', component: PassForgetComponent},
     {path: 'event/tickets/:id', component: EventTicketsComponent, canActivate: [AuthGuard], data: { authority : [org] }  },
     {path: 'reset/:id', component: PassResetComponent},
+    {path: 'events/edit/:id', component: OrgEventsEditComponent, canActivate: [AuthGuard], data: { authority: [org]} },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

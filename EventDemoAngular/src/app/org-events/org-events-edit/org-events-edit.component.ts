@@ -1,37 +1,47 @@
-import { Component, OnInit } from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {EventsService} from '../events.service';
-import {AuthenticationService} from '../../auth/authentication.service';
-import {UploadFileService} from '../../upload-file.service';
-import {HttpEventType, HttpResponse} from '@angular/common/http';
-
-function dateMatcher(control: AbstractControl) {
-    return control.get('date').value >= Date.now() + (10800000)
-        ? null : {'old': true};
-}
+import {Component, Input, OnInit, Output} from '@angular/core';
+import {Events} from "../../event/event.model";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {EventsService} from "../../event/events.service";
+import {AuthenticationService} from "../../auth/authentication.service";
+import {UploadFileService} from "../../upload-file.service";
+import {HttpEventType, HttpResponse} from "@angular/common/http";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
-  selector: 'app-create-event',
-  templateUrl: './create-event.component.html',
-  styleUrls: ['./create-event.component.scss']
+    selector: 'app-org-events-edit',
+    templateUrl: './org-events-edit.component.html',
+    styleUrls: ['./org-events-edit.component.css']
 })
-export class CreateEventComponent implements OnInit {
+export class OrgEventsEditComponent implements OnInit {
 
-        fileDownloadUri = 'defaultEventImage';
+    fileDownloadUri ;
+    id;
     eventForm: FormGroup;
     selectedFiles: FileList;
     currentFileUpload: File;
     uploaded;
+    currentEvent;
     progress: { percentage: number } = {percentage: 0};
 
     constructor(
         private formBuilder: FormBuilder,
         private eventService: EventsService,
         private auth: AuthenticationService,
-        private uploadService: UploadFileService) {
+        private uploadService: UploadFileService,
+        private route: ActivatedRoute) {
     }
 
+
     ngOnInit() {
+        this.route.params.subscribe(value => {
+            this.id = value.id;
+            this.eventService.getEvent(this.id).subscribe( value1 => {
+                if(value1){
+                this.eventForm.patchValue(value1 as any);
+                this.fileDownloadUri = value1.image;
+                this.currentEvent =true;
+            }})
+        });
         this.eventForm = this.formBuilder.group({
             name: ['', Validators.required],
             capacity: ['', Validators.required],
@@ -44,17 +54,17 @@ export class CreateEventComponent implements OnInit {
             category: '',
             city: '',
             location: ''
-        }, {
-            validator: dateMatcher
         });
     }
 
     onSubmit() {
-        // console.log(this.myReactiveForm)
         this.eventForm.controls.image.setValue(this.fileDownloadUri);
-        this.eventService.addEvent(this.auth.getUserId() , JSON.stringify(this.eventForm.value)).subscribe();
+        // console.log(this.eventForm)
+        this.eventService.editEvent(this.id , this.eventForm).subscribe();
 
     }
+
+
     selectFile(event) {
         this.selectedFiles = event.target.files;
     }
@@ -77,4 +87,5 @@ export class CreateEventComponent implements OnInit {
         this.selectedFiles = undefined;
     }
 }
+
 

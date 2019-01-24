@@ -21,7 +21,8 @@ public interface EventsRepository extends JpaRepository<EventsEntity,Long> {
     Optional<EventsEntity> findByIdAndDeletedFalseAndApprovedTrueAndDateAfter(Long eventid,LocalDate date);
     Long countByApprovedTrue();
     long countByOrganizerId(Long id);
-    List<EventsEntity> findByOrganizerIdAndDeletedFalseAndApprovedTrue(Long oid);
+    //    List<EventsEntity> findByOrganizerIdAndDeletedFalseAndApprovedTrue(Long oid);
+    List<EventsEntity> findByOrganizerIdAndDeletedFalseAndApprovedTrueAndDateAfter(Long oid,LocalDate date);
     List<EventsEntity> findByOrganizerIdAndDeletedFalseAndApprovedFalse(Long oid);
     List<EventsEntity> findByDeletedFalseAndApprovedFalse();
 

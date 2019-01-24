@@ -14,30 +14,15 @@ export class OrgEventsComponent implements OnInit {
 
     events$: Observable<Events[]>;
     unAprrovedEvents$: Observable<Events[]>;
-    editable = false;
-    eventForm: FormGroup;
+    event:Events;
 
     constructor(private eventsService: EventsService,
-                private auth: AuthenticationService,
-                private formBuilder: FormBuilder) {
+                private auth: AuthenticationService) {
     }
 
     ngOnInit() {
         this.getEvents();
         this.getUnaprrovedEvents();
-        this.eventForm = this.formBuilder.group({
-            name: ['', Validators.required],
-            capacity: ['', Validators.required],
-            overview: '',
-            date: ['', Validators.required],
-            time: '',
-            image: '',
-            minage: '',
-            gender: '',
-            category: '',
-            city: '',
-            location: ''
-        });
     }
 
     getEvents() {
@@ -48,17 +33,10 @@ export class OrgEventsComponent implements OnInit {
         this.unAprrovedEvents$ = this.eventsService.getUnaprrovedEvents(this.auth.getUserId());
     }
 
-    edit(event) {
-        this.editable = true;
-        this.eventForm.patchValue(event);
-    }
 
-    onSubmit() {
-        console.log(this.eventForm);
-        this.editable = false;
-    }
+
 
     delete(id) {
-        console.log(id);
+        this.eventsService.cancelEvent(id).subscribe(value => this.ngOnInit());
     }
 }

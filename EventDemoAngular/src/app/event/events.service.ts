@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Events} from './event.model';
 import {Tickets} from './tickets/tickets.model';
+import {User} from "../user/user.model";
 const headers = new HttpHeaders().set('Content-Type', 'application/json');
 const API_ARGS = {headers: headers};
 
@@ -16,6 +17,9 @@ export class EventsService {
 
     getEvnets(): Observable<Events[]> {
         return this.http.get<Events[]>('/api/events/active');
+    }
+    editEvent(id: number, a): Observable<any> {
+        return this.http.put(`/api/events/edit/${id}`, JSON.stringify(a.value), API_ARGS);
     }
 
     getEvent(id: number): Observable<Events> {
@@ -44,6 +48,9 @@ export class EventsService {
     }
     cancelTicket(tid): Observable<any> {
         return this.http.get(`api/tickets/cancel/${tid}`);
+    }
+    cancelEvent(eid): Observable<any> {
+        return this.http.get(`api/events/delete/${eid}`);
     }
 
     getMyEvnets(id): Observable<Events[]> {

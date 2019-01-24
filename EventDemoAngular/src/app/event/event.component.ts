@@ -11,6 +11,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class EventComponent implements OnInit {
     events: Events[];
+
     constructor(private eventsService: EventsService) {
     }
 

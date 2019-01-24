@@ -5,9 +5,11 @@ import com.ahmadfahd.dto.EventsDTO;
 import com.ahmadfahd.dto.ObjectMapperUtils;
 import com.ahmadfahd.entity.EventsEntity;
 import com.ahmadfahd.entity.FeedEntity;
+import com.ahmadfahd.entity.TicketsEntity;
 import com.ahmadfahd.enums.ACTIONS;
 import com.ahmadfahd.repository.EventsRepository;
 import com.ahmadfahd.repository.FeedRepository;
+import com.ahmadfahd.repository.TicketsRepository;
 import com.ahmadfahd.repository.UsersRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class EventServicesImp implements EventServices {
     private ModelMapper modelMapper;
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    private TicketsRepository ticketsRepository;
     @Autowired
     private FeedRepository feedRepository;
 
@@ -72,6 +76,11 @@ public class EventServicesImp implements EventServices {
     @Override
     public void deleteById(Long eventid) {
         EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
+        List<TicketsEntity> ticketsEntities = ticketsRepository.findByEventIdAndCanceledFalse(eventid);
+        for (TicketsEntity ticketsEntity: ticketsEntities){
+            ticketsEntity.setCanceled(true);
+            ticketsRepository.save(ticketsEntity);
+        }
         eventsEntity.setDeleted(true);
         eventsRepository.save(eventsEntity);
     }
@@ -161,6 +170,6 @@ public class EventServicesImp implements EventServices {
 
     @Override
     public List<EventsDTO> findByUser(Long id) {
-        return ObjectMapperUtils.mapAll(eventsRepository.findByOrganizerIdAndDeletedFalseAndApprovedTrue(id), EventsDTO.class);
+        return ObjectMapperUtils.mapAll(eventsRepository.findByOrganizerIdAndDeletedFalseAndApprovedTrueAndDateAfter(id,LocalDate.now()), EventsDTO.class);
     }
 }

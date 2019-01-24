@@ -1,7 +1,7 @@
-<app-navbar></app-navbar>
-  <div class="container">
-    <div class="main-login main-center">
-      <div>
+<app-admin-panel></app-admin-panel>
+<div class="container">
+    <div class="main-login main-center" *ngIf="currentUser">
+      <div *ngIf="fileDownloadUri">
         <img class="rounded-circle img-fluid d-block mx-auto" style="max-width: 200px" src="/api/file/downloadFile/{{fileDownloadUri}}" alt="">
       </div>
       <br>
