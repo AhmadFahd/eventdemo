@@ -1,7 +1,10 @@
 <app-navbar></app-navbar>
 <div class="container" style="padding-top: 20px;">
     <div style="padding-bottom: 10px" class="form-inline my-2 my-lg-0">
-        <h4 style="color: #0f2442; padding-right: 20px">Search : </h4> <input [(ngModel)]="searchText" class="form-control mr-sm-2" placeholder="search for Event"></div>
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Search for event" [(ngModel)]="searchText">
+        </mat-form-field>
+    </div>
     <div class="row">
         <div *ngFor="let event of events | filter : searchText" class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100">
@@ -15,7 +18,7 @@
                     <p class="card-text">{{event.overview}}</p>
                 </div>
                 <!--<div class="card-footer">-->
-                    <!--<small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>-->
+                <!--<small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>-->
                 <!--</div>-->
             </div>
         </div>

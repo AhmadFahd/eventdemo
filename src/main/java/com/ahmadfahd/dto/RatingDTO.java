@@ -10,7 +10,7 @@ public class RatingDTO {
     private long id;
     @Size(min = 1, max = 5, message = "please rate 1-5")
     private int rate;
-    private UsersDTO user;
+    private UserGetDto user;
     private EventsDTO event;
 
     public long getId() {
@@ -29,11 +29,11 @@ public class RatingDTO {
         this.rate = rate;
     }
 
-    public UsersDTO getUser() {
+    public UserGetDto getUser() {
         return user;
     }
 
-    public void setUser(UsersDTO user) {
+    public void setUser(UserGetDto user) {
         this.user = user;
     }
 
