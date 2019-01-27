@@ -56,15 +56,15 @@ public class UserServicesImp implements UserServices {
     @Override
     public void addUser(UsersDTO usersDTO, String role) {
 
-            UsersEntity usersEntity = modelMapper.map(usersDTO, UsersEntity.class);
-            usersEntity.setPassword(new BCryptPasswordEncoder().encode(usersDTO.getPassword()));
-            usersEntity.setEnabled(true);
-            RolesEntity rolesEntity = new RolesEntity();
-            rolesEntity.setRoleName(role);
-            rolesEntity.setUser(usersEntity);
-            usersRepository.save(usersEntity);
-            rolesRepository.save(rolesEntity);
-        }
+        UsersEntity usersEntity = modelMapper.map(usersDTO, UsersEntity.class);
+        usersEntity.setPassword(new BCryptPasswordEncoder().encode(usersDTO.getPassword()));
+        usersEntity.setEnabled(true);
+        RolesEntity rolesEntity = new RolesEntity();
+        rolesEntity.setRoleName(role);
+        rolesEntity.setUser(usersEntity);
+        usersRepository.save(usersEntity);
+        rolesRepository.save(rolesEntity);
+    }
 
     @Override
     public void updateUser(UsersDTO usersDTO, Long userid) {
@@ -90,19 +90,21 @@ public class UserServicesImp implements UserServices {
 
     @Override
     public UsersDTO findByUsername(String username) {
-        UsersEntity usersEntity = usersRepository.findByUsername(username);
-        UsersDTO usersDTO = modelMapper.map(usersEntity, UsersDTO.class);
-        return usersDTO;
+            UsersEntity usersEntity = usersRepository.findByUsername(username);
+            UsersDTO usersDTO = modelMapper.map(usersEntity, UsersDTO.class);
+            return usersDTO;
     }
 
     @Override
     public boolean isActiveUser(String username) {
         return usersRepository.existsByUsernameAndEnabledTrue(username);
     }
+
     @Override
     public boolean isUser(String username) {
         return usersRepository.existsByUsername(username);
     }
+
     @Override
     public boolean isEmailUsed(String email) {
         return usersRepository.existsByEmail(email);
@@ -117,8 +119,8 @@ public class UserServicesImp implements UserServices {
                 filtered.add(usersEntity);
             }
         }
-            List<UserGetDto> userGetDtos = ObjectMapperUtils.mapAll(filtered, UserGetDto.class);
-            return userGetDtos;
+        List<UserGetDto> userGetDtos = ObjectMapperUtils.mapAll(filtered, UserGetDto.class);
+        return userGetDtos;
 
     }
 }

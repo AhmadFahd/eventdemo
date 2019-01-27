@@ -14,5 +14,7 @@ public interface FollowRepository extends JpaRepository<FollowEntity,Long> {
     FollowEntity findByUserIdAndFollowedId(Long uid,Long fid);
     // TODO: 12/30/2018 add service and controller
     boolean existsByUserIdAndFollowedIdAndStatusTrue(Long uid, Long fid);
+    @Query("select f.followed.id from FollowEntity f where f.user.id = ?1 and f.status = true ")
+    List<Long> getAllIds(Long id);
 
 }

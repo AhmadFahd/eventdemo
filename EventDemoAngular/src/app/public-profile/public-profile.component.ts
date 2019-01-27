@@ -13,7 +13,7 @@ import {FeedService} from '../feed.service';
 })
 export class PublicProfileComponent implements OnInit {
     currentUser: User;
-    id;
+    id;dds;
     name;
     followed;
     feeds: Feed[];

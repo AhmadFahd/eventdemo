@@ -10,7 +10,7 @@ public class RolesEntity  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String roleName;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "username",referencedColumnName = "username")
     private UsersEntity user;
 

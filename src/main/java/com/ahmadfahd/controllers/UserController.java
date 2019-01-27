@@ -103,8 +103,11 @@ public class UserController {
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity findByUser(@PathVariable String name){
-        return ResponseEntity.ok(userServices.findByUsername(name));
+    public ResponseEntity findByUser(@PathVariable String name) {
+        if (userServices.isUser(name)) {
+            return ResponseEntity.ok(userServices.findByUsername(name));
+        }
+        return ResponseEntity.badRequest().build();
     }
     @GetMapping("/organizers")
     public ResponseEntity findOrgs(){

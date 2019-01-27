@@ -10,20 +10,20 @@ public class FeedEntity {
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "userid",referencedColumnName = "id")
     private UsersEntity user;
     private String action;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "eventid",referencedColumnName = "id")
     private EventsEntity targetEvent;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "comment",referencedColumnName = "id")
     private CommentsEntity targetComment;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "target_user",referencedColumnName = "id")
     private UsersEntity targetUser;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "target_rate",referencedColumnName = "id")
     private RatingEntity targetRate;
     private LocalDateTime time;

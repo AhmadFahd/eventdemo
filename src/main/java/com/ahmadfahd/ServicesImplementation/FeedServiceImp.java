@@ -34,13 +34,15 @@ public class FeedServiceImp implements FeedService {
 
     @Override
     public List<FeedsDTO> findMyFeeds(Long id) {
-        List<FollowEntity> followEntities = followRepository.findByUserIdAndStatusTrue(id);
-        List<Long> ids = new ArrayList<>();
-        for (FollowEntity followEntity: followEntities) {
-                ids.add(followEntity.getFollowed().getId());
-        }
+        // Old function
+//        List<FollowEntity> followEntities = followRepository.findByUserIdAndStatusTrue(id);
+//        List<Long> ids = new ArrayList<>();
+//        for (FollowEntity followEntity: followEntities) {
+//                ids.add(followEntity.getFollowed().getId());}
+
+        List<Long> ids = followRepository.getAllIds(id);
         List<FeedEntity> feedEntities = feedRepository.findByUserIdIn(ids);
-        List<FeedsDTO> feedsDTOS = ObjectMapperUtils.mapAll(feedEntities,FeedsDTO.class);
-    return feedsDTOS;
+        List<FeedsDTO> feedsDTOS = ObjectMapperUtils.mapAll(feedEntities, FeedsDTO.class);
+        return feedsDTOS;
     }
 }
