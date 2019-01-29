@@ -47,18 +47,18 @@ export class UserDetailComponent implements OnInit {
           }}));
       this.myReactiveForm = this.formBuilder.group({
           email: ['', Validators.compose([Validators.required, Validators.email])],
-          username: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z]/)])],
+          username: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z0-9_.-]{2,17}$/)])],
           password: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^[a-zA-Z]/)])],
           confirm: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
-          gender: ``,
-          firstname: ``,
+          gender: [``, Validators.required],
+          firstname: [``, Validators.required],
           midname: ``,
           lastname: ``,
-          phone: ['', [Validators.required, Validators.pattern(/(05)\d{8}/)]],
-          dob: '',
-          icon: ''
+          phone: [``, [Validators.required, Validators.pattern(/(05)\d{8}/)]],
+          dob: [``, Validators.required],
+          icon: ``
 
-      }, {
+  }, {
           validator: passwordMatcher // pass in the validator function
       });
   }

@@ -37,8 +37,7 @@ export class RegisterComponent implements OnInit {
     ngOnInit() {
         this.myReactiveForm = this.formBuilder.group({
             email: ['', Validators.compose([Validators.required, Validators.email])],
-            username: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z0-9_.-]{2,17}$/),
-                Validators.maxLength(32), Validators.minLength(3)])],
+            username: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z0-9_.-]{2,17}$/)])],
             password: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^[a-zA-Z]/)])],
             confirm: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
             gender: [``, Validators.required],
@@ -68,8 +67,7 @@ export class RegisterComponent implements OnInit {
                 });
     }
     selectFile(event) {
-        this.selectedFiles = event.target.files;
-    }
+        this.selectedFiles = event.target.files;}
 
     upload() {
         this.currentFileUpload = this.selectedFiles.item(0);

@@ -64,7 +64,6 @@ export class ProfileComponent implements OnInit {
 
     onSubmit() {
         this.myReactiveForm.controls.icon.setValue(this.fileDownloadUri);
-        console.log(this.myReactiveForm.value);
         this.editable = false;
         return this.userService.updateUser(this.auth.getUserId(), this.myReactiveForm).subscribe(value =>
             this.ngOnInit());
