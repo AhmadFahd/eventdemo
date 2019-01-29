@@ -5,7 +5,6 @@ import {AuthenticationService} from '../../auth/authentication.service';
 import {UploadFileService} from '../../upload-file.service';
 import {HttpEventType, HttpResponse} from '@angular/common/http';
 import {Router} from "@angular/router";
-
 function dateMatcher(control: AbstractControl) {
     return control.get('date').value >= Date.now() + (10800000)
         ? null : {'old': true};

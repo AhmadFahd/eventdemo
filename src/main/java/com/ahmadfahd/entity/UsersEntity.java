@@ -23,7 +23,6 @@ public class UsersEntity implements Serializable {
     private String password;
     private String gender;
     private LocalDate dob;
-    @ColumnDefault(value = "'true'")
     private boolean enabled;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RolesEntity> roles;

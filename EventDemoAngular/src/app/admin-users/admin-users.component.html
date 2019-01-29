@@ -14,16 +14,19 @@
           <th>USERGENDER</th>
           <th>USERDOB</th>
           <th>USERNUMBER</th>
+          <th>EDIT</th>
           <th>DELETE</th>
+
           </thead>
           <tbody>
-          <tr *ngFor="let user of nonAdmin " class="d-lg-table-row" >
-            <td><BUTTON  class="btn" [routerLink]="['/user', user.id]">{{user.id}}</BUTTON></td>
+          <tr *ngFor="let user of users " class="d-lg-table-row" >
+            <td class="font-weight-bold">#{{user.id}}</td>
             <td>{{user.username}}</td>
             <td>{{user.gender}}</td>
             <td>{{user.dob}}</td>
             <td class="text-primary">{{user.phone}}</td>
-            <td>      <BUTTON (click)="Delete()" class="btn">Delete</BUTTON></td>
+            <td>      <BUTTON [disabled]="isAdmin(user)" [routerLink]="['/user', user.id]" class="btn">EDIT</BUTTON></td>
+            <td>      <BUTTON [disabled]="isAdmin(user)" (click)="Delete()" class="btn">Delete</BUTTON></td>
           </tr>
           </tbody>
         </table>

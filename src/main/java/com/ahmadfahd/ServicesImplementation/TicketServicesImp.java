@@ -61,8 +61,15 @@ public class TicketServicesImp implements TicketServices {
             UsersEntity usersEntity = usersRepository.findById(userid).get();
             LocalDate eventDate = eventsEntity.getDate();
             long counter = ticketsRepository.countByEventIdAndCanceledFalse(eventid);
-            boolean overlap = ticketsRepository.existsByUserIdAndEventDate(userid, eventDate);
-            if (eventsEntity.getCapacity() > counter && !overlap ) {
+            if(ticketsRepository.existsByUserIdAndEventIdAndCanceledFalse(userid, eventid))
+            {
+                throw new RuntimeException("You already have a ticket in this event!");
+            }
+            if(ticketsRepository.existsByUserIdAndEventDateAndCanceledFalse(userid, eventDate))
+            {
+                throw new RuntimeException("You have an event in this date!");
+            }
+            if (eventsEntity.getCapacity() > counter) {
                 ticketsEntity.setEvent(eventsEntity);
                 ticketsEntity.setUser(usersEntity);
                 FeedEntity feedEntity = new FeedEntity();

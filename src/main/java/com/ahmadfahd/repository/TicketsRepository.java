@@ -17,7 +17,8 @@ public interface TicketsRepository extends JpaRepository<TicketsEntity,String> {
 
 
     Long countByEventIdAndCanceledFalse(Long id);
-    boolean existsByUserIdAndEventDate(Long Id, LocalDate date);
+    boolean existsByUserIdAndEventDateAndCanceledFalse(Long Id, LocalDate date);
+    boolean existsByUserIdAndEventIdAndCanceledFalse(Long uId, Long eId);
     Long countByUserIdAndEventDate(Long Id, LocalDate date);
     List<TicketsEntity> findByUserIdAndChickedFalseAndCanceledFalse(Long Id);
     List<TicketsEntity> findByUserIdAndCanceledFalse(Long Id);

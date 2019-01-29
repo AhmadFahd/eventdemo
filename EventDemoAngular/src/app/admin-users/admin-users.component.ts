@@ -14,8 +14,6 @@ import {forEach} from '@angular/router/src/utils/collection';
 export class AdminUsersComponent implements OnInit {
 
     users: User[];
-    nonAdmin: User[] = [];
-
     constructor(private route: ActivatedRoute,
                 private userService: UserService) {
     }
@@ -23,19 +21,29 @@ export class AdminUsersComponent implements OnInit {
     ngOnInit() {
         this.userService.getUsers().subscribe(userData => {
             this.users = userData;
-            this.giveRole();
+            // this.giveRole();
         });
     }
 
-    giveRole() {
-        this.users.forEach(value => {
-            if ((value.roles.length === 1 || value.roles.length === 2)   && !value.roles.pop().roleName.includes(RoleEnum.ADMIN)) {
-                this.nonAdmin.push(value);
-            }
+    // giveRole() {
+        // this.users.forEach(value => {
+        //     if ((value.roles.length === 1 || value.roles.length === 2)   && !value.roles.pop().roleName.includes(RoleEnum.ADMIN)) {
+        //         this.nonAdmin.push(value);
+        //     }
             // if (value.roles.length === 2 && value.roles.pop().roleName.includes(RoleEnum.ORGANIZER)) {
             //     console.log(value);
             //     this.nonAdmin.push(value);
             // }
+        // });
+    // }
+    isAdmin(user){
+        let ad = false;
+        user.roles.forEach(function (value) {
+            if (value.roleName === RoleEnum.ADMIN) {
+                ad = true;
+            }
         });
+        return ad;
     }
 }
+

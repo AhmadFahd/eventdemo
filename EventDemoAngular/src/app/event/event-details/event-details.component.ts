@@ -7,6 +7,7 @@ import {Events} from '../event.model';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../auth/authentication.service';
 import {Comments} from '../comment.model';
+import {log} from "util";
 
 @Component({
     selector: 'app-event-details',
@@ -15,6 +16,7 @@ import {Comments} from '../comment.model';
 })
 export class EventDetailsComponent implements OnInit {
     id: number;
+    err;
     commentForm: FormGroup;
     currentEvent: Events;
     private sub: Subscription;
@@ -69,8 +71,13 @@ export class EventDetailsComponent implements OnInit {
     }
 
     bookTicket() {
-        this.eventsService.bookTicket(this.id, this.auth.getUserId()).subscribe();
-        this.router.navigateByUrl("/tickets");
+        this.eventsService.bookTicket(this.id, this.auth.getUserId()).subscribe(value => {
+            this.router.navigateByUrl("/tickets");
+        }, error1 => {
+            this.err = error1;
+            console.log(this.err);
+        });
+
     }
 
 }
