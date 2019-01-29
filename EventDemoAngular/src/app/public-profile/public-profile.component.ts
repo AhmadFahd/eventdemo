@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {User} from '../user/user.model';
 import {UserService} from '../user/user.service';
 import {AuthenticationService} from '../auth/authentication.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {Feed} from '../feeds/feed.model';
 import {FeedService} from '../feed.service';
 
@@ -13,19 +13,18 @@ import {FeedService} from '../feed.service';
 })
 export class PublicProfileComponent implements OnInit {
     currentUser: User;
-    id;dds;
+    id;
     name;
     followed;
     feeds: Feed[];
     myId = this.auth.getUserId();
 
+
     constructor(private userService: UserService,
                 private route: ActivatedRoute,
                 private auth: AuthenticationService,
                 private router: Router,
-                private feedService: FeedService) {
-        this.router.events.subscribe(value => this.ngOnInit());
-    }
+                private feedService: FeedService) { }
 
     ngOnInit() {
         if (this.router.url.startsWith('/search')) {
@@ -58,12 +57,29 @@ export class PublicProfileComponent implements OnInit {
             }));
         }
     }
+
     follow() {
         this.userService.Follow(this.myId, this.id).subscribe();
         this.ngOnInit();
     }
+
     unfollow() {
         this.userService.unFollow(this.myId, this.id).subscribe();
         this.ngOnInit();
+    }
+
+    nav(id) {
+        this.id = id;
+        this.userService.getUser(this.id).subscribe((value0 => {
+            this.currentUser = value0;
+            this.userService.isFollowed(this.myId, this.id).subscribe(
+                value => {
+                    this.followed = value;
+                });
+            this.feedService.userFeeds(this.id).subscribe(value =>
+                this.feeds = value
+            );
+            this.router.navigateByUrl(`/profile/${id}`);
+        }));
     }
 }

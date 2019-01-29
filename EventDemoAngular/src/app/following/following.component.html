@@ -4,7 +4,7 @@
   <div class="row">
     <div *ngFor="let user of users" class="col-lg-4 col-sm-6 text-center mb-4">
       <img class="rounded-circle img-fluid d-block mx-auto" style="max-width: 200px" src="/api/file/downloadFile/{{user.icon}}" alt="">
-      <h3>{{user.username}}</h3>
+      <h3 [routerLink]="['/profile',user.id]">{{user.username}}</h3>
       <button class="btn" (click)="unfollow(user.id)">UnFollow</button>
     </div>
   </div>

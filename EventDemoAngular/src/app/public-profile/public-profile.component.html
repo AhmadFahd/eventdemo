@@ -26,29 +26,29 @@
             <div class="list-group-item" style="background-color: #0f2442; color: white"><b> Feeds : </b></div>
             <ul class="list-group" *ngFor="let feed of feeds">
                 <li class="list-group-item" *ngIf="feed.action=='FOLLOW'">
-                    <a [routerLink]="['/profile', feed.user.id]">{{feed.user.username}}</a>
+                    <b (click)="nav(feed.user.id)">{{feed.user.username}}</b>
                     Follow :
-                    <a [routerLink]="['/profile', feed.targetUser.id]">{{feed.targetUser.username}}</a>
+                    <b (click)="nav(feed.targetUser.id)">{{feed.targetUser.username}}</b>
                 </li>
                 <li class="list-group-item" *ngIf="feed.action=='COMMENT'">
-                    <a [routerLink]="['/profile', feed.user.id]">{{feed.user.username}}</a>
+                    <b (click)="nav(feed.user.id)">{{feed.user.username}}</b>
                     Comments : {{feed.targetComment.comment}} On
-                    <a [routerLink]="['/events', feed.targetComment.event.id]">{{feed.targetComment.event.name}}</a>
+                    <b [routerLink]="['/events', feed.targetComment.event.id]">{{feed.targetComment.event.name}}</b>
                 </li>
                 <li class="list-group-item" *ngIf="feed.action=='BOOK'">
-                    <a [routerLink]="['/profile', feed.user.id]">{{feed.user.username}}</a>
+                    <b (click)="nav(feed.user.id)">{{feed.user.username}}</b>
                     Book a ticket On
-                    <a [routerLink]="['/events', feed.targetEvent.id]">{{feed.targetEvent.name}}</a>
+                    <b [routerLink]="['/events', feed.targetEvent.id]">{{feed.targetEvent.name}}</b>
                 </li>
                 <li class="list-group-item" *ngIf="feed.action=='ADD_EVENT'">
-                    <a [routerLink]="['/profile', feed.user.id]">{{feed.user.username}}</a>
+                    <b (click)="nav(feed.user.id)">{{feed.user.username}}</b>
                     Adds new Event :
-                    <a [routerLink]="['/events', feed.targetEvent.id]">{{feed.targetEvent.name}}</a>
+                    <b [routerLink]="['/events', feed.targetEvent.id]">{{feed.targetEvent.name}}</b>
                 </li>
                 <li class="list-group-item" *ngIf="feed.action=='RATE'">
-                    <a [routerLink]="['/profile', feed.user.id]">{{feed.user.username}}</a>
+                    <b (click)="nav(feed.user.id)">{{feed.user.username}}</b>
                     Rate an Event :
-                    <a [routerLink]="['/events', feed.targetRate.event.id]">{{feed.targetRate.event.name}}</a>
+                    <b [routerLink]="['/events', feed.targetRate.event.id]">{{feed.targetRate.event.name}}</b>
                     With : {{feed.targetRate.rate}}/5 Stars !
                 </li>
             </ul>

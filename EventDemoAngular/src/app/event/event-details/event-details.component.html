@@ -5,7 +5,8 @@
 
     <!-- Portfolio Item Heading -->
     <h1 class="my-4">{{event.name}}
-        <small > {{event.organizer.username}}: {{orgRate}}/5 &#9733;</small>
+        <small *ngIf="orgRate>0"> {{event.organizer.username}}: {{orgRate}}/5 &#9733;</small>
+        <small *ngIf="orgRate==0"> {{event.organizer.username}}: not rated yet!</small>
     </h1>
 
     <!-- Portfolio Item Row -->

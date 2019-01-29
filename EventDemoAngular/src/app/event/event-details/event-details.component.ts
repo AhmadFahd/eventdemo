@@ -22,7 +22,6 @@ export class EventDetailsComponent implements OnInit {
     currentEvent: Events;
     private sub: Subscription;
     comments: Observable<Comments>;
-    // time: number;
     orgRate = 0;
     eventCounter;
     percentage;
