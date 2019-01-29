@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {User} from '../user/user.model';
 import {UserService} from '../user/user.service';
 import {AuthenticationService} from '../auth/authentication.service';
@@ -19,12 +19,27 @@ export class PublicProfileComponent implements OnInit {
     feeds: Feed[];
     myId = this.auth.getUserId();
 
-
     constructor(private userService: UserService,
                 private route: ActivatedRoute,
                 private auth: AuthenticationService,
                 private router: Router,
                 private feedService: FeedService) { }
+
+    onBooleanGenerated(value) {
+
+        this.userService.getUserByUsername(value).subscribe((value0 => {
+            this.currentUser = value0;
+            this.name = this.currentUser.username;
+            this.id = this.currentUser.id;
+            this.userService.isFollowed(this.myId, this.id).subscribe(
+                value => {
+                    this.followed = value;
+                });
+            this.feedService.userFeeds(this.id).subscribe(value =>
+                this.feeds = value
+            );
+        }),error1 => this.currentUser = null);
+    }
 
     ngOnInit() {
         if (this.router.url.startsWith('/search')) {
@@ -82,4 +97,6 @@ export class PublicProfileComponent implements OnInit {
             this.router.navigateByUrl(`/profile/${id}`);
         }));
     }
+
+
 }

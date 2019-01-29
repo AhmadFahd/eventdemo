@@ -41,43 +41,15 @@ public class UserController {
             return ResponseEntity.ok(userServices.findById(userid));
         } return ResponseEntity.badRequest().body("No user");
     }
-    @PostMapping("/admin/create")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity addAdmin(@RequestBody @Valid UsersDTO usersDTO, BindingResult result) {
-        if (result.hasErrors()){
-            return ResponseEntity.badRequest().body(result.getAllErrors());
-        }
-//        notificationService.addUserNotification(usersDTO);
-        userServices.addUser(usersDTO,ROLES.ROLE_ADMIN.toString());
-        return ResponseEntity.ok().build();
-    }
-
-
-    @PostMapping("/organizer/create")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity addOrganizer(@RequestBody @Valid UsersDTO usersDTO, BindingResult result) {
-            if (result.hasErrors()){
-                return ResponseEntity.badRequest().body(result.getAllErrors());
-            }
-//        notificationService.addUserNotification(usersDTO);
-        userServices.addUser(usersDTO,ROLES.ROLE_ORGANIZER.toString());
-        return ResponseEntity.ok().build();
-    }
 
     @PostMapping("/create")
     public ResponseEntity addUser(@RequestBody @Valid UsersDTO usersDTO, BindingResult result) {
-
-        if (userServices.isUser(usersDTO.getUsername())) {
-            throw new RuntimeException(usersDTO.getUsername() + " is Already exist!");
-        } else if (userServices.isEmailUsed(usersDTO.getEmail())) {
-            throw new RuntimeException(usersDTO.getEmail() + " is Already exist!");
-        } else if (result.hasErrors()) {
+        if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(result.getAllErrors());
-        } else {
+        }
 //        notificationService.addUserNotification(usersDTO);
             userServices.addUser(usersDTO, ROLES.ROLE_USER.toString());
             return ResponseEntity.ok().build();
-        }
     }
 
 

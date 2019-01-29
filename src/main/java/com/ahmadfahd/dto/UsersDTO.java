@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class UsersDTO {
 
     private Long id;
-    @Length(min = 3,max = 32)
+//    @Length(min = 8,max = 18)
     private String username;
     private String firstname;
     private String midname;

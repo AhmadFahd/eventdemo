@@ -13,6 +13,9 @@
             <input matInput type="text" formControlName="email">
           </mat-form-field>
           <mat-error>
+            <small *ngIf="emailErr">{{emailErr}}</small>
+          </mat-error>
+          <mat-error>
             <small *ngIf="!myReactiveForm.controls.email.valid && !myReactiveForm.controls.email.untouched">
               Please enter valid email
             </small>
@@ -24,11 +27,14 @@
             <input matInput type="text" formControlName="username">
           </mat-form-field>
           <mat-error>
-            <small *ngIf="err">{{err}}</small>
+            <small *ngIf="userErr">{{userErr}}</small>
+          </mat-error>
+        <mat-error>
             <small *ngIf="!myReactiveForm.controls.username.valid && !myReactiveForm.controls.username.untouched">
                 Please enter valid username
             </small>
           </mat-error>
+
         </div>
         <div class="col-lg-4 portfolio-item">
           <mat-form-field appearance="legacy">
@@ -36,7 +42,7 @@
             <input matInput type="password" formControlName="password">
           </mat-form-field>
           <mat-error>
-            <small *ngIf="!myReactiveForm.controls.password.untouched && !myReactiveForm.controls.password.untouched">
+            <small *ngIf="!myReactiveForm.controls.password.valid && !myReactiveForm.controls.password.untouched">
               password required
             </small>
           </mat-error>

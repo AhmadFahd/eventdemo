@@ -1,8 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter , OnInit, Output} from '@angular/core';
 import {RoleEnum} from '../shared/roles';
 import {AuthenticationService} from '../auth/authentication.service';
 import {RequestService} from '../role-request/request.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {} from "selenium-webdriver";
+import {isBoolean} from "util";
 
 @Component({
     selector: 'app-navbar',
@@ -14,6 +16,8 @@ export class NavbarComponent implements OnInit {
     user;
     org;
     auths = this.authService.getAuthorities();
+
+    @Output() booleanGenerated = new EventEmitter<string>();
 
     constructor(private authService: AuthenticationService,
                 private reqService: RequestService,
@@ -52,6 +56,7 @@ export class NavbarComponent implements OnInit {
     }
 
     search(user) {
+        this.booleanGenerated.emit(user);
         this.router.navigateByUrl('/search/' + user);
     }
 }

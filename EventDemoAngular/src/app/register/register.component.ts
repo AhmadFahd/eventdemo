@@ -21,8 +21,8 @@ export class RegisterComponent implements OnInit {
     myReactiveForm: FormGroup;
     user$: Observable<User>;
     selectedFiles: FileList;
-    err;
-    sdfas;
+    emailErr;
+    userErr;
     currentFileUpload: File;
     fileDownloadUri = 'defaultProfileImage';
     uploaded;
@@ -37,7 +37,7 @@ export class RegisterComponent implements OnInit {
     ngOnInit() {
         this.myReactiveForm = this.formBuilder.group({
             email: ['', Validators.compose([Validators.required, Validators.email])],
-            username: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z]/),
+            username: ['', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z0-9_.-]{2,17}$/),
                 Validators.maxLength(32), Validators.minLength(3)])],
             password: ['', Validators.compose([Validators.required, Validators.minLength(6), Validators.pattern(/^[a-zA-Z]/)])],
             confirm: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
@@ -58,12 +58,14 @@ export class RegisterComponent implements OnInit {
         // console.log(this.myReactiveForm)
         this.myReactiveForm.controls.icon.setValue(this.fileDownloadUri);
         this.userService.addUser(this.myReactiveForm).subscribe(
-            value =>
+            value => this.router.navigateByUrl('/login'),
                 err => {
-                this.err = err;
-                console.log(this.err);
+                this.emailErr = null;
+                this.userErr = null;
+                 if (err.includes('@')){
+                     this.emailErr = err;
+                 }else {this.userErr = err;}
                 });
-        // this.router.navigateByUrl('/login');
     }
     selectFile(event) {
         this.selectedFiles = event.target.files;

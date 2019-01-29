@@ -20,7 +20,7 @@ export class EventDetailsComponent implements OnInit {
     err1;
     commentForm: FormGroup;
     currentEvent: Events;
-    private sub: Subscription;
+
     comments: Observable<Comments>;
     orgRate = 0;
     eventCounter;

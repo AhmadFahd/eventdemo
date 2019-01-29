@@ -11,6 +11,7 @@ import com.ahmadfahd.repository.RolesRepository;
 import com.ahmadfahd.repository.UsersRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -55,7 +56,11 @@ public class UserServicesImp implements UserServices {
     // FIXME: 11/19/2018
     @Override
     public void addUser(UsersDTO usersDTO, String role) {
-
+        if (usersRepository.existsByUsername(usersDTO.getUsername())) {
+            throw new RuntimeException(usersDTO.getUsername() + " is Already exist!");
+        } else if (usersRepository.existsByEmail(usersDTO.getEmail())) {
+            throw new RuntimeException(usersDTO.getEmail() + " is Already exist!");
+        }
         UsersEntity usersEntity = modelMapper.map(usersDTO, UsersEntity.class);
         usersEntity.setPassword(new BCryptPasswordEncoder().encode(usersDTO.getPassword()));
         usersEntity.setEnabled(true);
@@ -105,10 +110,6 @@ public class UserServicesImp implements UserServices {
         return usersRepository.existsByUsername(username);
     }
 
-    @Override
-    public boolean isEmailUsed(String email) {
-        return usersRepository.existsByEmail(email);
-    }
 
     @Override
     public List<UserGetDto> findAllOrganizers() {

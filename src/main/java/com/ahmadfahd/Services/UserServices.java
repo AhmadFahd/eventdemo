@@ -19,7 +19,6 @@ public interface UserServices {
      boolean isActiveUser(String username);
      boolean isUser(String username);
      List<UserGetDto> findAllOrganizers();
-     boolean isEmailUsed(String email);
 
 
      }
