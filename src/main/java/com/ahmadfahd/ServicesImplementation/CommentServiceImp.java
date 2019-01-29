@@ -46,7 +46,10 @@ public class CommentServiceImp implements CommentService {
             UsersEntity usersEntity = usersRepository.findById(userid).get();
             LocalDateTime timer = LocalDateTime.now().minusMinutes(1);
             boolean counter = commentsRepository.existsByEventAndUserAndTimeAfter(eventsEntity, usersEntity, timer);
-            if (!counter) {
+            if (counter){
+                throw new RuntimeException("You have to wait 1 minute between comments");
+            }
+            else {
                 commentsEntity.setEvent(eventsEntity);
                 commentsEntity.setUser(usersEntity);
                 commentsEntity.setTime(LocalDateTime.now());

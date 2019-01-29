@@ -17,11 +17,12 @@ import {log} from "util";
 export class EventDetailsComponent implements OnInit {
     id: number;
     err;
+    err1;
     commentForm: FormGroup;
     currentEvent: Events;
     private sub: Subscription;
     comments: Observable<Comments>;
-    time: number;
+    // time: number;
     orgRate = 0;
     eventCounter;
     percentage;
@@ -56,14 +57,17 @@ export class EventDetailsComponent implements OnInit {
     }
 
     onSubmit() {
-        if (!this.time || this.time <= Date.now() - 60000) {
-            // console.log('Accepted');
-            this.time = Date.now();
-            this.eventsService.addComment(this.commentForm, this.id, this.auth.getUserId()).subscribe(
-                value => this.ngOnInit());
-        } else {
-            // console.log('wait');
-        }
+        this.eventsService.addComment(this.commentForm, this.id, this.auth.getUserId()).subscribe(
+            value => {this.err1 = null; this.ngOnInit(); },error1 =>  this.err1=error1);
+
+        // if (!this.time || this.time <= Date.now() - 60000) {
+        //     console.log('Accepted');
+            // this.time = Date.now();
+            // this.eventsService.addComment(this.commentForm, this.id, this.auth.getUserId()).subscribe(
+            //     value => this.ngOnInit());
+        // } else {
+        //     console.log('wait');
+        // }
     }
 
     getComments() {
