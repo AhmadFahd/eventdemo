@@ -45,5 +45,8 @@ export class AdminUsersComponent implements OnInit {
         });
         return ad;
     }
+    Delete(id){
+        this.userService.delUser(id).subscribe(value => this.ngOnInit());
+    }
 }
 

@@ -25,6 +25,12 @@ export class UserService {
         // return this.http.get<User>(API_URL + `api/users/view/` + id);
         return this.http.get<User>(`/api/users/view/` + `${id}`);
     }
+
+    delUser(id: number): Observable<any> {
+        // return this.http.get<User>(API_URL + `api/users/view/` + id);
+        return this.http.get(`/api/users/delete/` + `${id}`);
+    }
+
     getUserByUsername(username: string): Observable<User> {
         // return this.http.get<User>(API_URL + `api/users/view/` + id);
         return this.http.get<User>(`/api/users/name/` + `${username}`);
@@ -62,4 +68,5 @@ export class UserService {
     checkActive(id): Observable<any> {
         return this.http.get(`/api/reset/check/${id}`);
     }
+
 }

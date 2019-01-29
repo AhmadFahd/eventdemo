@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Observable, Subscription} from 'rxjs';
 import {map, catchError, delay} from 'rxjs/operators';
 import {User} from '../user.model';
@@ -24,6 +24,7 @@ export class UserDetailComponent implements OnInit {
     dd: number;
     constructor(private route: ActivatedRoute, private userService: UserService,
                 private formBuilder: FormBuilder,
+                private router: Router,
                 private uploadService: UploadFileService) {
     }
 
@@ -64,9 +65,8 @@ export class UserDetailComponent implements OnInit {
   }
     onSubmit() {
         this.myReactiveForm.controls.icon.setValue(this.fileDownloadUri);
-        console.log(this.myReactiveForm.value);
         return this.userService.updateUser(this.id, this.myReactiveForm).subscribe(value =>
-            this.ngOnInit());
+            this.router.navigateByUrl("/admin/users"));
     }
 
     selectFile(event) {

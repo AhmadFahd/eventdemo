@@ -43,11 +43,17 @@ public class UserServicesImp implements UserServices {
         List<UserGetDto> usersDTOS = ObjectMapperUtils.mapAll(usersEntities, UserGetDto.class);
         return usersDTOS;
     }
+    @Override
+    public List<UserGetDto> findAllDisable() {
+        List<UsersEntity> usersEntities = usersRepository.findByEnabledFalse();
+        List<UserGetDto> usersDTOS = ObjectMapperUtils.mapAll(usersEntities, UserGetDto.class);
+        return usersDTOS;
+    }
 
     @Override
     public UserGetDto findById(Long userid) {
 //        if (usersRepository.findById(userid).isPresent()) {
-        UsersEntity usersEntity = usersRepository.findById(userid).get();
+        UsersEntity usersEntity = usersRepository.findByIdAndEnabledTrue(userid).get();
         UserGetDto userGetDto = modelMapper.map(usersEntity, UserGetDto.class);
         return userGetDto;
 
@@ -95,9 +101,15 @@ public class UserServicesImp implements UserServices {
 
     @Override
     public UsersDTO findByUsername(String username) {
-            UsersEntity usersEntity = usersRepository.findByUsername(username);
-            UsersDTO usersDTO = modelMapper.map(usersEntity, UsersDTO.class);
-            return usersDTO;
+        UsersEntity usersEntity = usersRepository.findByUsername(username);
+        UsersDTO usersDTO = modelMapper.map(usersEntity, UsersDTO.class);
+        return usersDTO;
+    }
+    @Override
+    public UsersDTO findByUsernameAndEnabledTrue(String username) {
+        UsersEntity usersEntity = usersRepository.findByUsernameAndEnabledTrue(username);
+        UsersDTO usersDTO = modelMapper.map(usersEntity, UsersDTO.class);
+        return usersDTO;
     }
 
     @Override

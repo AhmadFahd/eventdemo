@@ -28,6 +28,12 @@ public class UserController {
 
         return ResponseEntity.ok(userServices.findAllPresent());
     }
+    @GetMapping("/disabled")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity findAllDisable() {
+
+        return ResponseEntity.ok(userServices.findAllDisable());
+    }
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -77,7 +83,7 @@ public class UserController {
     @GetMapping("/name/{name}")
     public ResponseEntity findByUser(@PathVariable String name) {
         if (userServices.isUser(name)) {
-            return ResponseEntity.ok(userServices.findByUsername(name));
+            return ResponseEntity.ok(userServices.findByUsernameAndEnabledTrue(name));
         }
         return ResponseEntity.badRequest().build();
     }

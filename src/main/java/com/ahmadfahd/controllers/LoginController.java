@@ -34,6 +34,10 @@ public class LoginController {
     @PostMapping("/UserData")
     public ResponseEntity login(@RequestBody LoginBody loginBody) {
         if (!userServices.isActiveUser(loginBody.getUsername())) {
+            if(userServices.isUser(loginBody.getUsername()))
+            {
+                return ResponseEntity.badRequest().body(new RuntimeException("User is disabled"));
+            }
             return ResponseEntity.badRequest().body(new RuntimeException("User not found"));
         }
         UsersDTO usersDTO = userServices.findByUsername(loginBody.getUsername());
