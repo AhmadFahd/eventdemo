@@ -37,7 +37,7 @@ const routes: Routes = [
     {path: 'home', component: AppComponent, canActivate: [AuthGuard]},
     // {path: 'users', component: UserComponent, canActivate: [AuthGuard], data: { authority : [admin] }},
     {path: 'user/:id', component: UserDetailComponent, canActivate: [AuthGuard] , data: { authority : [admin] }},
-    {path: 'edit/:id', component: UserEditComponent, canActivate: [AuthGuard] ,data: { authority : [admin] }},
+    // {path: 'edit/:id', component: UserEditComponent, canActivate: [AuthGuard] ,data: { authority : [admin] }},
     {path: 'register', component: RegisterComponent},
     {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
     {path: 'profile/:id', component: PublicProfileComponent, canActivate: [AuthGuard] },

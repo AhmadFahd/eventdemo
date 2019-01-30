@@ -7,5 +7,7 @@ import java.time.LocalDateTime;
 
 public interface PasswordResetRepository extends JpaRepository<PasswordResetEntity,String> {
 
-    boolean existsByIdAndAndTimeAfterAndDoneFalse(String id,LocalDateTime time);
+    boolean existsByIdAndTimeAfterAndDoneFalse(String id,LocalDateTime time);
+    boolean existsByUserUsernameAndTimeAfterAndDoneFalse(String username,LocalDateTime time);
+    boolean existsByUserEmailAndTimeAfterAndDoneFalse(String email,LocalDateTime time);
 }

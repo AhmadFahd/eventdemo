@@ -24,29 +24,46 @@ public class PasswordResetServiceImp implements PasswordResetService {
 
 
     @Override
-    public void passResetRequest(String username,String origin){
+    public void passResetRequest(String username, String origin) {
 
 // TODO: 1/10/2019  check if (1 day or less) request exist
         PasswordResetEntity passwordResetEntity = new PasswordResetEntity();
-        if(username.contains("@")) {
-            if(usersRepository.existsByEmail(username)) {
+        if (username.contains("@")) {
+            if (!usersRepository.existsByEmail(username)) {
+                throw new RuntimeException(username + " is not existing Email");
+            }
+            if (passwordResetRepository.existsByUserEmailAndTimeAfterAndDoneFalse(username, LocalDateTime.now().minusMinutes(5))) {
+                throw new RuntimeException("Password reset link has been sent to your e-mail, Please check your e-mail or wait 5 minutes");
+            }
+            try {
                 UsersEntity usersEntity = usersRepository.findByEmail(username);
                 passwordResetEntity.setUser(usersEntity);
                 passwordResetEntity.setTime(LocalDateTime.now());
                 passwordResetRepository.save(passwordResetEntity);
                 notificationService.sendRequestEmail(usersEntity, passwordResetEntity.getId(), origin);
+            } catch (Exception e) {
+                throw new RuntimeException("Server cannot send e-mail, Please try again later");
             }
-        } else {
-            if (usersRepository.existsByUsername(username)) {
+        }
+        /*Else if it's not contains @ its username*/
+        else {
+            if (!usersRepository.existsByUsername(username)) {
+                throw new RuntimeException(username + " is not existing Username");
+            }
+            if (passwordResetRepository.existsByUserUsernameAndTimeAfterAndDoneFalse(username, LocalDateTime.now().minusMinutes(5))) {
+                throw new RuntimeException("Password reset link has been sent to your e-mail, Please check your e-mail or wait 5 minutes");
+            }
+            try {
                 UsersEntity usersEntity = usersRepository.findByUsername(username);
                 passwordResetEntity.setUser(usersEntity);
                 passwordResetEntity.setTime(LocalDateTime.now());
                 passwordResetRepository.save(passwordResetEntity);
                 notificationService.sendRequestEmail(usersEntity, passwordResetEntity.getId(), origin);
+            } catch (Exception e) {
+                throw new RuntimeException("Server cannot send e-mail, Please try again later");
             }
         }
     }
-
 
     @Override
     public void passReset(PasswordResetDTO dto, String id) {
@@ -60,6 +77,6 @@ public class PasswordResetServiceImp implements PasswordResetService {
 
     @Override
     public boolean isActive(String id) {
-        return passwordResetRepository.existsByIdAndAndTimeAfterAndDoneFalse(id,LocalDateTime.now().minusHours(1));
+        return passwordResetRepository.existsByIdAndTimeAfterAndDoneFalse(id, LocalDateTime.now().minusMinutes(5));
     }
 }

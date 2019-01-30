@@ -12,7 +12,7 @@ import {UserService} from '../user/user.service';
 export class PassForgetComponent implements OnInit {
 
     loginForm: FormGroup;
-    error = '';
+    error;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -29,6 +29,6 @@ export class PassForgetComponent implements OnInit {
     }
 
     onSubmit() {
-      this.userService.resetRequest(this.loginForm.controls.username.value,window.location.origin+'/reset/').subscribe(value => this.router.navigateByUrl("/login"));
+      this.userService.resetRequest(this.loginForm.controls.username.value,window.location.origin+'/reset/').subscribe(value => this.router.navigateByUrl("/login"),error1 => this.error=error1);
     }
 }
