@@ -14,6 +14,7 @@ import {FeedService} from '../feed.service';
 export class PublicProfileComponent implements OnInit {
     currentUser: User;
     id;
+    err;
     name;
     followed;
     feeds: Feed[];
@@ -29,6 +30,7 @@ export class PublicProfileComponent implements OnInit {
 
         this.userService.getUserByUsername(value).subscribe((value0 => {
             this.currentUser = value0;
+            this.err=null;
             this.name = this.currentUser.username;
             this.id = this.currentUser.id;
             this.userService.isFollowed(this.myId, this.id).subscribe(
@@ -38,7 +40,7 @@ export class PublicProfileComponent implements OnInit {
             this.feedService.userFeeds(this.id).subscribe(value =>
                 this.feeds = value
             );
-        }),error1 => this.currentUser = null);
+        }),error1 => {this.err=true ; this.currentUser = null});
     }
 
     ngOnInit() {
@@ -47,6 +49,7 @@ export class PublicProfileComponent implements OnInit {
                 this.name = param.name);
             this.userService.getUserByUsername(this.name).subscribe((value0 => {
                 this.currentUser = value0;
+                this.err=null;
                 this.id = this.currentUser.id;
                 this.userService.isFollowed(this.myId, this.id).subscribe(
                     value => {
@@ -55,13 +58,15 @@ export class PublicProfileComponent implements OnInit {
                 this.feedService.userFeeds(this.id).subscribe(value =>
                     this.feeds = value
                 );
-            }));
+            }),error1 => {this.err=true ; this.currentUser = null});
+
         }
         if (this.router.url.startsWith('/profile')) {
             this.route.params.subscribe((param: any) =>
                 this.id = param.id);
             this.userService.getUser(this.id).subscribe((value0 => {
                 this.currentUser = value0;
+                this.err=null;
                 this.userService.isFollowed(this.myId, this.id).subscribe(
                     value => {
                         this.followed = value;
@@ -69,7 +74,7 @@ export class PublicProfileComponent implements OnInit {
                 this.feedService.userFeeds(this.id).subscribe(value =>
                     this.feeds = value
                 );
-            }));
+            }),error1 => {this.err=true ; this.currentUser = null});
         }
     }
 
@@ -78,7 +83,7 @@ export class PublicProfileComponent implements OnInit {
         this.ngOnInit();
     }
 
-    unfollow() {
+        unfollow() {
         this.userService.unFollow(this.myId, this.id).subscribe();
         this.ngOnInit();
     }

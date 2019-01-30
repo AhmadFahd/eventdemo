@@ -23,13 +23,14 @@ export class PassForgetComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log(window.location.origin);
         this.loginForm = this.formBuilder.group({
             username: ['', Validators.required]
         });
     }
 
     onSubmit() {
-
+//todo: request by email , send origin to be handled by backend
        this.userService.resetRequest(this.loginForm.controls.username.value).subscribe();
     }
 }

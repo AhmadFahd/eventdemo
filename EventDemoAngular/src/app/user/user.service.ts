@@ -13,10 +13,14 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  getUsers(): Observable<User[]> {
+    getUsers(): Observable<User[]> {
 
-      return this.http.get<User[]>('/api/users/present');
-  }
+        return this.http.get<User[]>('/api/users/present');
+    }
+    getDelUsers(): Observable<User[]> {
+
+        return this.http.get<User[]>('/api/users/disabled');
+    }
   addUser(a): Observable<User> {
     return this.http.post<User>(
       `/api/users/create`, JSON.stringify(a.value), API_ARGS);
@@ -29,6 +33,10 @@ export class UserService {
     delUser(id: number): Observable<any> {
         // return this.http.get<User>(API_URL + `api/users/view/` + id);
         return this.http.get(`/api/users/delete/` + `${id}`);
+    }
+    activeUser(id: number): Observable<any> {
+        // return this.http.get<User>(API_URL + `api/users/view/` + id);
+        return this.http.get(`/api/users/enable/` + `${id}`);
     }
 
     getUserByUsername(username: string): Observable<User> {

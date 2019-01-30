@@ -14,15 +14,18 @@ import {forEach} from '@angular/router/src/utils/collection';
 export class AdminUsersComponent implements OnInit {
 
     users: User[];
+    disabled: User[];
     constructor(private route: ActivatedRoute,
                 private userService: UserService) {
     }
 
     ngOnInit() {
-        this.userService.getUsers().subscribe(userData => {
-            this.users = userData;
-            // this.giveRole();
-        });
+        this.userService.getUsers().subscribe(userData =>
+            this.users = userData // this.giveRole();
+        );
+        this.userService.getDelUsers().subscribe(value =>
+            this.disabled = value
+        );
     }
 
     // giveRole() {
@@ -47,6 +50,9 @@ export class AdminUsersComponent implements OnInit {
     }
     Delete(id){
         this.userService.delUser(id).subscribe(value => this.ngOnInit());
+    }
+    Activate(id){
+        this.userService.activeUser(id).subscribe(value => this.ngOnInit());
     }
 }
 

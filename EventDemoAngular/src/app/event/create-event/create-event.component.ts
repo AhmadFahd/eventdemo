@@ -53,8 +53,8 @@ export class CreateEventComponent implements OnInit {
     onSubmit() {
         // console.log(this.myReactiveForm)
         this.eventForm.controls.image.setValue(this.fileDownloadUri);
-        this.eventService.addEvent(this.auth.getUserId() , JSON.stringify(this.eventForm.value)).subscribe();
-        this.router.navigateByUrl("/myEvents");
+        this.eventService.addEvent(this.auth.getUserId() , JSON.stringify(this.eventForm.value)).subscribe( value =>
+        this.router.navigateByUrl("/myEvents"));
 
     }
     selectFile(event) {

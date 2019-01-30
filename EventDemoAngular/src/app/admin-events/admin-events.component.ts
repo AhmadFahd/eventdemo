@@ -28,6 +28,9 @@ export class AdminEventsComponent implements OnInit {
     }
 
     approve(id) {
-        this.eventsService.approve(id).subscribe();
+        this.eventsService.approve(id).subscribe(value => this.ngOnInit());
+    }
+    delEvent(id) {
+        this.eventsService.cancelEvent(id).subscribe( value => this.ngOnInit());
     }
 }
