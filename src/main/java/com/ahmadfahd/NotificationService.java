@@ -121,5 +121,18 @@ public class NotificationService {
 		javaMailSender.send(mail);
 
 	}
+	public void sendRequestEmail(UsersEntity usersEntity, String id , String origin){
+		SimpleMailMessage mail = new SimpleMailMessage();
+
+		mail.setTo(usersEntity.getEmail());
+		mail.setFrom("spring.mail.username");
+		mail.setSubject("Hi " + usersEntity.getUsername());
+		mail.setText("Hi " + usersEntity.getUsername() + "\n"
+				+ "to change your password please click on this link \n"
+				+ origin+id+"\n"
+				+"Thanks.");
+		javaMailSender.send(mail);
+
+	}
 
 }

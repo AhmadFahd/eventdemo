@@ -14,7 +14,7 @@ public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
     List<UsersEntity> findByEnabledIsTrue();
     List<UsersEntity> findByEnabledFalse();
     // select * from users where enable = true
-
+    UsersEntity findByEmail(String uname);
     UsersEntity findByUsername(String uname);
     UsersEntity findByUsernameAndEnabledTrue(String uname);
 

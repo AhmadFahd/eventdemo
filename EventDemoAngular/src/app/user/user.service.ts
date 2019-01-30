@@ -66,8 +66,8 @@ export class UserService {
     listOfFollowing(id): Observable<any> {
         return this.http.get(`api/follow/followinglist/${id}`);
     }
-    resetRequest(name): Observable<any> {
-      return this.http.get(`/api/reset/${name}`);
+    resetRequest(name,body): Observable<any> {
+      return this.http.post(`/api/reset/${name}`,body);
     }
     resetPassword(id, value): Observable<any> {
         return this.http.post(

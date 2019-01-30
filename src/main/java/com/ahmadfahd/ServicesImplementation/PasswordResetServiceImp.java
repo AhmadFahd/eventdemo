@@ -1,5 +1,6 @@
 package com.ahmadfahd.ServicesImplementation;
 
+import com.ahmadfahd.NotificationService;
 import com.ahmadfahd.Services.PasswordResetService;
 import com.ahmadfahd.dto.PasswordResetDTO;
 import com.ahmadfahd.entity.PasswordResetEntity;
@@ -18,17 +19,32 @@ public class PasswordResetServiceImp implements PasswordResetService {
     private PasswordResetRepository passwordResetRepository;
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    private NotificationService notificationService;
 
 
     @Override
-    public void passResetRequest(String username){
+    public void passResetRequest(String username,String origin){
 
 // TODO: 1/10/2019  check if (1 day or less) request exist
         PasswordResetEntity passwordResetEntity = new PasswordResetEntity();
-        UsersEntity usersEntity = usersRepository.findByUsername(username);
-        passwordResetEntity.setUser(usersEntity);
-        passwordResetEntity.setTime(LocalDateTime.now());
-        passwordResetRepository.save(passwordResetEntity);
+        if(username.contains("@")) {
+            if(usersRepository.existsByEmail(username)) {
+                UsersEntity usersEntity = usersRepository.findByEmail(username);
+                passwordResetEntity.setUser(usersEntity);
+                passwordResetEntity.setTime(LocalDateTime.now());
+                passwordResetRepository.save(passwordResetEntity);
+                notificationService.sendRequestEmail(usersEntity, passwordResetEntity.getId(), origin);
+            }
+        } else {
+            if (usersRepository.existsByUsername(username)) {
+                UsersEntity usersEntity = usersRepository.findByUsername(username);
+                passwordResetEntity.setUser(usersEntity);
+                passwordResetEntity.setTime(LocalDateTime.now());
+                passwordResetRepository.save(passwordResetEntity);
+                notificationService.sendRequestEmail(usersEntity, passwordResetEntity.getId(), origin);
+            }
+        }
     }
 
 

@@ -14,9 +14,9 @@ public class PasswordResetController {
     @Autowired
     private PasswordResetService passwordResetService;
 
-    @GetMapping("/{username}")
-    public ResponseEntity resetRequest(@PathVariable String username) {
-        passwordResetService.passResetRequest(username);
+    @PostMapping("/{username}")
+    public ResponseEntity resetRequest(@RequestBody String origin, @PathVariable String username) {
+        passwordResetService.passResetRequest(username,origin);
         return ResponseEntity.ok().build();
     }
 

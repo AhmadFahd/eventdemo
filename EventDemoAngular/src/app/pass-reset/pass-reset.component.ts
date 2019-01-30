@@ -43,8 +43,6 @@ export class PassResetComponent implements OnInit {
     }
 
     onSubmit() {
-
-        console.log(this.loginForm.value);
-        this.userService.resetPassword(this.id, this.loginForm).subscribe();
+        this.userService.resetPassword(this.id, this.loginForm).subscribe(value => this.router.navigateByUrl("/login"));
     }
 }
