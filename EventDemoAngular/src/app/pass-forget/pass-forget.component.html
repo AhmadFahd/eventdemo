@@ -18,9 +18,11 @@
         </mat-error>
       </div>
       <div>
-        <button mat-button  [disabled]="loginForm.invalid" class="btn btn-block py-1 font-weight-bold" type="submit">Submit</button>
+        <button mat-button  [disabled]="loginForm.invalid||loading" class="btn btn-block py-1 font-weight-bold" type="submit">Submit</button>
         <button mat-button class="btn btn-block py-1 font-weight-bold" routerLink="/login" >Login</button>
       </div>
+        <div *ngIf="loading" align="center">
+      <div class="loader"></div></div>
     </form>
   </div>
 </div>
