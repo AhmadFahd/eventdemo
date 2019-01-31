@@ -33,6 +33,10 @@ public class LoginController {
 // // FIXME: 1/21/2019 This function solved login pop up message
     @PostMapping("/UserData")
     public ResponseEntity login(@RequestBody LoginBody loginBody) {
+        // TODO: 1/31/2019 add findByEmail
+        //        if (loginBody.getUsername().contains("@"))
+
+
         if (!userServices.isActiveUser(loginBody.getUsername())) {
             if(userServices.isUser(loginBody.getUsername()))
             {
