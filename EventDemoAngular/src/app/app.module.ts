@@ -53,6 +53,7 @@ import { PassForgetComponent } from './pass-forget/pass-forget.component';
 import { PassResetComponent } from './pass-reset/pass-reset.component';
 import { TicketDetailsComponent } from './ticket-details/ticket-details.component';
 import { OrgEventsEditComponent } from './org-events/org-events-edit/org-events-edit.component';
+import { TestComponent } from './test/test.component';
 
 
 @NgModule({
@@ -85,7 +86,8 @@ import { OrgEventsEditComponent } from './org-events/org-events-edit/org-events-
     PassForgetComponent,
     PassResetComponent,
     TicketDetailsComponent,
-    OrgEventsEditComponent],
+    OrgEventsEditComponent,
+    TestComponent],
   imports: [
       BrowserModule,
       QRCodeModule,

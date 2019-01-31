@@ -11,7 +11,7 @@
           <input matInput type="text" formControlName="username">
         </mat-form-field>
         <mat-error>
-          <small [hidden]="loginForm.controls.username.valid ||loginForm.controls.username.untouched">username required</small>
+          <small [hidden]="loginForm.controls.username.valid ||loginForm.controls.username.untouched">please enter valid username or email</small>
         </mat-error>
         <mat-error>
           <small *ngIf="error">{{error}}</small>
