@@ -26,6 +26,7 @@ export class EventDetailsComponent implements OnInit {
     eventCounter;
     percentage;
     models;
+    ert;
 
     constructor(private formBuilder: FormBuilder,
                 private route: ActivatedRoute,

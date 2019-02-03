@@ -19,7 +19,10 @@ public interface UserServices {
      UsersDTO findByUsername(String username);
      UsersDTO findByUsernameAndEnabledTrue(String username);
      boolean isActiveUser(String username);
+     UsersDTO findByEmail(String email);
      boolean isUser(String username);
+     boolean isUserByEmail(String email);
+     boolean isActiveUserByEmail(String email);
      List<UserGetDto> findAllOrganizers();
 
 

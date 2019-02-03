@@ -105,6 +105,14 @@ public class UserServicesImp implements UserServices {
         UsersDTO usersDTO = modelMapper.map(usersEntity, UsersDTO.class);
         return usersDTO;
     }
+
+    @Override
+    public UsersDTO findByEmail(String email) {
+        UsersEntity usersEntity = usersRepository.findByEmail(email);
+        UsersDTO usersDTO = modelMapper.map(usersEntity, UsersDTO.class);
+        return usersDTO;
+    }
+
     @Override
     public UsersDTO findByUsernameAndEnabledTrue(String username) {
         UsersEntity usersEntity = usersRepository.findByUsernameAndEnabledTrue(username);
@@ -116,10 +124,19 @@ public class UserServicesImp implements UserServices {
     public boolean isActiveUser(String username) {
         return usersRepository.existsByUsernameAndEnabledTrue(username);
     }
+    @Override
+    public boolean isActiveUserByEmail(String email) {
+        return usersRepository.existsByEmailAndEnabledTrue(email);
+    }
 
     @Override
     public boolean isUser(String username) {
         return usersRepository.existsByUsername(username);
+    }
+
+    @Override
+    public boolean isUserByEmail(String email){
+        return usersRepository.existsByEmail(email);
     }
 
 

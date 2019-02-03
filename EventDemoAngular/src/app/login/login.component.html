@@ -7,11 +7,11 @@
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <div>
                 <mat-form-field appearance="legacy">
-                    <mat-label>Username or E-mail</mat-label>
+                    <mat-label>Username</mat-label>
                     <input matInput type="text" formControlName="username">
                 </mat-form-field>
                 <mat-error>
-                    <small [hidden]="loginForm.controls.username.valid ||loginForm.controls.username.untouched">please enter valid username or email</small>
+                    <small [hidden]="loginForm.controls.username.valid ||loginForm.controls.username.untouched">please enter valid username</small>
                 </mat-error>
             </div><div>
             <mat-form-field appearance="legacy">

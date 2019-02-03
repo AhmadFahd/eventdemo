@@ -13,6 +13,8 @@ public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
 
     List<UsersEntity> findByEnabledIsTrue();
     List<UsersEntity> findByEnabledFalse();
+    UsersEntity findByEmailAndFirstname(String email , String fn);
+
     // select * from users where enable = true
     UsersEntity findByEmail(String uname);
     UsersEntity findByUsername(String uname);
@@ -25,5 +27,7 @@ public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
     boolean existsByUsernameAndEnabledTrue(String username);
+    boolean existsByEmailAndEnabledTrue(String email);
+
 
 }

@@ -1,6 +1,7 @@
 package com.ahmadfahd.controllers;
 
 import com.ahmadfahd.Services.UserServices;
+import com.ahmadfahd.ServicesImplementation.LoginService;
 import com.ahmadfahd.dto.LoginBody;
 import com.ahmadfahd.dto.UsersDTO;
 import com.ahmadfahd.security.MyUserDetailsService;
@@ -16,10 +17,9 @@ import java.util.Map;
 @RestController
 public class LoginController {
 
+
     @Autowired
-    private MyUserDetailsService userDetailsService;
-    @Autowired
-    private UserServices userServices;
+    private LoginService loginService;
 
     // FIXME: 1/21/2019 old Login
 //    @GetMapping("/UserData")
@@ -33,29 +33,8 @@ public class LoginController {
 // // FIXME: 1/21/2019 This function solved login pop up message
     @PostMapping("/UserData")
     public ResponseEntity login(@RequestBody LoginBody loginBody) {
-        // TODO: 1/31/2019 add findByEmail
-        //        if (loginBody.getUsername().contains("@"))
 
-
-        if (!userServices.isActiveUser(loginBody.getUsername())) {
-            if(userServices.isUser(loginBody.getUsername()))
-            {
-                return ResponseEntity.badRequest().body(new RuntimeException("User is disabled"));
-            }
-            return ResponseEntity.badRequest().body(new RuntimeException("User not found"));
-        }
-        UsersDTO usersDTO = userServices.findByUsername(loginBody.getUsername());
-//        To Check The Case sensitive ,, but it's not required
-//        if (!usersDTO.getUsername().equals(loginBody.getUsername())) {
-//            return ResponseEntity.badRequest().body(new RuntimeException("UserCaseSensitive"));
-//        }
-        UserDetails userDetails = userDetailsService.loadUserByUsername(loginBody.getUsername());
-        if (new BCryptPasswordEncoder().matches(loginBody.getPassword(), usersDTO.getPassword())) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("userAuth", userDetails.getAuthorities());
-            map.put("userId", usersDTO.getId());
-            return ResponseEntity.ok(map);
-        }
-        return ResponseEntity.badRequest().body(new RuntimeException("Password Incorrect!"));
+        return ResponseEntity.ok(loginService.loginWithUser(loginBody));
     }
+
 }
