@@ -14,6 +14,7 @@ public interface EventServices {
 
     List<EventsDTO> getAllEvents() ;
     EventsDTO findById(Long eventid) ;
+
     void addEvent(EventsDTO eventsDTO, Long userid);
     void updateEvent(EventsDTO eventsDTO,Long eventid);
     void deleteById(Long eventid);
@@ -26,5 +27,11 @@ public interface EventServices {
     List<EventsDTO> findByUser(Long id);
     List<EventsDTO> getNonApproved(Long id);
     List<EventsDTO> getAllNonApproved();
+    List<EventsDTO> getAllSurveys() ;
+    void addSurvey(EventsDTO eventsDTO, Long userid);
+    EventsDTO findSurveyById(Long eventid) ;
+    List<EventsDTO> findMySurveys(Long id);
+
+
 
 }

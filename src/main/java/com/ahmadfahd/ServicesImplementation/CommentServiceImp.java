@@ -14,7 +14,6 @@ import com.ahmadfahd.repository.FeedRepository;
 import com.ahmadfahd.repository.UsersRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -38,7 +37,7 @@ public class CommentServiceImp implements CommentService {
 
     @Override
     public void AddComment(CommentsDTO commentsDTO, Long eventid, Long userid) {
-        Optional<EventsEntity> eventsEntityOptional = eventsRepository.findByIdAndDeletedFalseAndApprovedTrue(eventid);
+        Optional<EventsEntity> eventsEntityOptional = eventsRepository.findByIdAndDeletedFalseAndApprovedTrueAndSurveyFalse(eventid);
         Optional<UsersEntity> usersEntityOptional = usersRepository.findById(userid);
         if (eventsEntityOptional.isPresent() && usersEntityOptional.isPresent()) {
             CommentsEntity commentsEntity = modelMapper.map(commentsDTO, CommentsEntity.class);

@@ -18,6 +18,15 @@ export class EventsService {
     getEvnets(): Observable<Events[]> {
         return this.http.get<Events[]>('/api/events/active');
     }
+    getSurveys(): Observable<Events[]> {
+        return this.http.get<Events[]>('/api/events/surveys');
+    }
+    getSurvey(id): Observable<Events[]> {
+        return this.http.get<Events[]>(`/api/events/survey/${id}`);
+    }
+    getMySurveys(id): Observable<Events[]> {
+    return this.http.get<Events[]>(`/api/events/mysurveys/${id}`);
+    }
     editEvent(id: number, a): Observable<any> {
         return this.http.put(`/api/events/edit/${id}`, JSON.stringify(a.value), API_ARGS);
     }
@@ -42,6 +51,9 @@ export class EventsService {
     }
     addEvent(uid, value) {
         return this.http.post(`/api/events/${uid}/add`, value , API_ARGS);
+    }
+    addSurvey(uid, value) {
+        return this.http.post(`/api/events/${uid}/add/survey`, value , API_ARGS);
     }
     getMyNonRatedTickets(uid): Observable<any> {
         return this.http.get(`api/tickets/nonrated/${uid}`);

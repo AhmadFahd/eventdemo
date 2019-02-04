@@ -7,7 +7,6 @@ import com.ahmadfahd.dto.TicketsDTO;
 import com.ahmadfahd.entity.*;
 import com.ahmadfahd.enums.ACTIONS;
 import com.ahmadfahd.repository.*;
-import org.dom4j.jaxb.JAXBObjectModifier;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,7 +53,7 @@ public class TicketServicesImp implements TicketServices {
     @Override
     public void addTicket(Long eventid, Long userid) {
         TicketsEntity ticketsEntity = new TicketsEntity();
-        Optional<EventsEntity> eventsOptional = eventsRepository.findByIdAndDeletedFalseAndApprovedTrueAndDateAfter(eventid, LocalDate.now());
+        Optional<EventsEntity> eventsOptional = eventsRepository.findByIdAndDeletedFalseAndApprovedTrueAndDateAfterAndSurveyFalse(eventid, LocalDate.now());
         Optional<UsersEntity> usersOptional = usersRepository.findById(userid);
         if (eventsOptional.isPresent() && usersOptional.isPresent()) {
             EventsEntity eventsEntity = eventsRepository.findById(eventid).get();

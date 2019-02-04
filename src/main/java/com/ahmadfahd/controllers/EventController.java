@@ -31,6 +31,13 @@ public class EventController {
         }
         return ResponseEntity.ok(eventServices.getAllActive());
     }
+    @GetMapping("/surveys")
+    public ResponseEntity getAllSurveys() {
+        if (eventServices.getAllSurveys().isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(eventServices.getAllActive());
+    }
 
     @GetMapping("/all")
     public ResponseEntity getAllEvents() {
@@ -48,6 +55,10 @@ public class EventController {
 //        }
         return ResponseEntity.ok(eventServices.findById(eventId));
     }
+    @GetMapping("/survey/{eventId}")
+    public ResponseEntity findSurveyById(@PathVariable Long eventId) {
+        return ResponseEntity.ok(eventServices.findSurveyById(eventId));
+    }
 
     @PostMapping("/{userId}/add")
     public ResponseEntity addEvent(@RequestBody @Valid EventsDTO eventsDTO, @PathVariable Long userId, BindingResult result) {
@@ -57,7 +68,22 @@ public class EventController {
         eventServices.addEvent(eventsDTO, userId);
         return ResponseEntity.created(null).build();
     }
-
+    @PostMapping("/{userId}/add/survey")
+    public ResponseEntity addSurvey(@RequestBody @Valid EventsDTO eventsDTO, @PathVariable Long userId, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(result.getAllErrors());
+        }
+        eventServices.addSurvey(eventsDTO, userId);
+        return ResponseEntity.created(null).build();
+    }
+    @GetMapping("mysurveys/{userId}")
+    public ResponseEntity findMySurveys(@PathVariable Long userId) {
+        if
+        (eventServices.getNonApproved(userId) != null) {
+            return ResponseEntity.ok(eventServices.findMySurveys(userId));
+        }
+        return ResponseEntity.noContent().build();
+    }
     @PutMapping("/edit/{eventId}")
     public ResponseEntity updateEvent(@RequestBody EventsDTO eventsDTO, @PathVariable Long eventId, BindingResult result) {
         if (result.hasErrors()) {

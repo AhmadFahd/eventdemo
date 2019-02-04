@@ -29,11 +29,20 @@ public class EventsEntity {
     private String city;
     private String location;
     @ColumnDefault("0")
-    @JsonIgnore
     private boolean deleted;
     @ColumnDefault("0")
-    @JsonIgnore
     private boolean approved;
+    @ColumnDefault("0")
+    private boolean survey;
+
+    public boolean isSurvey() {
+        return survey;
+    }
+
+    public void setSurvey(boolean survey) {
+        this.survey = survey;
+    }
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "org_id")
     private UsersEntity organizer;

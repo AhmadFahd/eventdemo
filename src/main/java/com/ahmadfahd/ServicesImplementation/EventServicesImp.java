@@ -40,10 +40,29 @@ public class EventServicesImp implements EventServices {
         List<EventsDTO> eventsDTO = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
         return eventsDTO;
     }
+    @Override
+    public List<EventsDTO> getAllSurveys() {
+        LocalDate localDate = LocalDate.now();
+        if (!eventsRepository.findByDeletedFalseAndSurveyTrueAndDateAfter(localDate).isEmpty()) {
+            List<EventsEntity> eventsEntityList = eventsRepository.findByDeletedFalseAndSurveyTrueAndDateAfter(localDate);
+            List<EventsDTO> eventsDTOList = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
+            return eventsDTOList;
+        }
+        return null;
+    }
 
     @Override
     public EventsDTO findById(Long eventid) {
-        if (eventsRepository.findByIdAndDeletedFalseAndApprovedTrueAndDateAfter(eventid, LocalDate.now()).isPresent()) {
+        if (eventsRepository.findByIdAndDeletedFalseAndApprovedTrueAndDateAfterAndSurveyFalse(eventid, LocalDate.now()).isPresent()) {
+            EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
+            EventsDTO eventsDTO = modelMapper.map(eventsEntity, EventsDTO.class);
+            return eventsDTO;
+        }
+        return null;
+    }
+    @Override
+    public EventsDTO findSurveyById(Long eventid) {
+        if (eventsRepository.findByIdAndDeletedFalseAndSurveyTrueAndDateAfter(eventid, LocalDate.now()).isPresent()) {
             EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
             EventsDTO eventsDTO = modelMapper.map(eventsEntity, EventsDTO.class);
             return eventsDTO;
@@ -58,6 +77,19 @@ public class EventServicesImp implements EventServices {
             EventsEntity eventsEntity;
             eventsEntity = modelMapper.map(eventsDTO, EventsEntity.class);
             eventsEntity.setOrganizer(usersRepository.findById(userid).get());
+            eventsRepository.save(eventsEntity);
+        }
+
+    }
+
+    @Override
+    public void addSurvey(EventsDTO eventsDTO, Long userid) {
+
+        if (eventsDTO.getDate().isAfter(LocalDate.now().minusDays(1))) {
+            EventsEntity eventsEntity;
+            eventsEntity = modelMapper.map(eventsDTO, EventsEntity.class);
+            eventsEntity.setOrganizer(usersRepository.findById(userid).get());
+            eventsEntity.setSurvey(true);
             eventsRepository.save(eventsEntity);
         }
     }
@@ -119,8 +151,8 @@ public class EventServicesImp implements EventServices {
     @Override
     public List<EventsDTO> getAllActive() {
         LocalDate localDate = LocalDate.now();
-        if (!eventsRepository.findByDeletedFalseAndApprovedTrueAndDateAfter(localDate).isEmpty()) {
-            List<EventsEntity> eventsEntityList = eventsRepository.findByDeletedFalseAndApprovedTrueAndDateAfter(localDate);
+        if (!eventsRepository.findByDeletedFalseAndApprovedTrueAndDateAfterAndSurveyFalse(localDate).isEmpty()) {
+            List<EventsEntity> eventsEntityList = eventsRepository.findByDeletedFalseAndApprovedTrueAndDateAfterAndSurveyFalse(localDate);
             List<EventsDTO> eventsDTOList = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
             return eventsDTOList;
         }
@@ -129,7 +161,7 @@ public class EventServicesImp implements EventServices {
 
     @Override
     public List<EventsDTO> getNonApproved(Long id) {
-        List<EventsEntity> eventsEntityList = eventsRepository.findByOrganizerIdAndDeletedFalseAndApprovedFalse(id);
+        List<EventsEntity> eventsEntityList = eventsRepository.findByOrganizerIdAndDeletedFalseAndApprovedFalseAndSurveyFalse(id);
         if (!eventsEntityList.isEmpty()) {
             List<EventsDTO> eventsDTOList = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
             return eventsDTOList;
@@ -139,7 +171,16 @@ public class EventServicesImp implements EventServices {
 
     @Override
     public List<EventsDTO> getAllNonApproved() {
-        List<EventsEntity> eventsEntityList = eventsRepository.findByDeletedFalseAndApprovedFalse();
+        List<EventsEntity> eventsEntityList = eventsRepository.findByDeletedFalseAndApprovedFalseAndSurveyFalse();
+        if (!eventsEntityList.isEmpty()) {
+            List<EventsDTO> eventsDTOList = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
+            return eventsDTOList;
+        }
+        return null;
+    }
+    @Override
+    public List<EventsDTO> findMySurveys(Long id) {
+        List<EventsEntity> eventsEntityList = eventsRepository.findByOrganizerIdAndDeletedFalseAndSurveyTrue(id);
         if (!eventsEntityList.isEmpty()) {
             List<EventsDTO> eventsDTOList = ObjectMapperUtils.mapAll(eventsEntityList, EventsDTO.class);
             return eventsDTOList;
@@ -170,6 +211,6 @@ public class EventServicesImp implements EventServices {
 
     @Override
     public List<EventsDTO> findByUser(Long id) {
-        return ObjectMapperUtils.mapAll(eventsRepository.findByOrganizerIdAndDeletedFalseAndApprovedTrueAndDateAfter(id,LocalDate.now()), EventsDTO.class);
+        return ObjectMapperUtils.mapAll(eventsRepository.findByOrganizerIdAndDeletedFalseAndApprovedTrueAndDateAfterAndSurveyFalse(id,LocalDate.now()), EventsDTO.class);
     }
 }

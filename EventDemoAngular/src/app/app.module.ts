@@ -19,6 +19,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import {
     MatButtonModule,
     MatCardModule,
+    MatButtonToggleModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatFormFieldModule,
@@ -31,7 +32,8 @@ import {
     MatProgressBarModule,
     MatSlideToggleModule,
     MatTableModule,
-    MatToolbarModule, MatListModule
+    MatToolbarModule,
+    MatListModule
 } from '@angular/material';
 import { ProfileComponent } from './profile/profile.component';
 import { EventComponent } from './event/event.component';
@@ -98,6 +100,7 @@ import { TestComponent } from './test/test.component';
       ReactiveFormsModule,
       HttpClientModule,
       MatInputModule,
+      MatButtonToggleModule,
       MatProgressBarModule,
       MatFormFieldModule,
       MatButtonModule,
