@@ -1,23 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {EventsService} from '../events.service';
 import {AuthenticationService} from '../../auth/authentication.service';
 import {UploadFileService} from '../../upload-file.service';
 import {HttpEventType, HttpResponse} from '@angular/common/http';
 import {Router} from "@angular/router";
+
 function dateMatcher(control: AbstractControl) {
     return control.get('date').value >= Date.now() + (10800000)
         ? null : {'old': true};
 }
 
 @Component({
-  selector: 'app-create-event',
-  templateUrl: './create-event.component.html',
-  styleUrls: ['./create-event.component.scss']
+    selector: 'app-create-event',
+    templateUrl: './create-event.component.html',
+    styleUrls: ['./create-event.component.scss']
 })
 export class CreateEventComponent implements OnInit {
 
-        fileDownloadUri = 'defaultEventImage';
+    fileDownloadUri = 'defaultEventImage';
     eventForm: FormGroup;
     selectedFiles: FileList;
     currentFileUpload: File;
@@ -28,7 +29,7 @@ export class CreateEventComponent implements OnInit {
         private formBuilder: FormBuilder,
         private eventService: EventsService,
         private auth: AuthenticationService,
-        private router:Router,
+        private router: Router,
         private uploadService: UploadFileService) {
     }
 
@@ -50,13 +51,19 @@ export class CreateEventComponent implements OnInit {
         });
     }
 
-    onSubmit() {
-        // console.log(this.myReactiveForm)
-        this.eventForm.controls.image.setValue(this.fileDownloadUri);
-        this.eventService.addEvent(this.auth.getUserId() , JSON.stringify(this.eventForm.value)).subscribe( value =>
-        this.router.navigateByUrl("/myEvents"));
-
+    onSubmit(value) {
+        if(value === 'event') {
+            this.eventForm.controls.image.setValue(this.fileDownloadUri);
+            this.eventService.addEvent(this.auth.getUserId() , JSON.stringify(this.eventForm.value)).subscribe( value =>
+                this.router.navigateByUrl("/myEvents"));
+        } else if(value === 'survey'){
+            this.eventForm.controls.image.setValue(this.fileDownloadUri);
+            this.eventService.addSurvey(this.auth.getUserId() , JSON.stringify(this.eventForm.value)).subscribe( value =>
+                this.router.navigateByUrl("/mySurveys")
+            );
+        }
     }
+
     selectFile(event) {
         this.selectedFiles = event.target.files;
     }

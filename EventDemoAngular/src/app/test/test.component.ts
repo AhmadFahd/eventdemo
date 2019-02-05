@@ -53,18 +53,16 @@ export class TestComponent implements OnInit {
     }
 
     onSubmit(value) {
-        console.log(value)
         if(value === 'event') {
             this.eventForm.controls.image.setValue(this.fileDownloadUri);
             this.eventService.addEvent(this.auth.getUserId() , JSON.stringify(this.eventForm.value)).subscribe( value =>
                 this.router.navigateByUrl("/myEvents"));
-        }
+        } else if(value === 'survey'){
         this.eventForm.controls.image.setValue(this.fileDownloadUri);
         this.eventService.addSurvey(this.auth.getUserId() , JSON.stringify(this.eventForm.value)).subscribe( value =>
-            console.log('Done')
-        // this.router.navigateByUrl("/mySurveys")
+        this.router.navigateByUrl("/mySurveys")
         );
-
+        }
     }
     selectFile(event) {
         this.selectedFiles = event.target.files;
