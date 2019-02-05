@@ -1,0 +1,51 @@
+<app-navbar></app-navbar>
+<!-- Page Content -->
+<!-- /.container -->
+<div class="container" *ngIf="currentEvent as event">
+
+  <!-- Portfolio Item Heading -->
+  <h1 class="my-4">{{event.name}}
+    <small *ngIf="orgRate>0"> {{event.organizer.username}}: {{orgRate}}/5 &#9733;</small>
+    <small *ngIf="orgRate==0"> {{event.organizer.username}}: not rated yet!</small>
+  </h1>
+
+  <!-- Portfolio Item Row -->
+  <div class="row">
+
+    <div class="col-md-8">
+      <img class="img-fluid" src="/api/file/downloadFile/{{event.image}}" alt="">
+    </div>
+    <div class="col-md-4">
+      <h3 class="my-3">{{event.name}}</h3>
+      <p>{{event.overview}}</p>
+      <h3 class="my-3">Event Details:</h3>
+      <ul class="list-group">
+        <li class="list-group-item">Date : {{event.date}}</li>
+        <li class="list-group-item">Time : {{event.time}}</li>
+        <li class="list-group-item">Gender : {{event.gender}}</li>
+        <li class="list-group-item">Category : {{event.category}}</li>
+      </ul>
+      <div style="margin: 10px">
+<h4 *ngIf="voteCounter>0" align="center" style="color: #0f2442">{{voteCounter}} Voted this event !</h4>
+      </div>
+      <div align="center" style="padding-bottom: 10px"><mat-error *ngIf="err">{{err}}</mat-error></div>
+      <button  mat-button class="btn btn-block py-1 font-weight-bold" [disabled]="isVoted" (click)="voteSurvey()">Vote</button>
+    </div>
+  </div>
+  <!-- /.row -->
+
+  <div class="container" style="padding-top: 30px">
+    <div class="list-group-item" style="background-color: #0f2442; color: white"><b> Comments : </b></div>
+    <ul class="list-group" *ngFor="let comment of comments | async ">
+      <li class="list-group-item"><b [routerLink]="['/profile',  comment.user.id]">{{comment.user.username}}</b> : {{comment.comment}}</li>
+    </ul>
+    <div align="center" style="padding-bottom: 10px"><mat-error *ngIf="err1">{{err1}}</mat-error></div>
+    <form style="padding-top: 10px" class="form-inline my-2 my-lg-0" [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+      <input class="form-control mr-sm-2" type="text" placeholder="Comment" aria-label="Comment"
+             formControlName="comment">
+      <button mat-button style="background-color: #0f2442" class="btn py-1 font-weight-bold text-white" type="submit">Add</button>
+    </form>
+  </div>
+
+
+</div>

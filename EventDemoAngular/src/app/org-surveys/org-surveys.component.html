@@ -1,0 +1,31 @@
+<app-org-panel></app-org-panel>
+<div class="container">
+  <div class="card">
+    <div class="card-header card-header-danger">
+      <h4 class="card-title ">Surveys Table</h4>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class=" text-primary">
+          <th>Event Name</th>
+          <th>Event GENDER</th>
+          <th>Event Category</th>
+          <th>DELETE</th>
+          </thead>
+          <tbody>
+          <tr *ngFor="let event of events$" class="d-lg-table-row">
+            <td [routerLink]="['/event/tickets', event.id] ">{{event.name}}</td>
+            <td>{{event.gender}}</td>
+            <td>{{event.category}}</td>
+            <td>
+              <BUTTON (click)="delete(event.id)" class="btn">Delete</BUTTON>
+            </td>
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

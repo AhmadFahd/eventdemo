@@ -1,0 +1,24 @@
+<app-navbar></app-navbar>
+<div class="container" style="padding-top: 20px;">
+  <div style="padding-bottom: 10px" class="form-inline my-2 my-lg-0">
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Search for event" [(ngModel)]="searchText">
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <div *ngFor="let event of events | filter : searchText" class="col-lg-4 col-md-6 mb-4">
+      <div class="card h-100">
+        <a [routerLink]="['/survey', event.id]">
+          <img class="card-img-top" src="/api/file/downloadFile/{{event.image}}" alt="Event image"></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a>{{event.name}}</a>
+          </h4>
+          <h5>{{event.date}}</h5>
+          <p class="card-text">{{event.overview}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
