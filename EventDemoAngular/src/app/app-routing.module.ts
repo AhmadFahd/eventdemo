@@ -28,6 +28,9 @@ import {PassForgetComponent} from './pass-forget/pass-forget.component';
 import {PassResetComponent} from './pass-reset/pass-reset.component';
 import {OrgEventsEditComponent} from "./org-events/org-events-edit/org-events-edit.component";
 import {TestComponent} from "./test/test.component";
+import {OrgSurveysComponent} from "./org-surveys/org-surveys.component";
+import {SurveysComponent} from "./surveys/surveys.component";
+import {SurveyDetailsComponent} from "./survey-details/survey-details.component";
 
 const user = RoleEnum.USER;
 const admin = RoleEnum.ADMIN;
@@ -45,10 +48,13 @@ const routes: Routes = [
     {path: 'search/:name', component: PublicProfileComponent, canActivate: [AuthGuard] },
     {path: 'login', component: LoginComponent},
     {path: 'events', component: EventComponent, canActivate: [AuthGuard] },
+    {path: 'surveys', component: SurveysComponent, canActivate: [AuthGuard] },
     {path: 'events/:id', component: EventDetailsComponent, canActivate: [AuthGuard] },
+    {path: 'survey/:id', component: SurveyDetailsComponent, canActivate: [AuthGuard] },
     {path: 'tickets', component: TicketsComponent, canActivate: [AuthGuard] },
     {path: 'event/create', component: CreateEventComponent, canActivate: [AuthGuard], data: { authority : [org] } },
     {path: 'myEvents', component: OrgEventsComponent, canActivate: [AuthGuard], data: { authority : [org] }  },
+    {path: 'mySurveys', component: OrgSurveysComponent, canActivate: [AuthGuard], data: { authority : [org] }  },
     {path: 'admin', component: AdminPanelComponent, canActivate: [AuthGuard], data: { authority : [admin] }  },
     {path: 'admin/users', component: AdminUsersComponent, canActivate: [AuthGuard], data: { authority : [admin] }  },
     {path: 'admin/events', component: AdminEventsComponent, canActivate: [AuthGuard], data: { authority : [admin] }  },

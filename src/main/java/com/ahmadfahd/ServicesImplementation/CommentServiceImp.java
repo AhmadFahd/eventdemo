@@ -37,7 +37,7 @@ public class CommentServiceImp implements CommentService {
 
     @Override
     public void AddComment(CommentsDTO commentsDTO, Long eventid, Long userid) {
-        Optional<EventsEntity> eventsEntityOptional = eventsRepository.findByIdAndDeletedFalseAndApprovedTrueAndSurveyFalse(eventid);
+        Optional<EventsEntity> eventsEntityOptional = eventsRepository.findByIdAndDeletedFalse(eventid);
         Optional<UsersEntity> usersEntityOptional = usersRepository.findById(userid);
         if (eventsEntityOptional.isPresent() && usersEntityOptional.isPresent()) {
             CommentsEntity commentsEntity = modelMapper.map(commentsDTO, CommentsEntity.class);

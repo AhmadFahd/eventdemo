@@ -36,7 +36,7 @@ public class EventController {
         if (eventServices.getAllSurveys().isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(eventServices.getAllActive());
+        return ResponseEntity.ok(eventServices.getAllSurveys());
     }
 
     @GetMapping("/all")
@@ -79,7 +79,7 @@ public class EventController {
     @GetMapping("mysurveys/{userId}")
     public ResponseEntity findMySurveys(@PathVariable Long userId) {
         if
-        (eventServices.getNonApproved(userId) != null) {
+        (eventServices.findMySurveys(userId) != null) {
             return ResponseEntity.ok(eventServices.findMySurveys(userId));
         }
         return ResponseEntity.noContent().build();

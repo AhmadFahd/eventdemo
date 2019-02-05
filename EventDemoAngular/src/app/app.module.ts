@@ -56,6 +56,9 @@ import { PassResetComponent } from './pass-reset/pass-reset.component';
 import { TicketDetailsComponent } from './ticket-details/ticket-details.component';
 import { OrgEventsEditComponent } from './org-events/org-events-edit/org-events-edit.component';
 import { TestComponent } from './test/test.component';
+import { SurveysComponent } from './surveys/surveys.component';
+import { SurveyDetailsComponent } from './survey-details/survey-details.component';
+import { OrgSurveysComponent } from './org-surveys/org-surveys.component';
 
 
 @NgModule({
@@ -89,7 +92,10 @@ import { TestComponent } from './test/test.component';
     PassResetComponent,
     TicketDetailsComponent,
     OrgEventsEditComponent,
-    TestComponent],
+    TestComponent,
+    SurveysComponent,
+    SurveyDetailsComponent,
+    OrgSurveysComponent],
   imports: [
       BrowserModule,
       QRCodeModule,

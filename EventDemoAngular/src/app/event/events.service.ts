@@ -21,8 +21,8 @@ export class EventsService {
     getSurveys(): Observable<Events[]> {
         return this.http.get<Events[]>('/api/events/surveys');
     }
-    getSurvey(id): Observable<Events[]> {
-        return this.http.get<Events[]>(`/api/events/survey/${id}`);
+    getSurvey(id): Observable<Events> {
+        return this.http.get<Events>(`/api/events/survey/${id}`);
     }
     getMySurveys(id): Observable<Events[]> {
     return this.http.get<Events[]>(`/api/events/mysurveys/${id}`);
@@ -94,5 +94,13 @@ export class EventsService {
     eventCounter(id): Observable<any> {
         return this.http.get(`/api/tickets/count/${id}`)
     }
-
+    addVote(userId,eventId): Observable<any> {
+        return this.http.get(`/api/vote/add/${userId}/${eventId}`);
+    }
+    votesCounter(id): Observable<any> {
+        return this.http.get(`/api/vote/${id}`)
+    }
+    checkVoted(userId,eventId): Observable<any> {
+        return this.http.get(`/api/vote/check/${userId}/${eventId}`);
+    }
 }

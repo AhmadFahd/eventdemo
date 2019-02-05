@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface EventsRepository extends JpaRepository<EventsEntity,Long> {
 
-    Optional<EventsEntity> findByIdAndDeletedFalseAndApprovedTrueAndSurveyFalse(Long eventid);
+    Optional<EventsEntity> findByIdAndDeletedFalse(Long eventid);
     List<EventsEntity> findByDeletedFalseAndApprovedTrueAndDateAfterAndSurveyFalse(LocalDate date);
     Optional<EventsEntity> findByIdAndDeletedFalseAndApprovedTrueAndDateAfterAndSurveyFalse(Long eventid, LocalDate date);
     List<EventsEntity> findByOrganizerIdAndDeletedFalseAndApprovedTrueAndDateAfterAndSurveyFalse(Long oid, LocalDate date);
