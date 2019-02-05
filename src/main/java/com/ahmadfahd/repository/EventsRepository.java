@@ -26,6 +26,10 @@ public interface EventsRepository extends JpaRepository<EventsEntity,Long> {
     List<EventsEntity> findByOrganizerIdAndDeletedFalseAndSurveyTrueAndDateAfter(Long oid, LocalDate date);
     List<EventsEntity> findByOrganizerIdAndDeletedFalseAndSurveyTrue(Long oid);
 //    List<EventsEntity> findByDeletedFalseAndSurveyTrue();
+    boolean existsByIdAndSurveyTrue(Long id);
+//    boolean existsByIdAndDeletedTrue(Long id);
+//    boolean existsByIdAndDeletedTrueOrDateBefore(Long id , LocalDate date);
+    boolean existsByIdAndDeletedFalseAndApprovedTrueAndDateAfter(Long id , LocalDate date);
 
 
 

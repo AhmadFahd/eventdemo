@@ -139,6 +139,15 @@ public class EventController {
     }
     return ResponseEntity.noContent().build();
     }
+    @GetMapping("/isDeleted/{eventId}")
+    public ResponseEntity isDeleted(@PathVariable Long eventId) {
+        return ResponseEntity.ok(eventServices.isDeleted(eventId));
+    }
+
+    @GetMapping("/isSurvey/{eventId}")
+    public ResponseEntity isSurvey(@PathVariable Long eventId) {
+        return ResponseEntity.ok(eventServices.isSurvey(eventId));
+    }
 }
 
 

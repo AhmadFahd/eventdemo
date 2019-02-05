@@ -20,13 +20,14 @@ export class EventDetailsComponent implements OnInit {
     err1;
     commentForm: FormGroup;
     currentEvent: Events;
+    noContent;
 
     comments: Observable<Comments>;
     orgRate = 0;
     eventCounter;
     percentage;
-    models;
-    ert;
+    deleted;
+    survey;
 
     constructor(private formBuilder: FormBuilder,
                 private route: ActivatedRoute,
@@ -38,14 +39,22 @@ export class EventDetailsComponent implements OnInit {
     ngOnInit() {
         this.route.params.subscribe((param: any) => {
             this.id = param.id;
-            this.eventsService.getEvent(this.id).subscribe(value => {
-                this.currentEvent = value;
-                this.eventsService.getOrgRate(this.currentEvent.organizer.id).subscribe(value =>
-                    this.orgRate = value);
-                this.eventsService.eventCounter(this.id).subscribe(value => {
-                    this.eventCounter = value;
-                    this.percentage= this.eventCounter/this.currentEvent.capacity*100;
-                });
+
+            this.eventsService.isSurvey(this.id).subscribe(value1 => {
+                this.survey = value1;
+                if (this.survey) {
+                    this.router.navigateByUrl(`/survey/${this.id}`);
+                } else {
+                    this.eventsService.getEvent(this.id).subscribe(value => {
+                        this.currentEvent = value;
+                        this.eventsService.getOrgRate(this.currentEvent.organizer.id).subscribe(value =>
+                            this.orgRate = value);
+                        this.eventsService.eventCounter(this.id).subscribe(value => {
+                            this.eventCounter = value;
+                            this.percentage = this.eventCounter / this.currentEvent.capacity * 100;
+                        });
+                    },error1 => this.noContent = true);
+                }
             });
         });
 
@@ -58,13 +67,16 @@ export class EventDetailsComponent implements OnInit {
 
     onSubmit() {
         this.eventsService.addComment(this.commentForm, this.id, this.auth.getUserId()).subscribe(
-            value => {this.err1 = null; this.ngOnInit(); },error1 =>  this.err1=error1);
+            value => {
+                this.err1 = null;
+                this.ngOnInit();
+            }, error1 => this.err1 = error1);
 
         // if (!this.time || this.time <= Date.now() - 60000) {
         //     console.log('Accepted');
-            // this.time = Date.now();
-            // this.eventsService.addComment(this.commentForm, this.id, this.auth.getUserId()).subscribe(
-            //     value => this.ngOnInit());
+        // this.time = Date.now();
+        // this.eventsService.addComment(this.commentForm, this.id, this.auth.getUserId()).subscribe(
+        //     value => this.ngOnInit());
         // } else {
         //     console.log('wait');
         // }

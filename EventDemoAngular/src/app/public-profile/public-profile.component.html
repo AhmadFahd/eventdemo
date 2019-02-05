@@ -41,6 +41,11 @@
                     Book a ticket On
                     <b [routerLink]="['/events', feed.targetEvent.id]">{{feed.targetEvent.name}}</b>
                 </li>
+                <li class="list-group-item" *ngIf="feed.action=='VOTE'">
+                    <b [routerLink]="['/profile', feed.user.id]">{{feed.user.username}}</b>
+                    voted for
+                    <b [routerLink]="['/events', feed.targetEvent.id]">{{feed.targetEvent.name}}</b>
+                </li>
                 <li class="list-group-item" *ngIf="feed.action=='ADD_EVENT'">
                     <b (click)="nav(feed.user.id)">{{feed.user.username}}</b>
                     Adds new Event :

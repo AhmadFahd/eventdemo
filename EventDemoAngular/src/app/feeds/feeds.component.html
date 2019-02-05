@@ -17,6 +17,12 @@
                     Book a ticket On
                     <b [routerLink]="['/events', feed.targetEvent.id]">{{feed.targetEvent.name}}</b>
                 </li>
+                <li class="list-group-item" *ngIf="feed.action=='VOTE'">
+                    <b [routerLink]="['/profile', feed.user.id]">{{feed.user.username}}</b>
+                    voted for
+                    <b [routerLink]="['/events', feed.targetEvent.id]">{{feed.targetEvent.name}}</b>
+                </li>
+
                 <li class="list-group-item" *ngIf="feed.action=='ADD_EVENT'">
                     <b [routerLink]="['/profile', feed.user.id]">{{feed.user.username}}</b>
                     Adds new Event :
@@ -28,6 +34,7 @@
                     <b [routerLink]="['/events', feed.targetRate.event.id]">{{feed.targetRate.event.name}}</b>
                     With : {{feed.targetRate.rate}}/5 Stars !
                 </li>
+
             </ul>
     </div>
 </div>

@@ -103,4 +103,10 @@ export class EventsService {
     checkVoted(userId,eventId): Observable<any> {
         return this.http.get(`/api/vote/check/${userId}/${eventId}`);
     }
+    isDeleted(id): Observable<any> {
+        return this.http.get(`/api/events/isDeleted/${id}`);
+    }
+    isSurvey(id): Observable<any> {
+        return this.http.get(`/api/events/isSurvey/${id}`);
+    }
 }

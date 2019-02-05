@@ -57,8 +57,7 @@ public class EventServicesImp implements EventServices {
             EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
             EventsDTO eventsDTO = modelMapper.map(eventsEntity, EventsDTO.class);
             return eventsDTO;
-        }
-        return null;
+        } throw new RuntimeException("No content");
     }
     @Override
     public EventsDTO findSurveyById(Long eventid) {
@@ -66,8 +65,7 @@ public class EventServicesImp implements EventServices {
             EventsEntity eventsEntity = eventsRepository.findById(eventid).get();
             EventsDTO eventsDTO = modelMapper.map(eventsEntity, EventsDTO.class);
             return eventsDTO;
-        }
-        return null;
+        } throw new RuntimeException("No content");
     }
 
     @Override
@@ -186,6 +184,16 @@ public class EventServicesImp implements EventServices {
             return eventsDTOList;
         }
         return null;
+    }
+
+    @Override
+    public boolean isDeleted(Long eid) {
+        return !eventsRepository.existsByIdAndDeletedFalseAndApprovedTrueAndDateAfter(eid,LocalDate.now());
+    }
+
+    @Override
+    public boolean isSurvey(Long eid) {
+        return eventsRepository.existsByIdAndSurveyTrue(eid);
     }
 
 

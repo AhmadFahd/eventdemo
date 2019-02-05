@@ -31,6 +31,8 @@ public interface EventServices {
     void addSurvey(EventsDTO eventsDTO, Long userid);
     EventsDTO findSurveyById(Long eventid) ;
     List<EventsDTO> findMySurveys(Long id);
+    boolean isDeleted(Long eid);
+    boolean isSurvey(Long eid);
 
 
 

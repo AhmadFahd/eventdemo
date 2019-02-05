@@ -6,5 +6,6 @@ public enum ACTIONS {
     BOOK,
     COMMENT,
     RATE,
-    ADD_EVENT
+    ADD_EVENT,
+    VOTE
 }
