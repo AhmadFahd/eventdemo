@@ -13,3 +13,26 @@ progress::-webkit-progress-value {
 }
 progress { color: black; }
 
+
+.main-login{
+    background-color: #fff;
+    opacity: 0.8;
+    /* shadows and rounded borders */
+    -moz-border-radius: 9px;
+    -webkit-border-radius: 9px;
+    border-radius: 9px;
+    -moz-box-shadow: 0px 9px 9px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 9px 9px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 9px 9px rgba(0, 0, 0, 0.3);
+
+}
+
+.main-center{
+    text-align: center;
+//margin-top: 260px;
+    margin: 100px auto;
+    min-width: 350px;
+    max-width: 370px;
+    padding: 80px 40px;
+
+}

@@ -23,6 +23,7 @@ export class SurveyDetailsComponent implements OnInit {
     orgRate = 0;
     voteCounter;
     isVoted;
+    noContent;
     percentage;
 
     constructor(private formBuilder: FormBuilder,
@@ -45,7 +46,7 @@ export class SurveyDetailsComponent implements OnInit {
                 this.eventsService.checkVoted(this.auth.getUserId(),this.id).subscribe(
                     value1 => this.isVoted = value1
                 );
-            });
+            },error1 => this.noContent = true);
         });
 
         this.commentForm = this.formBuilder.group({

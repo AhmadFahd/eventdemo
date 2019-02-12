@@ -84,4 +84,8 @@ public class RatingServicesImp implements RatingServices {
         return 0;
     }
 
+//    @Override
+//    public double findRateAvg(Long uid) {
+//        return ratingRepository.getAverageRate(uid);
+//    }
 }
